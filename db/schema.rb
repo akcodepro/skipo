@@ -10,9 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_22_164027) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_23_163146) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "exercises", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.text "instructions"
+    t.string "name", limit: 100, null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_exercises_on_name", unique: true
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "shared_workout_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["shared_workout_id"], name: "index_likes_on_shared_workout_id"
+    t.index ["user_id", "shared_workout_id"], name: "index_likes_on_user_id_and_shared_workout_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "shared_workouts", force: :cascade do |t|
+    t.text "caption"
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.string "photo_url", limit: 500
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "workout_session_id", null: false
+    t.index ["user_id"], name: "index_shared_workouts_on_user_id"
+    t.index ["workout_session_id"], name: "index_shared_workouts_on_workout_session_id", unique: true
+  end
 
   create_table "solid_cable_messages", force: :cascade do |t|
     t.binary "channel", null: false
@@ -187,16 +218,63 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_22_164027) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "display_name", limit: 100, null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.string "profile_photo_url", limit: 500
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.datetime "updated_at", null: false
+    t.string "username", limit: 50
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "workout_exercises", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "duration_seconds"
+    t.bigint "exercise_id", null: false
+    t.integer "position", null: false
+    t.integer "repetitions"
+    t.integer "rest_seconds"
+    t.datetime "updated_at", null: false
+    t.bigint "workout_id", null: false
+    t.index ["exercise_id"], name: "index_workout_exercises_on_exercise_id"
+    t.index ["workout_id", "position"], name: "index_workout_exercises_on_workout_id_and_position", unique: true
+    t.index ["workout_id"], name: "index_workout_exercises_on_workout_id"
+  end
+
+  create_table "workout_sessions", force: :cascade do |t|
+    t.integer "actual_duration_seconds"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "started_at"
+    t.string "status", limit: 30, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "workout_id", null: false
+    t.index ["user_id"], name: "index_workout_sessions_on_user_id"
+    t.index ["workout_id"], name: "index_workout_sessions_on_workout_id"
+  end
+
+  create_table "workouts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "difficulty", limit: 30, null: false
+    t.integer "duration_seconds", null: false
+    t.string "goal", limit: 50, null: false
+    t.string "title", limit: 150, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_workouts_on_user_id"
+  end
+
+  add_foreign_key "likes", "shared_workouts"
+  add_foreign_key "likes", "users"
+  add_foreign_key "shared_workouts", "users"
+  add_foreign_key "shared_workouts", "workout_sessions"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
@@ -205,4 +283,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_22_164027) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "workout_exercises", "exercises"
+  add_foreign_key "workout_exercises", "workouts"
+  add_foreign_key "workout_sessions", "users"
+  add_foreign_key "workout_sessions", "workouts"
+  add_foreign_key "workouts", "users"
 end
