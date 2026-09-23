@@ -289,3 +289,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_23_163146) do
   add_foreign_key "workout_sessions", "workouts"
   add_foreign_key "workouts", "users"
 end
+
