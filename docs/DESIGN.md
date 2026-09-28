@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.2
+**Version:** 0.3
 **Status:** Exploratory
 
 ## Product
@@ -80,6 +80,18 @@ Purpose:
 
 The interaction should remain structured and quick.
 
+The user tells the coach what they want. The AI decides the details.
+
+Inputs (V1):
+
+- **Focus:** multi-select category pills, plus "Mixed"
+- **Duration:** preset options (5 / 10 / 15 / 20 / 30 min)
+- **Difficulty:** slider (1 to 3)
+
+Work/rest intervals, tempo and volume are decided by the AI, not the user.
+
+Later: "anything to include" preferences, a first-use comfort question, Quick Start / Surprise me, adaptive coaching from history.
+
 ---
 
 ### Generated Workout
@@ -118,6 +130,10 @@ Priority:
 
 The interface should feel focused rather than like a dashboard.
 
+Pause and resume happen in the browser only. Leaving the workout screen ends the session: the user finishes or stops.
+
+Stopping before the end asks for confirmation and explains that a stopped workout cannot be shared, so there is no surprise.
+
 ---
 
 ### Workout Complete
@@ -130,6 +146,8 @@ Purpose:
 - Offer the option to share the workout
 
 The user should be prompted to share, but sharing must remain optional.
+
+Only completed workouts can be shared. A stopped workout shows a neutral, positive summary of what the user did (for example, the minutes completed), without a share prompt. Final wording to be defined.
 
 Primary actions:
 
@@ -171,6 +189,8 @@ Purpose:
 - Show meaningful personal progress over time
 
 This is primarily private user data and should remain secondary to the workout experience.
+
+Stopped sessions still appear in history and progress, visually distinct from completed ones: a dot on a chart is more motivating than nothing.
 
 ---
 
@@ -250,9 +270,17 @@ The goal is to establish the basic community experience without turning V1 into 
 - Subtle purposeful motion
 - High readability during active workouts
 
-Navigation is expected to use a mobile-native approach, potentially inspired by Apple's Liquid Glass aesthetic.
+### Navigation
 
-The exact navigation structure is still open.
+Mobile-native bottom tab bar, styled close to Apple's Liquid Glass.
+
+- Tabs: **Progress · Train · Feed** (Train in the centre, same size as the others)
+- Profile accessed via the avatar in the header
+- Hidden during workout generation and the active workout, shown again on the complete screen
+- Logged-out users see a landing page with sign up / log in, and no tab bar
+- Desktop: same mobile layout in a centred column for V1
+- Glass effect on the nav bar only. It must stay readable over any content and look right on iPhone Safari, where refraction effects may not render
+- Active tab set server-side, tap interactions only (no hover-driven behaviour)
 
 Avoid:
 
@@ -300,6 +328,14 @@ The generated result should clearly communicate:
 - How difficult it is
 
 The AI should encourage without becoming cheesy or overly verbose.
+
+### Exercise library
+
+The AI can only pick exercises from a global library. Each exercise has one home category and a difficulty (1 to 3).
+
+Categories: Fundamentals · Footwork · Rhythm & Coordination · Power · Technical · Freestyle
+
+Users never "graduate": every category stays available, whatever their experience. Category labels live in the UI and can change without touching data.
 
 ---
 
@@ -352,15 +388,17 @@ Content and UI details should be refined during implementation.
 - Achievement without excessive gamification
 - Custom illustrations are desirable but not a development blocker
 - Placeholder icons can be used during early implementation
+- Bottom tab bar navigation: Progress · Train · Feed, Liquid Glass style
+- Generation inputs: focus (multi-select), duration, difficulty
+- Global exercise library with categories and difficulty
+- Pause/resume in the browser only; stopped workouts cannot be shared
+- AI: RubyLLM with Mistral, structured output validated in code
 
 ---
 
 ## Open Questions
 
 - Exact home screen structure
-- Workout generation inputs
-- Navigation structure
-- Feed placement in navigation
 - Feed ordering / pagination
 - Exact feed post layout
 - Progress visualisation
@@ -369,5 +407,4 @@ Content and UI details should be refined during implementation.
 - AI coach interaction
 - History / progress scope
 - Final illustration approach
-- Backend / AI architecture
 - Error and loading states
