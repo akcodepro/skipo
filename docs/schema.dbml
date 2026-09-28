@@ -1,0 +1,178 @@
+// https://dbdiagram.io/d
+// SKIPO V1 data model: current db/schema.rb plus the changes decided in #7, #8, #10 and #11.
+// db/schema.rb is the source of truth for what is actually in the database.
+// Active Storage tables (profile photos, workout photos) are managed by Rails and not shown here.
+
+Project skipo {
+  database_type: "PostgreSQL"
+}
+
+
+// ============================================
+// USERS
+// ============================================
+
+Table users {
+  id bigint [pk, increment]
+
+  email varchar [not null, unique]
+  encrypted_password varchar [not null]
+  reset_password_token varchar [unique]
+  reset_password_sent_at timestamp
+  remember_created_at timestamp
+
+  display_name varchar(100) [not null]
+  username varchar(50) [unique]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Note: "Profile photo is an Active Storage attachment (#7)."
+}
+
+
+// ============================================
+// WORKOUTS
+// ============================================
+
+Table workouts {
+  id bigint [pk, increment]
+
+  user_id bigint [not null, ref: > users.id]
+
+  goal "varchar(50)[]" [not null, note: "Multi-select focus categories (#10)"]
+
+  title varchar(150) [not null]
+  description text
+
+  difficulty integer [not null, note: "1 to 3 (#10)"]
+
+  duration_seconds integer [not null]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  indexes {
+    user_id
+  }
+}
+
+
+// ============================================
+// EXERCISES
+// ============================================
+
+Table exercises {
+  id bigint [pk, increment]
+
+  name varchar(100) [not null, unique]
+  description text
+  instructions text
+
+  category integer [not null, note: "Enum: Fundamentals, Footwork, Rhythm & Coordination, Power, Technical, Freestyle (#11)"]
+  difficulty integer [not null, note: "1 to 3 (#11)"]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+
+// ============================================
+// WORKOUT EXERCISES
+// ============================================
+
+Table workout_exercises {
+  id bigint [pk, increment]
+
+  workout_id bigint [not null, ref: > workouts.id]
+  exercise_id bigint [not null, ref: > exercises.id]
+
+  position integer [not null]
+
+  duration_seconds integer
+  repetitions integer
+  rest_seconds integer
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  indexes {
+    (workout_id, position) [unique]
+    workout_id
+    exercise_id
+  }
+
+  Note: "At least duration_seconds or repetitions should be present."
+}
+
+
+// ============================================
+// WORKOUT SESSIONS
+// ============================================
+
+Table workout_sessions {
+  id bigint [pk, increment]
+
+  user_id bigint [not null, ref: > users.id]
+  workout_id bigint [not null, ref: > workouts.id]
+
+  status varchar(30) [not null, note: "in_progress, completed, stopped (#8)"]
+
+  started_at timestamp
+  completed_at timestamp
+
+  actual_duration_seconds integer
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  indexes {
+    user_id
+    workout_id
+  }
+}
+
+
+// ============================================
+// SHARED WORKOUTS
+// ============================================
+
+Table shared_workouts {
+  id bigint [pk, increment]
+
+  user_id bigint [not null, ref: > users.id]
+  workout_session_id bigint [not null, unique, ref: - workout_sessions.id]
+
+  caption text
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+  deleted_at timestamp
+
+  indexes {
+    user_id
+  }
+
+  Note: "Photo is an optional Active Storage attachment (#7). Only completed sessions can be shared."
+}
+
+
+// ============================================
+// LIKES
+// ============================================
+
+Table likes {
+  id bigint [pk, increment]
+
+  user_id bigint [not null, ref: > users.id]
+  shared_workout_id bigint [not null, ref: > shared_workouts.id]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  indexes {
+    (user_id, shared_workout_id) [unique]
+    user_id
+    shared_workout_id
+  }
+}
