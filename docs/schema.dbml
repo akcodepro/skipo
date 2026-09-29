@@ -70,7 +70,7 @@ Table exercises {
   instructions text
 
   category integer [not null, note: "Enum: Fundamentals, Footwork, Rhythm & Coordination, Power, Technical, Freestyle (#11)"]
-  difficulty integer [not null, note: "1 to 3 (#11)"]
+  difficulty integer [not null, note: "1 to 3, enforced by check constraint exercises_difficulty_range (#11)"]
 
   created_at timestamp [not null]
   updated_at timestamp [not null]
