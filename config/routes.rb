@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: "pages#home"
+  authenticated :user do
+    root to: "workouts#new", as: :authenticated_root
+  end
+
+  unauthenticated do
+    root to: "pages#home"
+  end
 
   resources :shared_workouts, only: [:index], path: "feed"
   resources :workout_sessions, only: [:index], path: "progress"
