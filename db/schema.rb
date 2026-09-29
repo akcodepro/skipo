@@ -10,17 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_23_163146) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_091755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "exercises", force: :cascade do |t|
+    t.integer "category", null: false
     t.datetime "created_at", null: false
     t.text "description"
+    t.integer "difficulty", null: false
     t.text "instructions"
     t.string "name", limit: 100, null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_exercises_on_name", unique: true
+    t.check_constraint "difficulty >= 1 AND difficulty <= 3", name: "exercises_difficulty_range"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -289,4 +292,3 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_23_163146) do
   add_foreign_key "workout_sessions", "workouts"
   add_foreign_key "workouts", "users"
 end
-
