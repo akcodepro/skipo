@@ -2,21 +2,24 @@
   <nav class="liquid-navbar" aria-label="Primary navigation">
     <div class="liquid-navbar__bar">
 
+      <% progress_active = controller_name == "workout_sessions" %>
       <%= link_to workout_sessions_path,
-          class: "liquid-navbar__link #{'is-active' if current_page?(workout_sessions_path)}",
-          aria: { current: ("page" if current_page?(workout_sessions_path)) } do %>
+          class: "liquid-navbar__link #{'is-active' if progress_active}",
+          aria: { current: ("page" if progress_active) } do %>
         <span>Progress</span>
       <% end %>
-
+  
+      <% train_active = controller_name == "workouts" %>
       <%= link_to new_workout_path,
-          class: "liquid-navbar__link #{'is-active' if current_page?(new_workout_path)}",
-          aria: { current: ("page" if current_page?(new_workout_path)) } do %>
+          class: "liquid-navbar__link #{'is-active' if train_active}",
+          aria: { current: ("page" if train_active) } do %>
         <span>Train</span>
       <% end %>
-
+  
+      <% feed_active = controller_name == "shared_workouts" %>
       <%= link_to shared_workouts_path,
-          class: "liquid-navbar__link #{'is-active' if current_page?(shared_workouts_path)}",
-          aria: { current: ("page" if current_page?(shared_workouts_path)) } do %>
+          class: "liquid-navbar__link #{'is-active' if feed_active}",
+          aria: { current: ("page" if feed_active) } do %>
         <span>Feed</span>
       <% end %>
 
