@@ -6,10 +6,9 @@ class WorkoutSession < ApplicationRecord
 
   enum :status, {
     in_progress: "in_progress",
-    paused: "paused",
     completed: "completed",
-    abandoned: "abandoned"
-    }, validates: true
+    stopped: "stopped"
+    }, validate: true
 
   validates :status, presence: true
 end
