@@ -2,7 +2,7 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Skipo" %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Skipo">
     <meta name="mobile-web-app-capable" content="yes">
@@ -23,9 +23,14 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body><%= render "shared/navbar" %>
-<%= render "shared/flashes" %>
+  <body>
+    <%= render "shared/header" %>
+    <%= render "shared/flashes" %>
 
-    <%= yield %>
+    <main class="<%= 'has-bottom-nav' if user_signed_in? %>">
+      <%= yield %>
+    </main>
+
+    <%= render "shared/navbar" %>
   </body>
 </html>
