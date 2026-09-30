@@ -6,9 +6,9 @@ class SetupSolidCacheTables < ActiveRecord::Migration[8.1]
       t.datetime :created_at, null: false
       t.integer :key_hash, limit: 8, null: false
       t.integer :byte_size, limit: 4, null: false
-        
+
       t.index :byte_size
-      t.index [:key_hash, :byte_size]
+      t.index [ :key_hash, :byte_size ]
       t.index :key_hash, unique: true
     end
   end
