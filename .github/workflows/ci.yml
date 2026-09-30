@@ -28,11 +28,12 @@ jobs:
 
     # Point Rails at that database
     env:
+      RAILS_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/skipo_ci
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
