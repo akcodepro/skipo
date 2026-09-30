@@ -7,7 +7,7 @@ class CreateWorkoutSessions < ActiveRecord::Migration[8.1]
       t.integer :actual_duration_seconds
       t.references :user, null: false, foreign_key: true
       t.references :workout, null: false, foreign_key: true
-        
+
       t.timestamps
     end
   end
