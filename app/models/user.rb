@@ -15,4 +15,6 @@ class User < ApplicationRecord
             uniqueness: true,
             length: { maximum: 50 },
             allow_nil: true
+
+  has_one_attached :profile_photo, service: :cloudinary_profile_photos
 end
