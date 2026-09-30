@@ -7,12 +7,22 @@ test:
 #  root: <%= Rails.root.join("storage") %>
 
 cloudinary_profile_photos:
+  <% if Rails.env.test? %>
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+  <% else %>
   service: Cloudinary
   folder: <%= "skipo/#{Rails.env}/profile_photos" %>
+  <% end %>
 
 cloudinary_workout_photos:
+  <% if Rails.env.test? %>
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+  <% else %>
   service: Cloudinary
   folder: <%= "skipo/#{Rails.env}/workout_photos" %>
+  <% end %>
 
 cloudinary:
   service: Cloudinary
