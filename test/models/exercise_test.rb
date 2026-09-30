@@ -3,7 +3,7 @@ require "test_helper"
 class ExerciseTest < ActiveSupport::TestCase
   setup do
     @exercise = Exercise.new(
-      name: "Double Under",
+      name: "Test Exercise",
       category: :power,
       difficulty: 3
     )
