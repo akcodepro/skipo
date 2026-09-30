@@ -1,0 +1,43 @@
+name: CI
+
+# When to run: on every PR, and on every push to main (i.e. after a merge)
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    # A throwaway Postgres database, just for this run
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        # Wait until Postgres is ready before running steps
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    # Point Rails at that database
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/skipo_ci
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true   # installs gems and caches them between runs
+
+      - name: Run bin/ci
+        run: bin/ci
