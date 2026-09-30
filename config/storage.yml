@@ -2,26 +2,28 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
-local:
+#local:
+#  service: Disk
+#  root: <%= Rails.root.join("storage") %>
+
+cloudinary_profile_photos:
+  <% if Rails.env.test? %>
   service: Disk
-  root: <%= Rails.root.join("storage") %>
+  root: <%= Rails.root.join("tmp/storage") %>
+  <% else %>
+  service: Cloudinary
+  folder: <%= "skipo/#{Rails.env}/profile_photos" %>
+  <% end %>
 
-# Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
-# amazon:
-#   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
-#   region: us-east-1
-#   bucket: your_own_bucket-<%= Rails.env %>
+cloudinary_workout_photos:
+  <% if Rails.env.test? %>
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage") %>
+  <% else %>
+  service: Cloudinary
+  folder: <%= "skipo/#{Rails.env}/workout_photos" %>
+  <% end %>
 
-# Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: your_project
-#   credentials: <%= Rails.root.join("path/to/gcs.keyfile") %>
-#   bucket: your_own_bucket-<%= Rails.env %>
-
-# mirror:
-#   service: Mirror
-#   primary: local
-#   mirrors: [ amazon, google, microsoft ]
+cloudinary:
+  service: Cloudinary
+  folder: <%= "skipo/#{Rails.env}" %>
