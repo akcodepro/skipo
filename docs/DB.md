@@ -58,7 +58,7 @@ Represents a generated workout plan.
 
 - id
 - user_id
-- goal: the focus categories chosen by the user (multi-select, stored as an array)
+- focus: the focus categories chosen by the user (multi-select, stored as an array)
 - title
 - description
 - difficulty: integer, 1 to 3
@@ -297,7 +297,7 @@ An exercise's category describes what kind of move it is. Its difficulty describ
 |-------|----------|
 | #7 Photo storage | Active Storage + Cloudinary for user uploads |
 | #8 Session status values | in_progress, completed, stopped. Pause is browser-only, no resume |
-| #10 Generation inputs | Stored on the workout (goal, duration_seconds, difficulty) |
+| #10 Generation inputs | Stored on the workout (focus, duration_seconds, difficulty) |
 | #11 Exercises | Global library, one home category and a difficulty per exercise |
 
 ---
