@@ -6,8 +6,22 @@ class Workout < ApplicationRecord
   has_many :workout_sessions, dependent: :destroy
   has_many :shared_workouts, through: :workout_sessions
 
-  validates :goal, presence: true, length: { maximum: 50 }
+  validates :focus, presence: true
   validates :title, presence: true, length: { maximum: 150 }
-  validates :difficulty, presence: true, length: { maximum: 30 }
+  validates :difficulty, presence: true, numericality: { only_integer: true, in: 1..3 }
   validates :duration_seconds, presence: true, numericality: { only_integer: true, greater_than: 0 }
+
+  validate :allowed_focus_names
+
+  private
+
+  def allowed_focus_names
+    return if focus.blank?
+
+    invalid = focus - Exercise.categories.keys
+
+    unless invalid.empty?
+      errors.add(:focus, "contains unknown categories: #{invalid.join(", ")}")
+    end
+  end
 end

@@ -1,5 +1,4 @@
 require "test_helper"
-
 class WorkoutSessionTest < ActiveSupport::TestCase
   setup do
     @user = User.create!(
@@ -9,9 +8,9 @@ class WorkoutSessionTest < ActiveSupport::TestCase
       )
     @workout = Workout.create!(
       user: @user,
-      goal: "cardio",
+      focus: ["freestyle"],
       title: "Test workout",
-      difficulty: "1",
+      difficulty: 1,
       duration_seconds: 900,
       )
   end
