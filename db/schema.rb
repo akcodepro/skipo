@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_30_100240) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_01_093808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -291,13 +291,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_30_100240) do
   create_table "workouts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "description"
-    t.string "difficulty", limit: 30, null: false
+    t.integer "difficulty", null: false
     t.integer "duration_seconds", null: false
-    t.string "goal", limit: 50, null: false
+    t.string "focus", limit: 50, default: [], null: false, array: true
     t.string "title", limit: 150, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_workouts_on_user_id"
+    t.check_constraint "difficulty >= 1 AND difficulty <= 3", name: "workouts_difficulty_range"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

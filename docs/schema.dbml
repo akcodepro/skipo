@@ -40,12 +40,12 @@ Table workouts {
 
   user_id bigint [not null, ref: > users.id]
 
-  goal "varchar(50)[]" [not null, note: "Multi-select focus categories (#10)"]
+  focus "varchar(50)[]" [not null, note: "Multi-select focus categories (#10)"]
 
   title varchar(150) [not null]
   description text
 
-  difficulty integer [not null, note: "1 to 3 (#10)"]
+  difficulty integer [not null, note: "1 to 3, enforced by check constraint workouts_difficulty_range (#10)"]
 
   duration_seconds integer [not null]
 
