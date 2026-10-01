@@ -8,7 +8,7 @@ class WorkoutSessionTest < ActiveSupport::TestCase
       )
     @workout = Workout.create!(
       user: @user,
-      focus: ["freestyle"],
+      focus: [ "freestyle" ],
       title: "Test workout",
       difficulty: 1,
       duration_seconds: 900,
