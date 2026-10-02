@@ -149,4 +149,19 @@ class WorkoutGenerator
 
     minimum_duration..maximum_duration
   end
+
+  def request_message
+    <<~PROMPT
+      Target duration: between #{duration_range.min} and #{duration_range.max} seconds.
+      Difficulty: #{@difficulty}
+      Focus: #{@focus.join(", ")}
+
+      Available exercises:
+      #{exercise_list}
+    PROMPT
+  end
+
+  def exercise_list
+    candidate_exercises.map { |exercise| "- #{ exercise.name } (#{ exercise.category }, difficulty #{ exercise.difficulty }): #{ exercise.description }" }.join("\n")
+  end
 end
