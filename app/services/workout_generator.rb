@@ -181,6 +181,12 @@ class WorkoutGenerator
   end
 
   def fundamentals_share(result)
+    fundamental_names = candidate_exercises.fundamentals.pluck(:name)
 
+    fundamentals_count = result["exercises"].count do |exercise|
+      fundamental_names.include?(exercise["name"])
+    end
+
+    fundamentals_count.to_f / result["exercises"].size
   end
 end
