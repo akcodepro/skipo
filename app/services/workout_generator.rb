@@ -22,4 +22,29 @@ class WorkoutGenerator
   def candidate_exercises
     Exercise.where(category: @focus | [ "fundamentals" ], difficulty: ..@difficulty)
   end
+
+  def schema
+    {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        exercises: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              name: { type: "string", enum: candidate_exercises.pluck(:name) },
+              duration_seconds: { type: "integer" },
+              rest_seconds: { type: "integer" }
+            },
+            required: [ "name", "duration_seconds", "rest_seconds" ],
+            additionalProperties: false
+          }
+        }
+      },
+      required: [ "title", "description", "exercises" ],
+      additionalProperties: false
+    }
+  end
 end
