@@ -93,6 +93,8 @@ class WorkoutGenerator
     1800 => { below: 90, above: 30 }  # 30 min → 28:30–30:30
   }.freeze
 
+  MAX_FUNDAMENTALS_SHARE = 0.5
+
   def initialize(user:, focus:, difficulty:, duration_seconds:)
     @user = user
     @focus = focus
@@ -112,7 +114,7 @@ class WorkoutGenerator
   private
 
   def candidate_exercises
-    Exercise.where(category: @focus | [ "fundamentals" ], difficulty: ..@difficulty)
+    @candidate_exercises ||= Exercise.where(category: @focus | [ "fundamentals" ], difficulty: ..@difficulty)
   end
 
   def schema
@@ -142,7 +144,7 @@ class WorkoutGenerator
 
   def request_message
     <<~PROMPT
-      Target duration: aim for #{duration_range} seconds (acceptable range: #{duration_range.min} to #{duration_range.max} seconds.
+      Target duration: aim for #{@duration_seconds} seconds (acceptable range: #{duration_range.min} to #{duration_range.max} seconds).
       Difficulty: #{@difficulty}
       Focus: #{@focus.join(", ")}
 
@@ -188,5 +190,17 @@ class WorkoutGenerator
     end
 
     fundamentals_count.to_f / result["exercises"].size
+  end
+
+  def validate!(result)
+    exercises = result["exercises"]
+    raise GenerationError, "Workout must contain at least one exercise" if exercises.empty?
+
+    total = total_duration(result)
+    range = duration_range
+    raise GenerationError, "Workout duration #{ total }s is outside the expected range #{ range.min }–#{ range.max }s" unless range.cover?(total)
+
+    share = fundamentals_share(result)
+    raise GenerationError, "Fundamentals make up #{ (share * 100).round(1) }% of exercises; maximum is #{ (MAX_FUNDAMENTALS_SHARE * 100).round }%" if share > MAX_FUNDAMENTALS_SHARE
   end
 end
