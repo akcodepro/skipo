@@ -1,6 +1,9 @@
 class WorkoutGenerator
   class GenerationError < StandardError; end
 
+  MODEL = "mistral-small-latest"
+  PROVIDER = :mistral
+
   INSTRUCTIONS = <<~PROMPT
     You are SKIPO's workout coach.
 
@@ -138,7 +141,18 @@ class WorkoutGenerator
   end
 
   def request_message
-    # duration range
+    <<~PROMPT
+      Target duration: aim for #{duration_range} seconds (acceptable range: #{duration_range.min} to #{duration_range.max} seconds.
+      Difficulty: #{@difficulty}
+      Focus: #{@focus.join(", ")}
+
+      Available exercises:
+      #{ exercise_list }
+    PROMPT
+  end
+
+  def exercise_list
+    candidate_exercises.map { |exercise| "- #{ exercise.name } (#{ exercise.category }, difficulty #{ exercise.difficulty }): #{ exercise.description }" }.join("\n")
   end
 
   def duration_range
@@ -150,18 +164,23 @@ class WorkoutGenerator
     minimum_duration..maximum_duration
   end
 
-  def request_message
-    <<~PROMPT
-      Target duration: between #{duration_range.min} and #{duration_range.max} seconds.
-      Difficulty: #{@difficulty}
-      Focus: #{@focus.join(", ")}
+  def generate
+    response = RubyLLM
+      .chat(model: MODEL, provider: PROVIDER)
+      .with_instructions(INSTRUCTIONS)
+      .with_schema(schema)
+      .ask(request_message)
 
-      Available exercises:
-      #{exercise_list}
-    PROMPT
+    JSON.parse(response.content)
   end
 
-  def exercise_list
-    candidate_exercises.map { |exercise| "- #{ exercise.name } (#{ exercise.category }, difficulty #{ exercise.difficulty }): #{ exercise.description }" }.join("\n")
+  def total_duration(result)
+    result["exercises"].sum do |exercise|
+      exercise["duration_seconds"] + exercise["rest_seconds"]
+    end
+  end
+
+  def fundamentals_share(result)
+
   end
 end
