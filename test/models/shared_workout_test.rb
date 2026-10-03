@@ -13,7 +13,7 @@ class SharedWorkoutTest < ActiveSupport::TestCase
       focus: [ "footwork" ],
       title: "Some title",
       difficulty: 1,
-      duration_seconds: 45
+      requested_duration_seconds: 45
     )
 
     @workout_session = WorkoutSession.create!(

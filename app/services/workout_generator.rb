@@ -95,20 +95,17 @@ class WorkoutGenerator
 
   MAX_FUNDAMENTALS_SHARE = 0.5
 
-  def initialize(user:, focus:, difficulty:, duration_seconds:)
+  def initialize(user:, focus:, difficulty:, requested_duration_seconds:)
     @user = user
     @focus = focus
     @difficulty = difficulty
-    @duration_seconds = duration_seconds
+    @requested_duration_seconds = requested_duration_seconds
   end
 
   def call
-    # 1. candidate exercises
-    # 2. build the schema
-    # 3. ask the AI
-    # 4. parse the JSON
-    # 5. validate
-    # 6. save and return the workout
+    result = generate
+    validate!(result)
+    save!(result)
   end
 
   private
@@ -144,7 +141,7 @@ class WorkoutGenerator
 
   def request_message
     <<~PROMPT
-      Target duration: aim for #{@duration_seconds} seconds (acceptable range: #{duration_range.min} to #{duration_range.max} seconds).
+      Target duration: aim for #{@requested_duration_seconds} seconds (acceptable range: #{duration_range.min} to #{duration_range.max} seconds).
       Difficulty: #{@difficulty}
       Focus: #{@focus.join(", ")}
 
@@ -158,10 +155,10 @@ class WorkoutGenerator
   end
 
   def duration_range
-    tolerance = DURATION_TOLERANCES.fetch(@duration_seconds)
+    tolerance = DURATION_TOLERANCES.fetch(@requested_duration_seconds)
 
-    minimum_duration = @duration_seconds - tolerance[:below]
-    maximum_duration = @duration_seconds + tolerance[:above]
+    minimum_duration = @requested_duration_seconds - tolerance[:below]
+    maximum_duration = @requested_duration_seconds + tolerance[:above]
 
     minimum_duration..maximum_duration
   end
@@ -196,11 +193,44 @@ class WorkoutGenerator
     exercises = result["exercises"]
     raise GenerationError, "Workout must contain at least one exercise" if exercises.empty?
 
+    exercise_names = candidate_exercises.pluck(:name)
+    invalid_exercises = exercises
+      .map { |exercise| exercise["name"] }
+      .uniq
+      .difference(exercise_names)
+    raise GenerationError, "Workout contains unknown exercises: #{invalid_exercises.join(", ")}" unless invalid_exercises.empty?
+
     total = total_duration(result)
     range = duration_range
     raise GenerationError, "Workout duration #{ total }s is outside the expected range #{ range.min }–#{ range.max }s" unless range.cover?(total)
 
     share = fundamentals_share(result)
     raise GenerationError, "Fundamentals make up #{ (share * 100).round(1) }% of exercises; maximum is #{ (MAX_FUNDAMENTALS_SHARE * 100).round }%" if share > MAX_FUNDAMENTALS_SHARE
+  end
+
+  def save!(result)
+    ActiveRecord::Base.transaction do
+      workout = Workout.create!(
+        user: @user,
+        title: result["title"],
+        description: result["description"],
+        focus: @focus,
+        difficulty: @difficulty,
+        requested_duration_seconds: @requested_duration_seconds
+      )
+
+      exercises_by_name = candidate_exercises.index_by(&:name)
+
+      result["exercises"].each.with_index(1) do |item, position|
+        workout.workout_exercises.create!(
+          exercise: exercises_by_name[item["name"]],
+          position: position,
+          duration_seconds: item["duration_seconds"],
+          rest_seconds: item["rest_seconds"]
+        )
+      end
+
+      workout
+    end
   end
 end
