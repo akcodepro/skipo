@@ -112,6 +112,12 @@ class WorkoutGeneratorTest < ActiveSupport::TestCase
     end
   end
 
+  test "wraps AI errors as GenerationError" do
+    RubyLLM.stub(:chat, proc { raise JSON::ParserError, "broken" }) do
+      assert_raises(WorkoutGenerator::GenerationError) { @generator.call }
+    end
+  end
+
   private
 
   def fake_ai_answer
@@ -119,9 +125,9 @@ class WorkoutGeneratorTest < ActiveSupport::TestCase
       "title" => "Test Workout",
       "description" => "A fake AI answer for testing.",
       "exercises" => [
-      { "name" => "Test Footwork Move",   "duration_seconds" => 120, "rest_seconds" => 60 },
-      { "name" => "Test Power Move",   "duration_seconds" => 120, "rest_seconds" => 60 },
-      { "name" => "Test Fundamentals Move", "duration_seconds" => 120, "rest_seconds" => 120 }
+        { "name" => "Test Footwork Move",   "duration_seconds" => 120, "rest_seconds" => 60 },
+        { "name" => "Test Power Move",   "duration_seconds" => 120, "rest_seconds" => 60 },
+        { "name" => "Test Fundamentals Move", "duration_seconds" => 120, "rest_seconds" => 120 }
       ]
     }
   end

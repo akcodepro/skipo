@@ -173,6 +173,9 @@ class WorkoutGenerator
       .ask(request_message)
 
     JSON.parse(response.content)
+
+  rescue RubyLLM::Error, JSON::ParserError => error
+    raise GenerationError, "AI request failed: #{error.class}: #{error.message}"
   end
 
   def total_duration(result)
