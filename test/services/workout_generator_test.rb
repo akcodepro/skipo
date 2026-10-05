@@ -64,6 +64,54 @@ class WorkoutGeneratorTest < ActiveSupport::TestCase
     assert_equal 70, first_exercise.rest_seconds
   end
 
+  test "rejects a workout more than 20% off and saves nothing" do
+    answer = fake_ai_answer.merge("exercises" => [
+      { "name" => "Test Footwork Move",     "duration_seconds" => 130, "rest_seconds" => 130 },
+      { "name" => "Test Power Move",        "duration_seconds" => 130, "rest_seconds" => 130 },
+      { "name" => "Test Fundamentals Move", "duration_seconds" => 130, "rest_seconds" => 130 }
+    ])
+
+    @generator.stub(:generate, answer) do
+      assert_no_difference("Workout.count") do
+        assert_raises(WorkoutGenerator::GenerationError) do
+          @generator.call
+        end
+      end
+    end
+  end
+
+  test "rejects a unknown exercise" do
+    answer = fake_ai_answer.merge("exercises" => [
+      { "name" => "Test Footwork Move",     "duration_seconds" => 120, "rest_seconds" => 60 },
+      { "name" => "Test Power Move",        "duration_seconds" => 120, "rest_seconds" => 60 },
+      { "name" => "This exercise is unknown", "duration_seconds" => 120, "rest_seconds" => 120 }
+    ])
+
+    @generator.stub(:generate, answer) do
+      assert_no_difference("Workout.count") do
+        assert_raises(WorkoutGenerator::GenerationError) do
+          @generator.call
+        end
+      end
+    end
+  end
+
+  test "rejects more than 50% fundamentals category" do
+    answer = fake_ai_answer.merge("exercises" => [
+      { "name" => "Test Fundamentals Move",     "duration_seconds" => 120, "rest_seconds" => 60 },
+      { "name" => "Test Fundamentals Move",     "duration_seconds" => 120, "rest_seconds" => 60 },
+      { "name" => "Test Power Move",        "duration_seconds" => 120, "rest_seconds" => 120 }
+    ])
+
+    @generator.stub(:generate, answer) do
+      assert_no_difference("Workout.count") do
+        assert_raises(WorkoutGenerator::GenerationError) do
+          @generator.call
+        end
+      end
+    end
+  end
+
   private
 
   def fake_ai_answer
