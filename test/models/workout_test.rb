@@ -13,7 +13,7 @@ class WorkoutTest < ActiveSupport::TestCase
       title: "Test workout",
       focus: [ "freestyle", "power" ],
       difficulty: 3,
-      duration_seconds: 780
+      requested_duration_seconds: 780
     )
   end
 

@@ -85,7 +85,7 @@ The user tells the coach what they want. The AI decides the details.
 Inputs (V1):
 
 - **Focus:** multi-select category pills, plus "Mixed"
-- **Duration:** preset options (5 / 10 / 15 / 20 / 30 min)
+- **Duration:** preset options (5 / 10 / 15 / 20 / 25 / 30 min)
 - **Difficulty:** slider (1 to 3)
 
 Work/rest intervals, tempo and volume are decided by the AI, not the user.

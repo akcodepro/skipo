@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_01_093808) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_03_180242) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -292,8 +292,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_093808) do
     t.datetime "created_at", null: false
     t.text "description"
     t.integer "difficulty", null: false
-    t.integer "duration_seconds", null: false
     t.string "focus", limit: 50, default: [], null: false, array: true
+    t.integer "requested_duration_seconds", null: false
     t.string "title", limit: 150, null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false

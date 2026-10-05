@@ -49,6 +49,7 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 
 gem "cloudinary"
+gem "ruby_llm"
 
 group :development, :test do
   gem "dotenv-rails"
@@ -74,6 +75,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "minitest-mock"
 end
 
 

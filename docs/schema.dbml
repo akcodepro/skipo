@@ -47,7 +47,7 @@ Table workouts {
 
   difficulty integer [not null, note: "1 to 3, enforced by check constraint workouts_difficulty_range (#10)"]
 
-  duration_seconds integer [not null]
+  requested_duration_seconds integer [not null]
 
   created_at timestamp [not null]
   updated_at timestamp [not null]
