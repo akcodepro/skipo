@@ -32,19 +32,36 @@ class WorkoutGeneratorTest < ActiveSupport::TestCase
 
   test "saves a workout with its exercises in order" do
     workout = nil
-    # ACT: fake the AI, then press the button
     @generator.stub(:generate, fake_ai_answer) do
       assert_difference("Workout.count", 1) do
         workout = @generator.call
       end
     end
 
-    # ASSERT: check what got saved
-
     # 1. the workout has 3 exercises
     assert_equal 3, workout.workout_exercises.count
     # 2. the first one, ordered by position, is Test Footwork Move
     assert_equal "Test Footwork Move", workout.workout_exercises.order(:position).first.exercise.name
+  end
+
+  test "scales exercises and rest durations when total workout duration is outside the range but within 20%" do
+    workout = nil
+    answer = fake_ai_answer.merge("exercises" => [
+      { "name" => "Test Footwork Move",   "duration_seconds" => 150, "rest_seconds" => 80 },
+      { "name" => "Test Power Move",   "duration_seconds" => 150, "rest_seconds" => 80 },
+      { "name" => "Test Fundamentals Move", "duration_seconds" => 150, "rest_seconds" => 80 }
+    ])
+
+    @generator.stub(:generate, answer) do
+      assert_difference("Workout.count", 1) do
+        workout = @generator.call
+      end
+    end
+
+    first_exercise = workout.workout_exercises.order(:position).first
+
+    assert_equal 130, first_exercise.duration_seconds
+    assert_equal 70, first_exercise.rest_seconds
   end
 
   private
