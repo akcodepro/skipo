@@ -1,6 +1,8 @@
 class WorkoutGenerator
   class GenerationError < StandardError; end
 
+  MAX_ADJUSTMENT = 0.2
+
   MODEL = "mistral-small-latest"
   PROVIDER = :mistral
 
@@ -103,7 +105,7 @@ class WorkoutGenerator
   end
 
   def call
-    result = generate
+    result = adjust_timings(generate)
     validate!(result)
     save!(result)
   end
@@ -232,5 +234,33 @@ class WorkoutGenerator
 
       workout
     end
+  end
+
+  def adjust_timings(result)
+    total = total_duration(result)
+    range = duration_range
+    deviation = (total - @requested_duration_seconds).abs.to_f / @requested_duration_seconds
+
+    # already in range
+    return result if range.cover?(total)
+
+    # off by more than 20% => validate! will reject
+    return result if deviation > MAX_ADJUSTMENT
+
+    # Otherwise, scale every value
+    factor = @requested_duration_seconds.to_f / total
+
+    result.merge(
+      "exercises" => result["exercises"].map do |exercise|
+        exercise.merge(
+          "duration_seconds" => round_to_nearest_five(exercise["duration_seconds"] * factor),
+          "rest_seconds" => round_to_nearest_five(exercise["rest_seconds"] * factor)
+        )
+      end
+    )
+  end
+
+  def round_to_nearest_five(seconds)
+    (seconds / 5.0).round * 5
   end
 end
