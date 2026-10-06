@@ -15,7 +15,10 @@ class WorkoutsController < ApplicationController
       requested_duration_seconds: requested_duration_seconds,
       user: current_user
     )
-    redirect_to new_workout_path, notice: "Generating your workout…"
+    redirect_to generating_workouts_path
+  end
+
+  def generating
   end
 
   private

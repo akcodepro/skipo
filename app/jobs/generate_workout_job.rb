@@ -3,6 +3,13 @@ class GenerateWorkoutJob < ApplicationJob
   retry_on WorkoutGenerator::GenerationError, attempts: 2
 
   def perform(user:, focus:, difficulty:, requested_duration_seconds:)
-    WorkoutGenerator.new(user: user, focus: focus, difficulty: difficulty, requested_duration_seconds: requested_duration_seconds).call
+    workout = WorkoutGenerator.new(user: user, focus: focus, difficulty: difficulty, requested_duration_seconds: requested_duration_seconds).call
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      [ user, :workout_generation ],
+      target: "workout_generation",
+      partial: "workouts/generated",
+      locals: { workout: workout }
+    )
   end
 end
