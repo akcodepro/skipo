@@ -118,6 +118,27 @@ class WorkoutGeneratorTest < ActiveSupport::TestCase
     end
   end
 
+  test "allows more than 50% fundamentals when the user chose fundamentals" do
+    generator = WorkoutGenerator.new(
+      user: @user,
+      difficulty: 2,
+      focus: [ "fundamentals", "footwork" ],
+      requested_duration_seconds: 600
+    )
+
+    answer = fake_ai_answer.merge("exercises" => [
+      { "name" => "Test Fundamentals Move", "duration_seconds" => 120, "rest_seconds" => 60 },
+      { "name" => "Test Fundamentals Move", "duration_seconds" => 120, "rest_seconds" => 60 },
+      { "name" => "Test Footwork Move", "duration_seconds" => 120, "rest_seconds" => 120 }
+    ])
+
+    generator.stub(:generate, answer) do
+      assert_difference("Workout.count", 1) do
+        generator.call
+      end
+    end
+  end
+
   private
 
   def fake_ai_answer
