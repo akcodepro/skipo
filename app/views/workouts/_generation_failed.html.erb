@@ -1,0 +1,21 @@
+<% error_message = [
+  {
+    title: "Whoops. Bit crook.",
+    body: "Something went sideways making your workout. Let’s try again."
+  },
+  {
+    title: "That’s not quite right.",
+    body: "We’d rather not send you a dud workout. Have another go."
+  },
+  {
+    title: "Well, that didn’t work.",
+    body: "Bit of a snag. Let’s have another crack."
+  }
+].sample %>
+
+<div id="workout_generation">
+  <h1><%= error_message[:title] %></h1>
+  <p><%= error_message[:body] %></p>
+
+  <%= link_to "Try again", new_workout_path %>
+</div>
