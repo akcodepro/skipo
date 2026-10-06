@@ -1,0 +1,34 @@
+<%= simple_form_for workout do |f| %>
+  <%= f.input :requested_duration_seconds,
+        label: "How long do you want to work out?",
+        as: :radio_buttons,
+        collection: WorkoutGenerator::DURATION_TOLERANCES.keys.map { |seconds| ["#{seconds / 60} min", seconds] },
+        label_method: :first,
+        value_method: :last %>
+
+  <%= f.input :focus,
+        label: "What would you like to focus on?",
+        as: :check_boxes,
+        collection: Exercise.categories.keys.map { |category| [category.titleize, category] },
+        label_method: :first,
+        value_method: :last %>
+
+  <%= f.input :difficulty,
+        label: "How difficult should it be?" do %>
+    <div class="difficulty-slider">
+      <%= f.range_field :difficulty,
+            min: Workout::DIFFICULTY_LEVELS.keys.min,
+            max: Workout::DIFFICULTY_LEVELS.keys.max,
+            step: 1,
+            class: "slider" %>
+
+      <div class="difficulty-levels">
+        <% Workout::DIFFICULTY_LEVELS.each_value do |label| %>
+          <span><%= label %></span>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.button :submit, "Generate workout" %>
+<% end %>
