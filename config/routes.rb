@@ -10,9 +10,10 @@ Rails.application.routes.draw do
 
   resources :shared_workouts, only: [ :index ], path: "feed"
 
-  resources :workout_sessions, only: [ :index ], path: "progress"
+  resources :workout_sessions, only: [ :index, :show, :update ], path: "progress"
 
   resources :workouts, only: [ :new, :create, :show ], path: "train" do
+    resources :workout_sessions, only: [ :create ]
     collection do
       get :generating
     end
