@@ -10,10 +10,16 @@ class Workout < ApplicationRecord
 
   validates :focus, presence: true
   validates :title, presence: true, length: { maximum: 150 }
-  validates :difficulty, presence: true, numericality: { only_integer: true, in: 1..3 }
+  validates :difficulty, presence: true, numericality: { only_integer: true }, inclusion: { in: DIFFICULTY_LEVELS.keys }
   validates :requested_duration_seconds, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
   validate :allowed_focus_names
+
+  def total_duration_seconds
+    workout_exercises.sum do |workout_exercise|
+      workout_exercise.duration_seconds + workout_exercise.rest_seconds
+    end
+  end
 
   private
 
