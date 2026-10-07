@@ -1,0 +1,14 @@
+<div id="workout_generation">
+  <h1><%= workout.title %></h1>
+  <p><%= workout.description %></p>
+
+  <ol>
+    <% workout.workout_exercises.each do |workout_exercise| %>
+      <li>
+        <h2>Exercise: <%= workout_exercise.exercise.name %></h2>
+        <p>Duration: <%= workout_exercise.duration_seconds %> seconds</p>
+        <p>Rest: <%= workout_exercise.rest_seconds %> seconds</p>
+      </li>
+    <% end %>
+  </ol>
+</div>

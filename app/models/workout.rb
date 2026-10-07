@@ -1,7 +1,9 @@
 class Workout < ApplicationRecord
+  DIFFICULTY_LEVELS = { 1 => "Easy", 2 => "Medium", 3 => "Hard" }.freeze
+
   belongs_to :user
 
-  has_many :workout_exercises, dependent: :destroy
+  has_many :workout_exercises, -> { order(:position) }, dependent: :destroy
   has_many :exercises, through: :workout_exercises
   has_many :workout_sessions, dependent: :destroy
   has_many :shared_workouts, through: :workout_sessions

@@ -210,7 +210,7 @@ class WorkoutGenerator
     raise GenerationError, "Workout duration #{ total }s is outside the expected range #{ range.min }–#{ range.max }s" unless range.cover?(total)
 
     share = fundamentals_share(result)
-    raise GenerationError, "Fundamentals make up #{ (share * 100).round(1) }% of exercises; maximum is #{ (MAX_FUNDAMENTALS_SHARE * 100).round }%" if share > MAX_FUNDAMENTALS_SHARE
+    raise GenerationError, "Fundamentals make up #{ (share * 100).round(1) }% of exercises; maximum is #{ (MAX_FUNDAMENTALS_SHARE * 100).round }%" if share > MAX_FUNDAMENTALS_SHARE && @focus.exclude?("fundamentals")
   end
 
   def save!(result)
