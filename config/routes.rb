@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   resources :workout_sessions, only: [ :index ], path: "progress"
 
-  resources :workouts, only: [ :new, :create ], path: "train" do
+  resources :workouts, only: [ :new, :create, :show ], path: "train" do
     collection do
       get :generating
     end

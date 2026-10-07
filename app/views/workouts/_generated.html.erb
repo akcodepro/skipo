@@ -2,11 +2,29 @@
   <h1><%= workout.title %></h1>
   <p><%= workout.description %></p>
 
+  <dl>
+    <dt>Requested duration</dt>
+    <dd><%= format_duration(workout.requested_duration_seconds) %></dd>
+
+    <dt>Actual duration</dt>
+    <dd><%= format_duration(workout.total_duration_seconds) %></dd>
+
+    <dt>Difficulty</dt>
+    <dd><%= Workout::DIFFICULTY_LEVELS[workout.difficulty] %></dd>
+
+    <dt>Focus</dt>
+    <dd><%= workout.focus.map(&:titleize).join(", ") %></dd>
+  </dl>
+
+  <h2>Exercises</h2>
+
   <ol>
     <% workout.workout_exercises.each do |workout_exercise| %>
       <li>
-        <h2>Exercise: <%= workout_exercise.exercise.name %></h2>
-        <p>Duration: <%= workout_exercise.duration_seconds %> seconds</p>
+        <h3><%= workout_exercise.exercise.name %></h3>
+
+        <p>Work: <%= workout_exercise.duration_seconds %> seconds</p>
+
         <p>Rest: <%= workout_exercise.rest_seconds %> seconds</p>
       </li>
     <% end %>

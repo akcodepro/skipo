@@ -18,8 +18,13 @@ class WorkoutsController < ApplicationController
     redirect_to generating_workouts_path
   end
 
+  def show
+    @workout = current_user.workouts.find(params[:id])
+  end
+
   def generating
   end
+
 
   private
     def workout_params
