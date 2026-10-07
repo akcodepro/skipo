@@ -27,4 +27,16 @@ class GenerateWorkoutJobTest < ActiveJob::TestCase
 
     fake_generator.verify
   end
+
+  test "broadcasts a failure message when retries run out" do
+    WorkoutGenerator.stub(:new, ->(**) { raise WorkoutGenerator::GenerationError, "AI failed" }) do
+      assert_turbo_stream_broadcasts [ @user, :workout_generation ], count: 1 do
+        perform_enqueued_jobs do
+          GenerateWorkoutJob.perform_later(
+            user: @user, focus: [ "footwork" ], difficulty: 2, requested_duration_seconds: 600
+          )
+        end
+      end
+    end
+  end
 end
