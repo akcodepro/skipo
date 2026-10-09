@@ -1,15 +1,13 @@
 <%= tag.div data: { controller: "workout-timer", workout_timer_exercises_value: timer_exercises(@workout_session.workout) } do %>
-  <div data-workout-timer-target="exercise"></div>
-
-  <div data-workout-timer-target="seconds"></div>
-
-  <div data-workout-timer-target="phase"></div>
-
   <div id="workout_session">
     <h1><%= @workout_session.workout.title %></h1>
-
-    <p>Status: <%= @workout_session.status %></p>
-
+    <p>Status: <%= @workout_session.status.titleize %></p>
     <p>Started at: <%= @workout_session.started_at %></p>
+  </div>
+
+  <div>
+    <h2 data-workout-timer-target="exercise"></h2>
+    <p data-workout-timer-target="phase"></p>
+    <p data-workout-timer-target="seconds"></p>
   </div>
 <% end %>
