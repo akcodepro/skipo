@@ -82,4 +82,4 @@ end
 # Temporary pin: json 3.x breaks ActiveSupport::JSON.decode in Rails 8.1.3.1
 # (session cookies crash with "wrong number of arguments").
 # Remove once a Rails release includes the fix.
-gem "json", "< 3"
+gem "json", "< 4"
