@@ -1,7 +1,9 @@
-<div id="workout_session">
-  <h1><%= @workout_session.workout.title %></h1>
+<%= tag.div data: { controller: "workout-timer", workout_timer_exercises_value: timer_exercises(@workout_session.workout) } do %>
+  <div id="workout_session">
+    <h1><%= @workout_session.workout.title %></h1>
 
-  <p>Status: <%= @workout_session.status %></p>
+    <p>Status: <%= @workout_session.status %></p>
 
-  <p>Started at: <%= @workout_session.started_at %></p>
-</div>
+    <p>Started at: <%= @workout_session.started_at %></p>
+  </div>
+<% end %>
