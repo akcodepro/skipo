@@ -323,7 +323,7 @@ The symbol has a bold, dynamic silhouette and can be used independently or along
 
 The standalone S is the current app icon design.
 
-The editable master is maintained in Affinity. Favicon and icon-size variants have been generated using favicon.now.
+The editable master is maintained in Affinity.
 
 Colour treatment: see BRAND.md.
 
