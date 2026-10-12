@@ -1,3 +1,10 @@
 <h1>Build Your Workout</h1>
 
+<% if @resumable_session %>
+  <div class="resume-workout-banner">
+    <p>You've got a workout in progress.</p>
+    <%= link_to "Resume workout", workout_session_path(@resumable_session) %>
+  </div>
+<% end %>
+
 <%= render "form", workout: @workout %>
