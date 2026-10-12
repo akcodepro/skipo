@@ -1,6 +1,6 @@
 # SKIPO — Brand
 
-**Version:** 0.1
+**Version:** 0.2
 **Status:** Exploratory
 
 ## Personality
@@ -127,6 +127,44 @@ The visual language should combine:
 - Purposeful colour accents
 
 The interface can have personality without becoming decorative or childish.
+
+---
+
+## Logo & Symbol
+
+### Core concept
+
+The SKIPO symbol is a custom, organic **S** with a bold, dynamic silhouette.
+
+The direction is unconventional, sculptural and energetic. The letter should feel like a distinctive shape rather than a conventional typographic character.
+
+The symbol does not need to depict a jump rope literally. Its purpose is to establish a recognisable brand identity, not to illustrate the product.
+
+### Visual characteristics
+
+- Bold, organic silhouette
+- Asymmetrical, flowing contours
+- Dynamic and slightly unconventional proportions
+- Recognisable as an S without being overly literal
+- Simple enough to work at small sizes
+- Distinctive enough to stand alone without the wordmark
+
+### Usage
+
+The symbol can be used independently as an app icon or combined with KIPO to form the SKIPO wordmark.
+
+The wordmark uses Chakra Petch for KIPO, with the custom S designed to complement the typeface.
+
+### Current colour treatment
+
+- Primary: Deep Forest symbol on Warm Porcelain background.
+- Alternative: Golden Yellow symbol on Deep Forest background.
+
+The primary treatment is the current preference. Alternative colour combinations may be explored as the visual identity develops.
+
+### Design principle
+
+**A distinctive shape first. A recognisable S second. A literal illustration never.**
 
 ---
 

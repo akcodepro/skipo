@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.3
+**Version:** 0.4
 **Status:** Exploratory
 
 ## Product
@@ -313,6 +313,30 @@ The priority is to establish the product and interaction first rather than block
 
 ---
 
+## Brand Symbol
+
+SKIPO uses a custom, organic S as its primary brand symbol.
+
+The symbol has a bold, dynamic silhouette and can be used independently or alongside the SKIPO wordmark.
+
+### App Icon
+
+The standalone S is the current app icon design.
+
+The editable master is maintained in Affinity. Favicon and icon-size variants have been generated using favicon.now.
+
+Colour treatment: see BRAND.md.
+
+### Train tab icon
+
+The Train tab should be evaluated using the brand symbol rather than introducing an unrelated icon by default.
+
+The final choice should prioritise clarity, consistency and legibility at the actual rendered size.
+
+The brand symbol should not be forced into contexts where a conventional icon communicates the action more clearly.
+
+---
+
 ## AI Experience
 
 The AI should feel like a **coach**, not a chatbot.
@@ -393,6 +417,7 @@ Content and UI details should be refined during implementation.
 - Global exercise library with categories and difficulty
 - Pause/resume in the browser only; stopped workouts cannot be shared
 - AI: RubyLLM with Mistral, structured output validated in code
+- Custom organic S established as the primary brand symbol
 
 ---
 
@@ -408,3 +433,4 @@ Content and UI details should be refined during implementation.
 - History / progress scope
 - Final illustration approach
 - Error and loading states
+- Train tab icon: brand S or conventional icon
