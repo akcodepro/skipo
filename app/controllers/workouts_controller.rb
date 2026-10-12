@@ -1,6 +1,7 @@
 class WorkoutsController < ApplicationController
   def new
     @workout = Workout.new
+    @resumable_session = current_user.workout_sessions.resumable.order(started_at: :desc).first
   end
 
   def create
@@ -24,7 +25,6 @@ class WorkoutsController < ApplicationController
 
   def generating
   end
-
 
   private
     def workout_params
