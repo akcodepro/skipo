@@ -18,6 +18,19 @@ class WorkoutSessionsTest < ActionDispatch::IntegrationTest
       difficulty: 2,
       requested_duration_seconds: 600
     )
+    @exercise = Exercise.create!(
+      name: "Test Bounce",
+      category: :fundamentals,
+      difficulty: 2
+    )
+
+    WorkoutExercise.create!(
+      workout: @workout,
+      exercise: @exercise,
+      position: 1,
+      duration_seconds: 300,
+      rest_seconds: 60
+    )
 
     @other_user = User.create!(
       display_name: "Sam",
@@ -73,5 +86,57 @@ class WorkoutSessionsTest < ActionDispatch::IntegrationTest
     get workout_session_path(@other_session)
 
     assert_response :not_found
+  end
+
+  test "completes your own session" do
+    patch workout_session_path(@workout_session), params: {
+      workout_session: {
+        status: "completed",
+        actual_duration_seconds: 300
+      }
+    }
+    assert_redirected_to workout_session_path(@workout_session)
+    @workout_session.reload
+    assert_equal "completed", @workout_session.status
+    assert_not_nil @workout_session.completed_at
+    assert_equal 300, @workout_session.actual_duration_seconds
+  end
+
+  test "cannot update someone else's session" do
+    patch workout_session_path(@other_session), params: {
+      workout_session: {
+        status: "completed",
+        actual_duration_seconds: 300
+      }
+    }
+    assert_response :not_found
+    @other_session.reload
+    assert_equal "in_progress", @other_session.status
+  end
+
+  test "rejects an invalid status" do
+    patch workout_session_path(@workout_session), params: {
+      workout_session: {
+        status: "in_progress",
+        actual_duration_seconds: 300
+      }
+    }
+    assert_redirected_to workout_session_path(@workout_session)
+    @workout_session.reload
+    assert_equal "in_progress", @workout_session.status
+    assert_nil @workout_session.completed_at
+  end
+
+  test "clamps actual duration to the workout's total duration" do
+    total_duration = @workout_session.workout.total_duration_seconds
+    patch workout_session_path(@workout_session), params: {
+      workout_session: {
+        status: "completed",
+        actual_duration_seconds: 999999
+      }
+    }
+    assert_redirected_to workout_session_path(@workout_session)
+    @workout_session.reload
+    assert_equal total_duration, @workout_session.actual_duration_seconds
   end
 end

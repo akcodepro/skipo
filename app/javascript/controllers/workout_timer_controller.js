@@ -2,7 +2,19 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="workout-timer"
 export default class extends Controller {
-  static targets = [ "exercise", "seconds", "phase", "progress", "progressText" ]
+  static targets = [
+    "exercise",
+    "seconds",
+    "phase",
+    "progress",
+    "progressText",
+    "form",
+    "status",
+    "actualDuration",
+    "stopButton",
+    "stopButton",
+    "pauseButton"
+  ]
 
   static values = { exercises: Array }
 
@@ -11,7 +23,8 @@ export default class extends Controller {
     work: "Jump!",
     rest: "Rest",
     done: "Workout complete!",
-    cooldown: "Cooldown"
+    cooldown: "Cooldown",
+    stopped: "Workout stopped"
   }
 
   connect() {
@@ -19,6 +32,7 @@ export default class extends Controller {
     this.phase = "ready"
     this.phaseEndsAt = Date.now() + 5 * 1000
     this.workoutStartsAt = this.phaseEndsAt
+    this.pausedAt = null
 
     this.render()
 
@@ -50,6 +64,8 @@ export default class extends Controller {
       if (this.index >= this.exercisesValue.length) {
         clearInterval(this.interval)
         this.phase = "done"
+        this.hideControls()
+        this.finish("completed")
         return
       }
 
@@ -59,7 +75,7 @@ export default class extends Controller {
   }
 
   secondsLeft() {
-    return Math.ceil((this.phaseEndsAt - Date.now()) / 1000)
+    return Math.ceil((this.phaseEndsAt - this.now()) / 1000)
   }
 
   currentExercise() {
@@ -92,8 +108,59 @@ export default class extends Controller {
 
   elapsedSeconds() {
     const elapsed = Math.floor(
-      (Date.now() - this.workoutStartsAt) / 1000
+      (this.now() - this.workoutStartsAt) / 1000
     )
     return Math.max(0, Math.min(elapsed, Number(this.progressTarget.max)))
+  }
+
+  finish(status) {
+    this.statusTarget.value = status
+    this.actualDurationTarget.value = this.elapsedSeconds()
+    this.formTarget.requestSubmit()
+  }
+
+  stop() {
+    if (!confirm("Are you sure you want to stop? A stopped workout cannot be shared.")) {
+      return
+    }
+
+    clearInterval(this.interval)
+    this.hideControls()
+
+    this.phase = "stopped"
+    this.exerciseTarget.textContent = this.constructor.LABELS.stopped
+    this.phaseTarget.textContent = ""
+    this.secondsTarget.textContent = "0"
+
+    this.finish("stopped")
+  }
+
+  togglePause() {
+    if (this.pausedAt !== null) {
+      const pauseDuration = Date.now() - this.pausedAt
+
+      this.phaseEndsAt += pauseDuration
+      this.workoutStartsAt += pauseDuration
+      this.pausedAt = null
+
+      this.interval = setInterval(() => this.tick(), 1000)
+      this.pauseButtonTarget.textContent = "Pause"
+    } else {
+      this.pausedAt = Date.now()
+
+      clearInterval(this.interval)
+      this.pauseButtonTarget.textContent = "Resume"
+    }
+
+    this.render()
+  }
+
+  now() {
+    return this.pausedAt ?? Date.now()
+  }
+
+  hideControls() {
+    this.stopButtonTarget.hidden = true
+    this.pauseButtonTarget.hidden = true
   }
 }
