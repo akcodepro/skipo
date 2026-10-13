@@ -6,6 +6,16 @@
   </div>
 
   <div>
+    <progress
+      data-workout-timer-target="progress"
+      value="0"
+      max="<%= @workout_session.workout.total_duration_seconds %>">
+    </progress>
+
+    <span data-workout-timer-target="progressText"></span>
+  </div>
+
+  <div>
     <h2 data-workout-timer-target="exercise"></h2>
     <p data-workout-timer-target="phase"></p>
     <p data-workout-timer-target="seconds"></p>
