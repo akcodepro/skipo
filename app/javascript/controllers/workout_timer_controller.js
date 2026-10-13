@@ -2,7 +2,16 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="workout-timer"
 export default class extends Controller {
-  static targets = [ "exercise", "seconds", "phase", "progress", "progressText" ]
+  static targets = [
+    "exercise",
+    "seconds",
+    "phase",
+    "progress",
+    "progressText",
+    "form",
+    "status",
+    "actualDuration"
+  ]
 
   static values = { exercises: Array }
 
@@ -17,12 +26,12 @@ export default class extends Controller {
   connect() {
     this.index = 0
     this.phase = "ready"
-    this.phaseEndsAt = Date.now() + 5 * 1000
+    this.phaseEndsAt = Date.now() + 5 * 10
     this.workoutStartsAt = this.phaseEndsAt
 
     this.render()
 
-    this.interval = setInterval(() => this.tick(), 1000)
+    this.interval = setInterval(() => this.tick(), 10)
   }
 
   disconnect() {
@@ -40,26 +49,27 @@ export default class extends Controller {
   advance() {
     if (this.phase === "ready") {
       this.phase = "work"
-      this.phaseEndsAt += this.currentExercise().work * 1000
+      this.phaseEndsAt += this.currentExercise().work * 10
     } else if (this.phase === "work") {
       this.phase = "rest"
-      this.phaseEndsAt += this.currentExercise().rest * 1000
+      this.phaseEndsAt += this.currentExercise().rest * 10
     } else if (this.phase === "rest") {
       this.index += 1
 
       if (this.index >= this.exercisesValue.length) {
         clearInterval(this.interval)
         this.phase = "done"
+        this.finish("completed")
         return
       }
 
       this.phase = "work"
-      this.phaseEndsAt += this.currentExercise().work * 1000
+      this.phaseEndsAt += this.currentExercise().work * 10
     }
   }
 
   secondsLeft() {
-    return Math.ceil((this.phaseEndsAt - Date.now()) / 1000)
+    return Math.ceil((this.phaseEndsAt - Date.now()) / 10)
   }
 
   currentExercise() {
@@ -92,8 +102,14 @@ export default class extends Controller {
 
   elapsedSeconds() {
     const elapsed = Math.floor(
-      (Date.now() - this.workoutStartsAt) / 1000
+      (Date.now() - this.workoutStartsAt) / 10
     )
     return Math.max(0, Math.min(elapsed, Number(this.progressTarget.max)))
+  }
+
+  finish(status) {
+    this.statusTarget.value = status
+    this.actualDurationTarget.value = this.elapsedSeconds()
+    this.formTarget.requestSubmit()
   }
 }
