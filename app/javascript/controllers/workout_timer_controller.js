@@ -2,14 +2,15 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="workout-timer"
 export default class extends Controller {
-  static targets = [ "exercise", "seconds", "phase" ]
+  static targets = ["exercise", "seconds", "phase"]
 
   static values = { exercises: Array }
 
   connect() {
+    console.log("Workout timer connected")
     this.index = 0
     this.phase = "Get ready!"
-    this.secondsLeft = 5
+    this.phaseEndsAt = Date.now() + 5 * 1000
 
     this.render()
 
@@ -17,13 +18,12 @@ export default class extends Controller {
   }
 
   disconnect() {
+    console.log("Workout timer disconnected")
     clearInterval(this.interval)
   }
 
   tick() {
-    this.secondsLeft -= 1
-
-    if (this.secondsLeft <= 0) {
+    while (this.secondsLeft() <= 0 && this.phase !== "done") {
       this.advance()
     }
 
@@ -33,20 +33,26 @@ export default class extends Controller {
   advance() {
     if (this.phase === "Get ready!") {
       this.phase = "work"
-      this.secondsLeft = this.currentExercise().work
+      this.phaseEndsAt += this.currentExercise().work * 1000
     } else if (this.phase === "work") {
       this.phase = "rest"
-      this.secondsLeft = this.currentExercise().rest
+      this.phaseEndsAt += this.currentExercise().rest * 1000
     } else if (this.phase === "rest") {
       this.index += 1
+
       if (this.index >= this.exercisesValue.length) {
         clearInterval(this.interval)
         this.phase = "done"
         return
       }
+
       this.phase = "work"
-      this.secondsLeft = this.currentExercise().work
+      this.phaseEndsAt += this.currentExercise().work * 1000
     }
+  }
+
+  secondsLeft() {
+    return Math.ceil((this.phaseEndsAt - Date.now()) / 1000)
   }
 
   currentExercise() {
@@ -60,6 +66,7 @@ export default class extends Controller {
       this.secondsTarget.textContent = "0"
       return
     }
+
     this.exerciseTarget.textContent = this.currentExercise().name
 
     if (
@@ -71,6 +78,6 @@ export default class extends Controller {
       this.phaseTarget.textContent = this.phase
     }
 
-    this.secondsTarget.textContent = this.secondsLeft
+    this.secondsTarget.textContent = this.secondsLeft()
   }
 }
