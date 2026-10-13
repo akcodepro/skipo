@@ -10,7 +10,8 @@ export default class extends Controller {
     "progressText",
     "form",
     "status",
-    "actualDuration"
+    "actualDuration",
+    "stopButton"
   ]
 
   static values = { exercises: Array }
@@ -59,6 +60,7 @@ export default class extends Controller {
       if (this.index >= this.exercisesValue.length) {
         clearInterval(this.interval)
         this.phase = "done"
+        this.stopButtonTarget.hidden = true
         this.finish("completed")
         return
       }
@@ -111,5 +113,16 @@ export default class extends Controller {
     this.statusTarget.value = status
     this.actualDurationTarget.value = this.elapsedSeconds()
     this.formTarget.requestSubmit()
+  }
+
+  stop() {
+    if (!confirm("Are you sure you want to stop? A stopped workout cannot be shared.")) {
+      return
+    }
+  
+    clearInterval(this.interval)
+    this.stopButtonTarget.hidden = true
+    this.phase = "done"
+    this.finish("stopped")
   }
 }

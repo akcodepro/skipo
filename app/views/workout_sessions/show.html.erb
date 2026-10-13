@@ -26,12 +26,19 @@
       <p data-workout-timer-target="seconds"></p>
     </div>
 
+    <button
+      type="button"
+      data-action="workout-timer#stop"
+      data-workout-timer-target="stopButton">
+      Stop workout
+    </button>
+
     <%= form_with model: @workout_session,
                   data: { workout_timer_target: "form" } do |f| %>
       <%= f.hidden_field :status,
                           value: "",
                           data: { workout_timer_target: "status" } %>
-    
+
       <%= f.hidden_field :actual_duration_seconds,
                           value: "",
                           data: { workout_timer_target: "actualDuration" } %>
