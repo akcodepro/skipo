@@ -13,9 +13,10 @@
   }
 ].sample %>
 
-<div id="workout_generation">
-  <h1><%= error_message[:title] %></h1>
+<div id="workout_generation" class="workout-state workout-state--error">
+  <h1 class="workout-state__title"><%= error_message[:title] %></h1>
   <p><%= error_message[:body] %></p>
 
-  <%= link_to "Try again", new_workout_path %>
+  <%= link_to "Try again", new_workout_path,
+        class: "workout-state__retry" %>
 </div>
