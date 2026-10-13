@@ -6,10 +6,17 @@ export default class extends Controller {
 
   static values = { exercises: Array }
 
+  static LABELS = {
+    ready: "Get ready!",
+    work: "Jump!",
+    rest: "Rest",
+    done: "Workout complete!",
+    cooldown: "Cooldown"
+  }
+
   connect() {
-    console.log("Workout timer connected")
     this.index = 0
-    this.phase = "Get ready!"
+    this.phase = "ready"
     this.phaseEndsAt = Date.now() + 5 * 1000
 
     this.render()
@@ -18,7 +25,6 @@ export default class extends Controller {
   }
 
   disconnect() {
-    console.log("Workout timer disconnected")
     clearInterval(this.interval)
   }
 
@@ -31,7 +37,7 @@ export default class extends Controller {
   }
 
   advance() {
-    if (this.phase === "Get ready!") {
+    if (this.phase === "ready") {
       this.phase = "work"
       this.phaseEndsAt += this.currentExercise().work * 1000
     } else if (this.phase === "work") {
@@ -61,21 +67,18 @@ export default class extends Controller {
 
   render() {
     if (this.phase === "done") {
-      this.exerciseTarget.textContent = "Workout complete!"
-      this.phaseTarget.textContent = this.phase
+      this.exerciseTarget.textContent = this.constructor.LABELS.done
+      this.phaseTarget.textContent = this.constructor.LABELS.done
       this.secondsTarget.textContent = "0"
       return
     }
 
     this.exerciseTarget.textContent = this.currentExercise().name
 
-    if (
-      this.phase === "rest" &&
-      this.index === this.exercisesValue.length - 1
-    ) {
+    if (this.phase === "rest" && this.index === this.exercisesValue.length - 1) {
       this.phaseTarget.textContent = "cooldown"
     } else {
-      this.phaseTarget.textContent = this.phase
+      this.phaseTarget.textContent = this.constructor.LABELS[this.phase]
     }
 
     this.secondsTarget.textContent = this.secondsLeft()
