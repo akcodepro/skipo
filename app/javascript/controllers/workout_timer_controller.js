@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="workout-timer"
 export default class extends Controller {
-  static targets = ["exercise", "seconds", "phase"]
+  static targets = [ "exercise", "seconds", "phase", "progress", "progressText" ]
 
   static values = { exercises: Array }
 
@@ -18,6 +18,7 @@ export default class extends Controller {
     this.index = 0
     this.phase = "ready"
     this.phaseEndsAt = Date.now() + 5 * 1000
+    this.workoutStartsAt = this.phaseEndsAt
 
     this.render()
 
@@ -68,19 +69,31 @@ export default class extends Controller {
   render() {
     if (this.phase === "done") {
       this.exerciseTarget.textContent = this.constructor.LABELS.done
-      this.phaseTarget.textContent = this.constructor.LABELS.done
+      this.phaseTarget.textContent = ""
       this.secondsTarget.textContent = "0"
+      this.progressTarget.value = this.progressTarget.max
+      this.progressTextTarget.textContent = ""
       return
     }
+
+    this.progressTarget.value = this.elapsedSeconds()
+    this.progressTextTarget.textContent = `${this.index + 1} of ${this.exercisesValue.length}`
 
     this.exerciseTarget.textContent = this.currentExercise().name
 
     if (this.phase === "rest" && this.index === this.exercisesValue.length - 1) {
-      this.phaseTarget.textContent = "cooldown"
+      this.phaseTarget.textContent = this.constructor.LABELS.cooldown
     } else {
       this.phaseTarget.textContent = this.constructor.LABELS[this.phase]
     }
 
     this.secondsTarget.textContent = this.secondsLeft()
+  }
+
+  elapsedSeconds() {
+    const elapsed = Math.floor(
+      (Date.now() - this.workoutStartsAt) / 1000
+    )
+    return Math.max(0, Math.min(elapsed, Number(this.progressTarget.max)))
   }
 }
