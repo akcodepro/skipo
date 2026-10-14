@@ -14,7 +14,7 @@
     <div class="generated-workout__stat">
       <span class="generated-workout__stat-label">Requested duration</span>
       <span class="pill pill--duration">
-        <i class="fa fa-clock-o pill__icon" aria-hidden="true"></i>
+        <i class="fa-clock pill__icon" aria-hidden="true"></i>
         <%= format_duration(workout.requested_duration_seconds) %>
       </span>
     </div>
@@ -40,6 +40,7 @@
       <div class="generated-workout__focuses">
         <% workout.focus.each do |focus| %>
           <span class="pill pill--focus">
+            <%= focus_icon(focus, extra_class: "pill__icon") %>
             <%= focus.titleize %>
           </span>
         <% end %>
@@ -61,12 +62,12 @@
 
           <div class="generated-workout__exercise-details">
             <span class="pill pill--duration">
-              <i class="fa fa-bolt pill__icon" aria-hidden="true"></i>
+              <i class="fa-solid fa-stopwatch pill__icon" aria-hidden="true"></i>
               Work: <%= format_duration(workout_exercise.duration_seconds) %>
             </span>
 
             <span class="pill pill--rest">
-              <i class="fa fa-pause pill__icon" aria-hidden="true"></i>
+              <i class="fa-solid fa-pause pill__icon" aria-hidden="true"></i>
               Rest: <%= format_duration(workout_exercise.rest_seconds) %>
             </span>
           </div>
