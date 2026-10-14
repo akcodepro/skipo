@@ -1,0 +1,47 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 44px;
+  padding: 0 18px;
+
+  border-radius: 9999px;
+
+  background-color: $deep-forest;
+  color: $warm-porcelain;
+
+  text-decoration: none;
+  font-family: $headers-font;
+  font-weight: 600;
+
+  border: none;
+
+  cursor: pointer;
+
+  &--primary {
+    background: $warm-orange;
+    color: $deep-forest;
+  }
+  &--secondary {
+    background: $deep-forest;
+    color: $warm-porcelain;
+  }
+  &--small {
+    height: 44px;
+    padding: 0 18px;
+    font-size: 15px;
+  }
+  &--block {
+    width: 100%;
+    height: 58px;
+    font-size: 20px;
+  }
+}
+
+.button:hover {
+  transform: scale(0.98)
+}
+.button:active {
+  transform: scale(0.98)
+}

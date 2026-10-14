@@ -1,0 +1,18 @@
+.resume-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  //padding: top right bottom left;
+  padding: 10px 10px 10px 16px;
+  border-radius: 18px;
+
+  background-color: rgba($dusty-lilac, 0.2);
+}
+
+.resume-banner__text {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  flex: 1
+}

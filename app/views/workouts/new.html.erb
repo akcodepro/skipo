@@ -22,20 +22,23 @@
 ].sample %>
 
 <div class="workout-builder">
+  <%# Greeting %>
   <header class="workout-builder__header">
     <h1 class="workout-builder__title"><%= greeting_message[:title] %></h1>
     <p class="workout-builder__subtitle"><%= greeting_message[:subtitle] %></p>
   </header>
 
+  <%# Recent workout notice %>
   <% if @resumable_session %>
-    <div class="resume-workout-banner">
-      <p>You've got a workout in progress.</p>
+    <div class="resume-banner">
+        <p class="resume-banner__text">You've got a workout in progress.</p>
 
-      <%= link_to "Resume workout",
-            workout_session_path(@resumable_session),
-            class: "resume-workout-banner__link" %>
+        <%= link_to "Resume workout",
+              workout_session_path(@resumable_session),
+              class: "button button--secondary button--small" %>
     </div>
   <% end %>
 
+  <%# Workout generation form %>
   <%= render "form", workout: @workout %>
 </div>
