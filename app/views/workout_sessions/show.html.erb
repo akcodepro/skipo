@@ -36,7 +36,7 @@
       </progress>
     </section>
 
-    <main class="workout-session__timer">
+    <section class="workout-session__timer">
       <p class="workout-session__phase"
          data-workout-timer-target="phase"></p>
 
@@ -45,7 +45,7 @@
 
       <p class="workout-session__seconds"
          data-workout-timer-target="seconds"></p>
-    </main>
+    </section>
 
     <div class="workout-session__actions">
       <button
@@ -91,7 +91,7 @@
       </span>
 
       <span class="pill pill--duration">
-        <i class="fa fa-clock-o pill__icon" aria-hidden="true"></i>
+        <i class="fa-clock pill__icon" aria-hidden="true"></i>
         <%= format_duration(@workout_session.actual_duration_seconds) %>
       </span>
     </div>
