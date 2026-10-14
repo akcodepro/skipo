@@ -1,0 +1,32 @@
+.workout-builder {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.workout-builder__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.workout-builder__title {
+  font-family: $headers-font;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.05;
+
+  color: $deep-forest;
+
+  margin-bottom: 0;
+}
+
+.workout-builder__body {
+  font-family: $body-font;
+  font-size: 15px;
+
+  color: $smoky-mauve;
+
+  margin-bottom: 0;
+}

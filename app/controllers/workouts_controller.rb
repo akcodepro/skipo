@@ -2,6 +2,7 @@ class WorkoutsController < ApplicationController
   def new
     @workout = Workout.new
     @resumable_session = current_user.workout_sessions.resumable.order(started_at: :desc).first
+    @display_name = current_user.display_name.upcase_first
   end
 
   def create
