@@ -1,0 +1,48 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  padding: 0.4rem 0.75rem;
+
+  border: 1px solid transparent;
+  border-radius: 9999px;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.pill__icon {
+  font-size: 0.9em;
+}
+
+// Workout duration
+.pill--duration {
+  color: $deep-forest;
+  background-color: rgba($deep-forest, 0.08);
+  border-color: rgba($deep-forest, 0.15);
+}
+
+// Workout status
+.pill--status {
+  color: $deep-forest;
+  background-color: rgba($deep-forest, 0.08);
+  border-color: rgba($deep-forest, 0.15);
+}
+
+.pill__dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background-color: #36A878;
+}
+
+.pill--focus {
+  color: $deep-forest;
+  background-color: rgba($warm-orange, 0.12);
+  border-color: rgba($warm-orange, 0.2);
+}

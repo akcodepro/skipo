@@ -1,34 +1,85 @@
-<div id="workout_generation">
-  <h1><%= workout.title %></h1>
-  <p><%= workout.description %></p>
+<div id="workout_generation" class="generated-workout">
 
-  <dl>
-    <dt>Requested duration</dt>
-    <dd><%= format_duration(workout.requested_duration_seconds) %></dd>
+  <header class="generated-workout__header">
+    <h1 class="generated-workout__title">
+      <%= workout.title %>
+    </h1>
 
-    <dt>Actual duration</dt>
-    <dd><%= format_duration(workout.total_duration_seconds) %></dd>
+    <p class="generated-workout__description">
+      <%= workout.description %>
+    </p>
+  </header>
 
-    <dt>Difficulty</dt>
-    <dd><%= Workout::DIFFICULTY_LEVELS[workout.difficulty] %></dd>
+  <section class="generated-workout__summary">
+    <div class="generated-workout__stat">
+      <span class="generated-workout__stat-label">Requested duration</span>
+      <span class="pill pill--duration">
+        <i class="fa-clock pill__icon" aria-hidden="true"></i>
+        <%= format_duration(workout.requested_duration_seconds) %>
+      </span>
+    </div>
 
-    <dt>Focus</dt>
-    <dd><%= workout.focus.map(&:titleize).join(", ") %></dd>
-  </dl>
+    <div class="generated-workout__stat">
+      <span class="generated-workout__stat-label">Actual duration</span>
+      <span class="pill pill--duration">
+        <i class="fa fa-hourglass-half pill__icon" aria-hidden="true"></i>
+        <%= format_duration(workout.total_duration_seconds) %>
+      </span>
+    </div>
 
-  <h2>Exercises</h2>
+    <div class="generated-workout__stat">
+      <span class="generated-workout__stat-label">Difficulty</span>
+      <span class="pill pill--difficulty">
+        <%= Workout::DIFFICULTY_LEVELS[workout.difficulty] %>
+      </span>
+    </div>
 
-  <ol>
-    <% workout.workout_exercises.each do |workout_exercise| %>
-      <li>
-        <h3><%= workout_exercise.exercise.name %></h3>
+    <div class="generated-workout__stat">
+      <span class="generated-workout__stat-label">Focus</span>
 
-        <p>Work: <%= workout_exercise.duration_seconds %> seconds</p>
+      <div class="generated-workout__focuses">
+        <% workout.focus.each do |focus| %>
+          <span class="pill pill--focus">
+            <%= focus_icon(focus, extra_class: "pill__icon") %>
+            <%= focus.titleize %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </section>
 
-        <p>Rest: <%= workout_exercise.rest_seconds %> seconds</p>
-      </li>
-    <% end %>
-  </ol>
+  <section class="generated-workout__exercises">
+    <h2 class="generated-workout__section-title">Your exercises</h2>
 
-  <%= button_to "Start workout", workout_workout_sessions_path(workout) %>
+    <ol class="generated-workout__list">
+      <% workout.workout_exercises.each do |workout_exercise| %>
+        <li class="generated-workout__exercise">
+          <div class="generated-workout__exercise-header">
+            <h3 class="generated-workout__exercise-title">
+              <%= workout_exercise.exercise.name %>
+            </h3>
+          </div>
+
+          <div class="generated-workout__exercise-details">
+            <span class="pill pill--duration">
+              <i class="fa-solid fa-stopwatch pill__icon" aria-hidden="true"></i>
+              Work: <%= format_duration(workout_exercise.duration_seconds) %>
+            </span>
+
+            <span class="pill pill--rest">
+              <i class="fa-solid fa-pause pill__icon" aria-hidden="true"></i>
+              Rest: <%= format_duration(workout_exercise.rest_seconds) %>
+            </span>
+          </div>
+        </li>
+      <% end %>
+    </ol>
+  </section>
+
+  <div class="generated-workout__actions">
+    <%= button_to "Start workout",
+          workout_workout_sessions_path(workout),
+          class: "generated-workout__start-button" %>
+  </div>
+
 </div>

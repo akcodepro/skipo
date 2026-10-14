@@ -1,10 +1,18 @@
-<h1>Build Your Workout</h1>
+<div class="workout-builder">
+  <header class="workout-builder__header">
+    <h1 class="workout-builder__title">Build Your Workout</h1>
+    <p>Make it yours. We'll take care of the plan.</p>
+  </header>
 
-<% if @resumable_session %>
-  <div class="resume-workout-banner">
-    <p>You've got a workout in progress.</p>
-    <%= link_to "Resume workout", workout_session_path(@resumable_session) %>
-  </div>
-<% end %>
+  <% if @resumable_session %>
+    <div class="resume-workout-banner">
+      <p>You've got a workout in progress.</p>
 
-<%= render "form", workout: @workout %>
+      <%= link_to "Resume workout",
+            workout_session_path(@resumable_session),
+            class: "resume-workout-banner__link" %>
+    </div>
+  <% end %>
+
+  <%= render "form", workout: @workout %>
+</div>

@@ -1,62 +1,99 @@
 <% if @workout_session.in_progress? %>
-  <%= tag.div data: {
-    controller: "workout-timer",
-    workout_timer_exercises_value: timer_exercises(@workout_session.workout)
-  } do %>
+  <%= tag.div class: "workout-session",
+      data: {
+        controller: "workout-timer",
+        workout_timer_exercises_value: timer_exercises(@workout_session.workout)
+      } do %>
 
-    <div id="workout_session">
-      <h1><%= @workout_session.workout.title %></h1>
-      <p>Status: <%= @workout_session.status.titleize %></p>
-      <p>Started at: <%= @workout_session.started_at %></p>
-    </div>
+    <header class="workout-session__header" id="workout_session">
+      <h1 class="workout-session__title">
+        <%= @workout_session.workout.title %>
+      </h1>
 
-    <div>
+      <div class="workout-session__metadata">
+        <span class="pill pill--status">
+          <span class="pill__dot" aria-hidden="true"></span>
+          <%= @workout_session.status.titleize %>
+        </span>
+
+        <span class="workout-session__started">
+          Started at: <%= @workout_session.started_at %>
+        </span>
+      </div>
+    </header>
+
+    <section class="workout-session__progress">
+      <div class="workout-session__progress-label">
+        <span>Workout progress</span>
+        <span data-workout-timer-target="progressText"></span>
+      </div>
+
       <progress
+        class="workout-session__progress-bar"
         data-workout-timer-target="progress"
         value="0"
         max="<%= @workout_session.workout.total_duration_seconds %>">
       </progress>
+    </section>
 
-      <span data-workout-timer-target="progressText"></span>
+    <section class="workout-session__timer">
+      <p class="workout-session__phase"
+         data-workout-timer-target="phase"></p>
+
+      <h2 class="workout-session__exercise"
+          data-workout-timer-target="exercise"></h2>
+
+      <p class="workout-session__seconds"
+         data-workout-timer-target="seconds"></p>
+    </section>
+
+    <div class="workout-session__actions">
+      <button
+        type="button"
+        class="workout-session__button workout-session__button--primary"
+        data-action="workout-timer#togglePause"
+        data-workout-timer-target="pauseButton">
+        Pause
+      </button>
+
+      <button
+        type="button"
+        class="workout-session__button workout-session__button--secondary"
+        data-action="workout-timer#stop"
+        data-workout-timer-target="stopButton">
+        Stop workout
+      </button>
     </div>
-
-    <div>
-      <h2 data-workout-timer-target="exercise"></h2>
-      <p data-workout-timer-target="phase"></p>
-      <p data-workout-timer-target="seconds"></p>
-    </div>
-
-    <button
-      type="button"
-      data-action="workout-timer#togglePause"
-      data-workout-timer-target="pauseButton">
-      Pause
-    </button>
-
-    <button
-      type="button"
-      data-action="workout-timer#stop"
-      data-workout-timer-target="stopButton">
-      Stop workout
-    </button>
 
     <%= form_with model: @workout_session,
-                  data: { workout_timer_target: "form" } do |f| %>
+        data: { workout_timer_target: "form" } do |f| %>
+
       <%= f.hidden_field :status,
-                          value: "",
-                          data: { workout_timer_target: "status" } %>
+          value: "",
+          data: { workout_timer_target: "status" } %>
 
       <%= f.hidden_field :actual_duration_seconds,
-                          value: "",
-                          data: { workout_timer_target: "actualDuration" } %>
+          value: "",
+          data: { workout_timer_target: "actualDuration" } %>
     <% end %>
 
   <% end %>
 
 <% else %>
-  <div id="workout_session">
-    <h1><%= @workout_session.workout.title %></h1>
-    <p>Status: <%= @workout_session.status.titleize %></p>
-    <p>Duration: <%= format_duration(@workout_session.actual_duration_seconds) %></p>
+  <div class="workout-session workout-session--completed" id="workout_session">
+    <h1 class="workout-session__title">
+      <%= @workout_session.workout.title %>
+    </h1>
+
+    <div class="workout-session__metadata">
+      <span class="pill pill--status">
+        <%= @workout_session.status.titleize %>
+      </span>
+
+      <span class="pill pill--duration">
+        <i class="fa-clock pill__icon" aria-hidden="true"></i>
+        <%= format_duration(@workout_session.actual_duration_seconds) %>
+      </span>
+    </div>
   </div>
 <% end %>

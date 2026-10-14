@@ -1,20 +1,27 @@
-<%= simple_form_for workout do |f| %>
+<%= simple_form_for workout, html: { class: "workout-form" } do |f| %>
+
   <%= f.input :requested_duration_seconds,
         label: "How long do you want to work out?",
         as: :radio_buttons,
         collection: WorkoutGenerator::DURATION_TOLERANCES.keys.map { |seconds| ["#{seconds / 60} min", seconds] },
         label_method: :first,
-        value_method: :last %>
+        value_method: :last,
+        wrapper_html: { class: "workout-form__field workout-form__duration" },
+        item_wrapper_class: "workout-form__choice" %>
 
   <%= f.input :focus,
         label: "What would you like to focus on?",
         as: :check_boxes,
         collection: Exercise.categories.keys.map { |category| [category.titleize, category] },
         label_method: :first,
-        value_method: :last %>
+        value_method: :last,
+        wrapper_html: { class: "workout-form__field workout-form__focus" },
+        item_wrapper_class: "workout-form__choice" %>
 
   <%= f.input :difficulty,
-        label: "How difficult should it be?" do %>
+        label: "How difficult should it be?",
+        wrapper_html: { class: "workout-form__field workout-form__difficulty" } do %>
+
     <div class="difficulty-slider">
       <%= f.range_field :difficulty,
             min: Workout::DIFFICULTY_LEVELS.keys.min,
@@ -28,7 +35,10 @@
         <% end %>
       </div>
     </div>
+
   <% end %>
 
-  <%= f.button :submit, "Generate workout" %>
+  <%= f.button :submit, "Generate workout",
+        class: "workout-form__submit" %>
+
 <% end %>
