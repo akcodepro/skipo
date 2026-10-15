@@ -1,13 +1,47 @@
-<%= simple_form_for workout, html: { class: "workout-form" } do |f| %>
+<%= simple_form_for workout do |f| %>
 
-  <%= f.input :requested_duration_seconds,
-        label: "How long do you want to work out?",
-        as: :radio_buttons,
-        collection: WorkoutGenerator::DURATION_TOLERANCES.keys.map { |seconds| ["#{seconds / 60} min", seconds] },
-        label_method: :first,
-        value_method: :last,
-        wrapper_html: { class: "workout-form__field workout-form__duration" },
-        item_wrapper_class: "workout-form__choice" %>
+  <div
+    class="workout-builder__section"
+    data-controller="stepper"
+    data-stepper-options-value="<%= WorkoutGenerator::DURATION_TOLERANCES.keys.to_json %>"
+  >
+    <h2 class="workout-builder__section-title">
+      How long?
+    </h2>
+
+    <%= f.input :requested_duration_seconds,
+          as: :hidden,
+          input_html: {
+            value: 900,
+            data: { stepper_target: "input" }
+          } %>
+    <div class="stepper">
+      <button
+        type="button"
+        class="stepper__control"
+        data-stepper-target="decrementButton"
+        data-action="stepper#decrement"
+        aria-label="Decrease workout duration"
+      >
+        &minus;
+      </button>
+
+      <div class="stepper__display" aria-live="polite">
+        <span class="stepper__value" data-stepper-target="value">15</span>
+        <span class="stepper__unit">min</span>
+      </div>
+
+      <button
+        type="button"
+        class="stepper__control"
+        data-stepper-target="incrementButton"
+        data-action="stepper#increment"
+        aria-label="Increase workout duration"
+      >
+        &plus;
+      </button>
+    </div>
+  </div>
 
   <%= f.input :focus,
         label: "What would you like to focus on?",
