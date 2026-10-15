@@ -1,6 +1,6 @@
-<%= simple_form_for workout do |f| %>
+<%= simple_form_for workout, html: { class: "workout-builder__form" } do |f| %>
 
-  <div
+  <section
     class="workout-builder__section"
     data-controller="stepper"
     data-stepper-options-value="<%= Workout::DURATIONS.to_json %>"
@@ -9,12 +9,9 @@
       How long?
     </h2>
 
-    <%= f.input :requested_duration_seconds,
-          as: :hidden,
-          input_html: {
-            value: 900,
-            data: { stepper_target: "input" }
-          } %>
+    <%= f.hidden_field :requested_duration_seconds,
+          value: 900,
+          data: { stepper_target: "input" } %>
     <div class="stepper">
       <button
         type="button"
@@ -41,16 +38,44 @@
         &plus;
       </button>
     </div>
-  </div>
+  </section>
 
-  <%= f.input :focus,
-        label: "What would you like to focus on?",
-        as: :check_boxes,
-        collection: Exercise.categories.keys.map { |category| [category.titleize, category] },
-        label_method: :first,
-        value_method: :last,
-        wrapper_html: { class: "workout-form__field workout-form__focus" },
-        item_wrapper_class: "workout-form__choice" %>
+  <section class="workout-builder__section">
+    <h2 class="workout-builder__section-title">
+      What do you want to work on?
+    </h2>
+
+    <div class="choice-grid">
+      <div class="choice-tile choice-tile--locked choice-tile--wide">
+        <%= focus_icon("fundamentals", extra_class: "choice-tile__icon") %>
+        <span class="choice-tile__label">Fundamentals</span>
+        <span class="choice-tile__lock">
+          <i class="fa-solid fa-lock" aria-hidden="true"></i>
+          <span class="visually-hidden">Always included</span>
+        </span>
+      </div>
+
+      <%= f.collection_check_boxes(
+        :focus,
+        Exercise.categories.keys.reject { |category| category == "fundamentals" },
+        :itself,
+        ->(category) { focus_label(category) },
+        { item_wrapper_tag: false }
+      ) do |b| %>
+        <div class="choice-grid__item">
+          <%= b.check_box(class: "choice-tile__input") %>
+
+          <%= b.label(class: "choice-tile") do %>
+            <%= focus_icon(b.value, extra_class: "choice-tile__icon") %>
+            <span class="choice-tile__label"><%= b.text %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <p class="workout-builder__note">
+      Fundamentals are always in, they are the base every other move builds on.
+    </p>
+  </section>
 
   <%= f.input :difficulty,
         label: "How difficult should it be?",

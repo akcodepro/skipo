@@ -42,4 +42,17 @@
     font-size: 18px;
     font-weight: 600;
   }
+
+  &__note {
+    font-size: 13px;
+    color: $smoky-mauve;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
 }

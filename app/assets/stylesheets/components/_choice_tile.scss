@@ -1,0 +1,76 @@
+.choice-tile {
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  margin: 0;
+  padding: 10px 8px;
+  border: 1.5px solid rgba($dusty-lilac, 0.45);
+  border-radius: 18px;
+  background: $white;
+  color: $deep-forest;
+
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  &__label {
+    line-height: 1.2;
+  }
+
+  &__input {
+    @include visually-hidden;
+
+    &:checked + .choice-tile {
+      border-color: $deep-forest;
+      background: $deep-forest;
+      color: $warm-porcelain;
+    }
+
+    &:focus-visible + .choice-tile {
+      outline: 2px solid $warm-orange;
+      outline-offset: 3px;
+    }
+  }
+
+  &--locked {
+    position: relative;
+    border: none;
+    background: $golden-yellow;
+    cursor: default;
+  }
+
+  &__lock {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  &--wide {
+    grid-column: span 2;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 12px 14px;
+
+    .choice-tile__label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+}
