@@ -86,8 +86,7 @@
         Workout::DIFFICULTY_LEVELS.to_a,
         :first,
         :last,
-        { item_wrapper_tag: false },
-        {}
+        { item_wrapper_tag: false }
       ) do |b| %>
         <%= b.radio_button(class: "level-picker__input") %>
 
@@ -99,7 +98,5 @@
     </div>
   </section>
 
-  <%= f.button :submit, "Generate workout",
-        class: "workout-form__submit" %>
-
+  <%= f.submit "Build my workout", class: "button button--primary button--block" %>
 <% end %>
