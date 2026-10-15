@@ -13,7 +13,7 @@ class WorkoutTest < ActiveSupport::TestCase
       title: "Test workout",
       focus: [ "freestyle", "power" ],
       difficulty: 3,
-      requested_duration_seconds: 780
+      requested_duration_seconds: 900
     )
   end
 
@@ -24,25 +24,45 @@ class WorkoutTest < ActiveSupport::TestCase
   test "is invalid with nil focus" do
     @workout.focus = nil
     assert_not @workout.valid?
+    assert @workout.errors[:focus].any?
   end
 
   test "is invalid with empty focus" do
     @workout.focus = []
     assert_not @workout.valid?
+    assert @workout.errors[:focus].any?
   end
 
   test "is invalid with unknown focus category" do
     @workout.focus = [ "power", "creative" ]
     assert_not @workout.valid?
+    assert @workout.errors[:focus].any?
   end
 
   test "is invalid with difficulty out of range: 4" do
     @workout.difficulty = 4
     assert_not @workout.valid?
+    assert @workout.errors[:difficulty].any?
   end
 
   test "is invalid with difficulty out of range: 0" do
     @workout.difficulty = 0
     assert_not @workout.valid?
+    assert @workout.errors[:difficulty].any?
+  end
+
+  test "accepts an allowed workout duration" do
+    @workout.requested_duration_seconds = 1500
+    assert @workout.valid?
+  end
+
+  test "rejects a workout duration that is not allowed" do
+    @workout.requested_duration_seconds = 450
+    assert_not @workout.valid?
+    assert @workout.errors[:requested_duration_seconds].any?
+  end
+
+  test "workout durations match generator tolerance keys" do
+    assert_equal Workout::DURATIONS.sort, WorkoutGenerator::DURATION_TOLERANCES.keys.sort
   end
 end
