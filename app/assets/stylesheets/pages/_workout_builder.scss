@@ -1,0 +1,58 @@
+.workout-builder {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__title {
+    font-family: $headers-font;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.05;
+
+    color: $deep-forest;
+
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-family: $body-font;
+    font-size: 15px;
+
+    color: $smoky-mauve;
+
+    margin: 0;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__section-title {
+    margin: 0;
+    font-family: $headers-font;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__note {
+    font-size: 13px;
+    color: $smoky-mauve;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+}

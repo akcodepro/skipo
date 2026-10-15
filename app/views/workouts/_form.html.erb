@@ -1,44 +1,102 @@
-<%= simple_form_for workout, html: { class: "workout-form" } do |f| %>
+<%= simple_form_for workout, html: { class: "workout-builder__form" } do |f| %>
 
-  <%= f.input :requested_duration_seconds,
-        label: "How long do you want to work out?",
-        as: :radio_buttons,
-        collection: WorkoutGenerator::DURATION_TOLERANCES.keys.map { |seconds| ["#{seconds / 60} min", seconds] },
-        label_method: :first,
-        value_method: :last,
-        wrapper_html: { class: "workout-form__field workout-form__duration" },
-        item_wrapper_class: "workout-form__choice" %>
+  <section
+    class="workout-builder__section"
+    data-controller="stepper"
+    data-stepper-options-value="<%= Workout::DURATIONS.to_json %>"
+  >
+    <h2 class="workout-builder__section-title">
+      How long?
+    </h2>
 
-  <%= f.input :focus,
-        label: "What would you like to focus on?",
-        as: :check_boxes,
-        collection: Exercise.categories.keys.map { |category| [category.titleize, category] },
-        label_method: :first,
-        value_method: :last,
-        wrapper_html: { class: "workout-form__field workout-form__focus" },
-        item_wrapper_class: "workout-form__choice" %>
+    <%= f.hidden_field :requested_duration_seconds,
+          value: 900,
+          data: { stepper_target: "input" } %>
+    <div class="stepper">
+      <button
+        type="button"
+        class="stepper__control"
+        data-stepper-target="decrementButton"
+        data-action="stepper#decrement"
+        aria-label="Decrease workout duration"
+      >
+        &minus;
+      </button>
 
-  <%= f.input :difficulty,
-        label: "How difficult should it be?",
-        wrapper_html: { class: "workout-form__field workout-form__difficulty" } do %>
-
-    <div class="difficulty-slider">
-      <%= f.range_field :difficulty,
-            min: Workout::DIFFICULTY_LEVELS.keys.min,
-            max: Workout::DIFFICULTY_LEVELS.keys.max,
-            step: 1,
-            class: "slider" %>
-
-      <div class="difficulty-levels">
-        <% Workout::DIFFICULTY_LEVELS.each_value do |label| %>
-          <span><%= label %></span>
-        <% end %>
+      <div class="stepper__display" aria-live="polite">
+        <span class="stepper__value" data-stepper-target="value">15</span>
+        <span class="stepper__unit">min</span>
       </div>
+
+      <button
+        type="button"
+        class="stepper__control"
+        data-stepper-target="incrementButton"
+        data-action="stepper#increment"
+        aria-label="Increase workout duration"
+      >
+        &plus;
+      </button>
     </div>
+  </section>
 
-  <% end %>
+  <section class="workout-builder__section">
+    <h2 class="workout-builder__section-title">
+      What do you want to work on?
+    </h2>
 
-  <%= f.button :submit, "Generate workout",
-        class: "workout-form__submit" %>
+    <div class="choice-grid">
+      <div class="choice-tile choice-tile--locked choice-tile--wide">
+        <%= focus_icon("fundamentals", extra_class: "choice-tile__icon") %>
+        <span class="choice-tile__label">Fundamentals</span>
+        <span class="choice-tile__lock">
+          <i class="fa-solid fa-lock" aria-hidden="true"></i>
+          <span class="visually-hidden">Always included</span>
+        </span>
+      </div>
 
+      <%= f.collection_check_boxes(
+        :focus,
+        Exercise.categories.keys.reject { |category| category == "fundamentals" },
+        :itself,
+        ->(category) { focus_label(category) },
+        { item_wrapper_tag: false }
+      ) do |b| %>
+        <div class="choice-grid__item">
+          <%= b.check_box(class: "choice-tile__input") %>
+
+          <%= b.label(class: "choice-tile") do %>
+            <%= focus_icon(b.value, extra_class: "choice-tile__icon") %>
+            <span class="choice-tile__label"><%= b.text %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <p class="workout-builder__note">
+      Fundamentals are always in, they are the base every other move builds on.
+    </p>
+  </section>
+
+  <section class="workout-builder__section">
+    <h2 class="workout-builder__section-title">How hard?</h2>
+
+    <div class="level-picker">
+      <%= f.collection_radio_buttons(
+        :difficulty,
+        Workout::DIFFICULTY_LEVELS.to_a,
+        :first,
+        :last,
+        { item_wrapper_tag: false }
+      ) do |b| %>
+        <%= b.radio_button(class: "level-picker__input") %>
+
+        <%= b.label(class: "level-picker__stop") do %>
+          <span class="level-picker__dot"></span>
+          <span class="level-picker__text"><%= b.text %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+
+  <%= f.submit "Build my workout", class: "button button--primary button--block" %>
 <% end %>

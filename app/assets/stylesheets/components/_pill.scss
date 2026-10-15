@@ -46,3 +46,15 @@
   background-color: rgba($warm-orange, 0.12);
   border-color: rgba($warm-orange, 0.2);
 }
+
+.pill--difficulty {
+  color: $deep-forest;
+  background: rgba($golden-yellow, 0.25);
+  border-color: rgba($golden-yellow, 0.6);
+}
+
+.pill--rest {
+  color: $deep-forest;
+  background: rgba($dusty-lilac, 0.15);
+  border-color: rgba($dusty-lilac, 0.3);
+}

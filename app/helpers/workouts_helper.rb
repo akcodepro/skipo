@@ -28,4 +28,12 @@ module WorkoutsHelper
       aria: { hidden: true }
     )
   end
+
+  def focus_label(category)
+    labels = {
+      "rhythm_coordination" => "Rhythm"
+    }
+
+    labels.fetch(category.to_s, category.to_s.titleize)
+  end
 end

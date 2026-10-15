@@ -1,0 +1,117 @@
+.generated-workout {
+  padding: 1.5rem 1.25rem 7rem;
+}
+
+.generated-workout__header {
+  margin-bottom: 2rem;
+}
+
+.generated-workout__title {
+  margin-bottom: 0.75rem;
+
+  color: $deep-forest;
+  font-family: $headers-font;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.generated-workout__description {
+  color: rgba($deep-forest, 0.75);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.generated-workout__summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+
+  margin-bottom: 2.5rem;
+}
+
+.generated-workout__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  min-width: 0;
+}
+
+.generated-workout__stat-label {
+  color: $dusty-lilac;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.generated-workout__focuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.generated-workout__section-title {
+  margin-bottom: 1rem;
+
+  color: $deep-forest;
+  font-family: $headers-font;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.generated-workout__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  counter-reset: workout-exercise;
+}
+
+.generated-workout__exercise {
+  padding: 1rem;
+
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba($deep-forest, 0.1);
+  border-radius: $border-radius-lg;
+
+  counter-increment: workout-exercise;
+}
+
+.generated-workout__exercise-title {
+  margin-bottom: 0.85rem;
+
+  color: $deep-forest;
+  font-family: $headers-font;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.generated-workout__exercise-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.generated-workout__actions {
+  margin-top: 2rem;
+}
+
+.generated-workout__start-button {
+  width: 100%;
+  padding: 0.95rem 1.25rem;
+
+  border: 0;
+  border-radius: 9999px;
+
+  background: $warm-orange;
+  color: $deep-forest;
+
+  font-family: $headers-font;
+  font-weight: 700;
+  font-size: 1rem;
+}

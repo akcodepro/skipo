@@ -43,6 +43,7 @@ The app should feel like a coach that makes you want to move, not a workout trac
 | Warm Orange | `#F27C45` | Action / movement |
 | Golden Yellow | `#F4CF45` | Energy / achievement |
 | Dusty Lilac | `#AAA3AB` | Personality / visual accent |
+| Smoky Mauve | `#6B636D` | Secondary text / quiet lilac |
 
 ### Colour hierarchy
 

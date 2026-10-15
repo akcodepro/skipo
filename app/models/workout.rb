@@ -1,5 +1,6 @@
 class Workout < ApplicationRecord
   DIFFICULTY_LEVELS = { 1 => "Easy", 2 => "Medium", 3 => "Hard" }.freeze
+  DURATIONS = [ 300, 600, 900, 1200, 1500, 1800 ].freeze
 
   belongs_to :user
 
@@ -11,7 +12,7 @@ class Workout < ApplicationRecord
   validates :focus, presence: true
   validates :title, presence: true, length: { maximum: 150 }
   validates :difficulty, presence: true, numericality: { only_integer: true }, inclusion: { in: DIFFICULTY_LEVELS.keys }
-  validates :requested_duration_seconds, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :requested_duration_seconds, presence: true, inclusion: { in: DURATIONS }
 
   validate :allowed_focus_names
 

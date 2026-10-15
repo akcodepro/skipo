@@ -1,4 +1,6 @@
 // Import page-specific CSS files here.
+@import "generated_workout";
 @import "home";
+@import "workout_builder";
 @import "workout_sessions";
-@import "workouts";
+@import "workout_state";

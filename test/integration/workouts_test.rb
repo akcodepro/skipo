@@ -55,7 +55,7 @@ class WorkoutsTest < ActionDispatch::IntegrationTest
     get new_workout_path
 
     assert_response :success
-    assert_select ".resume-workout-banner"
+    assert_select ".resume-banner"
   end
 
   test "hides the banner for an old in-progress session" do
@@ -64,7 +64,7 @@ class WorkoutsTest < ActionDispatch::IntegrationTest
     get new_workout_path
 
     assert_response :success
-    assert_select ".resume-workout-banner", count: 0
+    assert_select ".resume-banner", count: 0
   end
 
   test "hides another user's in-progress session" do
@@ -78,7 +78,7 @@ class WorkoutsTest < ActionDispatch::IntegrationTest
     get new_workout_path
 
     assert_response :success
-    assert_select ".resume-workout-banner", count: 0
+    assert_select ".resume-banner", count: 0
   end
 
   private

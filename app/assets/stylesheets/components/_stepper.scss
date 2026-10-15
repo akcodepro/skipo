@@ -1,0 +1,46 @@
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: 1.5px solid $dusty-lilac;
+    border-radius: 50%;
+    background: transparent;
+    color: $deep-forest;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  &__display {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &__value {
+    font-family: $headers-font;
+    font-size: 88px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__unit {
+    font-family: $headers-font;
+    font-size: 22px;
+    font-weight: 600;
+    color: $smoky-mauve;
+  }
+}
