@@ -77,25 +77,27 @@
     </p>
   </section>
 
-  <%= f.input :difficulty,
-        label: "How difficult should it be?",
-        wrapper_html: { class: "workout-form__field workout-form__difficulty" } do %>
+  <section class="workout-builder__section">
+    <h2 class="workout-builder__section-title">How hard?</h2>
 
-    <div class="difficulty-slider">
-      <%= f.range_field :difficulty,
-            min: Workout::DIFFICULTY_LEVELS.keys.min,
-            max: Workout::DIFFICULTY_LEVELS.keys.max,
-            step: 1,
-            class: "slider" %>
+    <div class="level-picker">
+      <%= f.collection_radio_buttons(
+        :difficulty,
+        Workout::DIFFICULTY_LEVELS.to_a,
+        :first,
+        :last,
+        { item_wrapper_tag: false },
+        {}
+      ) do |b| %>
+        <%= b.radio_button(class: "level-picker__input") %>
 
-      <div class="difficulty-levels">
-        <% Workout::DIFFICULTY_LEVELS.each_value do |label| %>
-          <span><%= label %></span>
+        <%= b.label(class: "level-picker__stop") do %>
+          <span class="level-picker__dot"></span>
+          <span class="level-picker__text"><%= b.text %></span>
         <% end %>
-      </div>
+      <% end %>
     </div>
-
-  <% end %>
+  </section>
 
   <%= f.button :submit, "Generate workout",
         class: "workout-form__submit" %>
