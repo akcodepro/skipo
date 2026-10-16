@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.4
+**Version:** 0.5
 **Status:** Exploratory
 
 ## Product
@@ -82,11 +82,17 @@ The interaction should remain structured and quick.
 
 The user tells the coach what they want. The AI decides the details.
 
+The screen opens with a personal greeting using the user's display name and a short, cheeky subtitle picked at random. If a workout is still in progress, a resume banner sits under the greeting.
+
 Inputs (V1):
 
-- **Focus:** multi-select category pills, plus "Mixed"
-- **Duration:** preset options (5 / 10 / 15 / 20 / 25 / 30 min)
-- **Difficulty:** slider (1 to 3)
+- **Duration:** a stepper with a large number and −/+ buttons, from 5 to 30 min in steps of 5. Defaults to 15 min. The buttons disable at each end
+- **Focus:** a grid of square icon tiles, multi-select. Fundamentals is shown as a double-width golden tile with a lock: it is always included and cannot be toggled. A short note under the grid explains why. "Mixed" is planned but needs a backend decision first
+- **Difficulty:** three stops on a track (Easy, Medium, Hard). Defaults to Medium
+
+Primary action:
+
+**Build my workout**
 
 Work/rest intervals, tempo and volume are decided by the AI, not the user.
 
@@ -282,6 +288,10 @@ Mobile-native bottom tab bar, styled close to Apple's Liquid Glass.
 - Glass effect on the nav bar only. It must stay readable over any content and look right on iPhone Safari, where refraction effects may not render
 - Active tab set server-side, tap interactions only (no hover-driven behaviour)
 
+### Components
+
+Reusable UI pieces and their naming live in CSS.md. Interactive controls are touch-first: press feedback on tap, no hover-only states.
+
 Avoid:
 
 - Excessive cards
@@ -306,6 +316,8 @@ Illustrations should be:
 - Consistent with the brand palette
 
 For early implementation, large icons such as Font Awesome can be used as placeholders.
+
+Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout pills).
 
 Final illustrations may be created specifically for the project, potentially with external illustration support.
 
@@ -359,7 +371,9 @@ The AI can only pick exercises from a global library. Each exercise has one home
 
 Categories: Fundamentals · Footwork · Rhythm & Coordination · Power · Technical · Freestyle
 
-Users never "graduate": every category stays available, whatever their experience. Category labels live in the UI and can change without touching data.
+Fundamentals exercises are always part of the candidate pool, whatever the user picks.
+
+Users never "graduate": every category stays available, whatever their experience. Category labels live in the UI and can change without touching data (for example, "Rhythm & Coordination" shows as "Rhythm" on the Train form).
 
 ---
 
@@ -413,11 +427,13 @@ Content and UI details should be refined during implementation.
 - Custom illustrations are desirable but not a development blocker
 - Placeholder icons can be used during early implementation
 - Bottom tab bar navigation: Progress · Train · Feed, Liquid Glass style
-- Generation inputs: focus (multi-select), duration, difficulty
+- Generation inputs: duration stepper (default 15 min), focus tiles (multi-select, Fundamentals always included), difficulty picker (default Medium)
+- Allowed durations are defined once, on the Workout model, and validated server-side
 - Global exercise library with categories and difficulty
 - Pause/resume in the browser only; stopped workouts cannot be shared
 - AI: RubyLLM with Mistral, structured output validated in code
 - Custom organic S established as the primary brand symbol
+- Front-end conventions (BEM, one block per file, components) documented in CSS.md
 
 ---
 
@@ -434,3 +450,4 @@ Content and UI details should be refined during implementation.
 - Final illustration approach
 - Error and loading states
 - Train tab icon: brand S or conventional icon
+- What "Mixed" focus means for the generator
