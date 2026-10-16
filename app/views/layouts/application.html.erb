@@ -27,7 +27,10 @@
   </head>
 
   <body>
-    <%= render "shared/header" %>
+    <% unless content_for?(:hide_header) %>
+      <%= render "shared/header" %>
+    <% end %>
+
     <%= render "shared/flashes" %>
 
     <main class="<%= 'has-bottom-nav' if user_signed_in? %>">
