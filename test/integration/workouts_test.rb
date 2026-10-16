@@ -34,6 +34,21 @@ class WorkoutsTest < ActionDispatch::IntegrationTest
     assert_redirected_to generating_workouts_path
   end
 
+  test "defaults to fundamentals when no focus is selected" do
+    assert_enqueued_with(
+      job: GenerateWorkoutJob,
+      args: ->(args) { args.first[:focus] == [ "fundamentals" ] }
+    ) do
+      post workouts_path, params: {
+        workout: {
+          requested_duration_seconds: 600,
+          focus: [ "" ],
+          difficulty: 3
+        }
+      }
+    end
+    assert_redirected_to generating_workouts_path
+  end
   test "shows the user's own workout" do
     get workout_path(@workout)
 
