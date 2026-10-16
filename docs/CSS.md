@@ -26,6 +26,9 @@
 - When CSS "should work" but doesn't, read the real DOM tree in DevTools, not the ERB
 - Sizing a child is the parent's job: prefer making the parent flex or grid over `height: 100%`
 - Grow or shrink things on state changes with `transform: scale()`, not `width`/`height`, so nothing around them moves
+- Full-screen layouts: `min-height: 100dvh` (with a `100vh` fallback), never `height: 100vh`, which hides content behind Safari's toolbars
+- A base rotation that must survive `animation: none` goes in the standalone `rotate` property; keyframes then hold only the movement
+- Decorative layers behind content: `isolation: isolate` on the block plus `z-index: -1` on the decoration, or it slides behind the block's own background
 
 ## Colours
 
@@ -57,6 +60,7 @@ Forest text on Orange only at 18.66px bold or larger (3.7:1, large text only).
 
 | Block | Page |
 |---|---|
+| `.landing` (`__blob` with `--lilac` / `--yellow`, `__hero`, `__title`, `__tagline`, `__actions`) | Logged-out home (hides the header via `content_for :hide_header`) |
 | `.workout-builder` (`__header`, `__title`, `__subtitle`, `__form`, `__section`, `__section-title`, `__note`) | Train form |
 | `.generated-workout` | Generated workout |
 | `.workout-state` | Generating and generation failed |
