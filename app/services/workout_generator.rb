@@ -63,13 +63,12 @@ class WorkoutGenerator
     Choose timing based on the exercise, workout structure, difficulty and focus.
     Higher-intensity work generally requires more recovery.
 
-    These timing ranges are guidelines, not strict requirements. Prioritize
-    creating a coherent and effective workout over hitting an exact timing range.
+    Individual exercise and rest durations may flexibly exceed the suggested timing ranges when needed for an effective workout.
+    The total workout duration, including all work and rest periods, must always fall within the requested duration range.
 
     WORKOUT RULES
 
     - The total workout duration is the sum of every exercise duration and every rest duration, including the final rest.
-    - The total duration must fall within the requested duration range.
     - Fundamentals exercises must make up no more than half of the exercises.
     - Use only exercises provided in the request.
 
@@ -96,6 +95,8 @@ class WorkoutGenerator
   }.freeze
 
   MAX_FUNDAMENTALS_SHARE = 0.5
+
+  TARGET_BLOCK_SECONDS = 75
 
   def initialize(user:, focus:, difficulty:, requested_duration_seconds:)
     @user = user
@@ -143,9 +144,13 @@ class WorkoutGenerator
 
   def request_message
     <<~PROMPT
-      Target duration: aim for #{@requested_duration_seconds} seconds (acceptable range: #{duration_range.min} to #{duration_range.max} seconds).
-      Difficulty: #{@difficulty}
-      Focus: #{@focus.join(", ")}
+      Target duration: aim for #{@requested_duration_seconds} seconds.
+      Acceptable range: #{duration_range.min} to #{duration_range.max} seconds.
+      Difficulty: #{@difficulty}.
+      Focus: #{@focus.join(", ")}.
+
+      Number of exercises: use exactly #{target_exercise_count} exercises.
+      Each exercise plus its rest should take about #{TARGET_BLOCK_SECONDS} seconds.
 
       Available exercises:
       #{ exercise_list }
@@ -163,6 +168,10 @@ class WorkoutGenerator
     maximum_duration = @requested_duration_seconds + tolerance[:above]
 
     minimum_duration..maximum_duration
+  end
+
+  def target_exercise_count
+    (@requested_duration_seconds.to_f / TARGET_BLOCK_SECONDS).round
   end
 
   def generate
