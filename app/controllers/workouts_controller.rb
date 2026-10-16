@@ -8,7 +8,7 @@ class WorkoutsController < ApplicationController
   def create
     choices = workout_params
     difficulty = choices[:difficulty].to_i
-    focus = choices[:focus].compact_blank
+    focus = choices[:focus].compact_blank.presence || [ "fundamentals" ]
     requested_duration_seconds = choices[:requested_duration_seconds].to_i
 
     GenerateWorkoutJob.perform_later(
