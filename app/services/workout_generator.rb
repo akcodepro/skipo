@@ -69,7 +69,6 @@ class WorkoutGenerator
     WORKOUT RULES
 
     - The total workout duration is the sum of every exercise duration and every rest duration, including the final rest.
-    - The total duration must fall within the requested duration range.
     - Fundamentals exercises must make up no more than half of the exercises.
     - Use only exercises provided in the request.
 
