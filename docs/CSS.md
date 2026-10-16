@@ -19,6 +19,14 @@
 - `config/`: variables only (colours, fonts, Bootstrap overrides). Produces no CSS on its own
 - Every new file gets imported in its folder's `_index.scss`
 
+## Gotchas
+
+- simple_form wraps each item of `f.collection_check_boxes` / `f.collection_radio_buttons` in a `<span>`. Pass `{ item_wrapper_tag: false }` as the options hash to remove it
+- simple_form's `f.button :submit` adds Bootstrap's `btn` class. Use Rails' `f.submit` with our `.button` classes instead
+- When CSS "should work" but doesn't, read the real DOM tree in DevTools, not the ERB
+- Sizing a child is the parent's job: prefer making the parent flex or grid over `height: 100%`
+- Grow or shrink things on state changes with `transform: scale()`, not `width`/`height`, so nothing around them moves
+
 ## Colours
 
 | Variable | Hex | Use |
@@ -39,16 +47,16 @@ Forest text on Orange only at 18.66px bold or larger (3.7:1, large text only).
 | `.button` | | `--primary` (orange), `--secondary` (forest), `--small`, `--block` (full width) |
 | `.pill` | `__icon`, `__dot` | `--duration`, `--status`, `--focus`, `--difficulty`, `--rest` |
 | `.resume-banner` | `__text` | |
-| `.stepper` | `__control`, `__value`, `__unit` | |
-| `.choice-grid` | | |
-| `.choice-tile` | `__icon`, `__label` | `--locked`, `--wide` |
-| `.level-picker` | `__track`, `__fill`, `__stop`, `__labels` | |
+| `.stepper` | `__control` (the −/+ buttons), `__display` (wraps number and unit), `__value` (the big number), `__unit` ("min") | |
+| `.choice-grid` | `__item` (one grid cell, wraps a hidden input and its tile) | |
+| `.choice-tile` | `__input` (the hidden checkbox, sits before the tile), `__icon`, `__label`, `__lock` | `--locked`, `--wide` |
+| `.level-picker` | `__input` (the hidden radio), `__stop` (the label: dot + text), `__dot`, `__text` | |
 
 ## Page blocks
 
 | Block | Page |
 |---|---|
-| `.workout-builder` (`__header`, `__title`, `__subtitle`, `__section`, `__section-title`, `__note`) | Train form |
+| `.workout-builder` (`__header`, `__title`, `__subtitle`, `__form`, `__section`, `__section-title`, `__note`) | Train form |
 | `.generated-workout` | Generated workout |
 | `.workout-state` | Generating and generation failed |
 | `.workout-session` | Active workout and summary |
