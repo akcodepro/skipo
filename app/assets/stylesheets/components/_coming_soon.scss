@@ -1,0 +1,27 @@
+.coming-soon {
+  text-align: center;
+  padding: 5rem 1.5rem 2rem;
+  max-width: 640px;
+  margin: 0 auto;
+
+  &__icon {
+    display: block;
+    font-size: 48px;
+    color: $warm-orange;
+    margin-bottom: 1.5rem;
+  }
+
+  &__title {
+    color: $deep-forest;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  &__text {
+    color: $smoky-mauve;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+}

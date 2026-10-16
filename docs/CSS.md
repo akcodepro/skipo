@@ -51,6 +51,7 @@ Forest text on Orange only at 18.66px bold or larger (3.7:1, large text only).
 | `.choice-grid` | `__item` (one grid cell, wraps a hidden input and its tile) | |
 | `.choice-tile` | `__input` (the hidden checkbox, sits before the tile), `__icon`, `__label`, `__lock` | `--locked`, `--wide` |
 | `.level-picker` | `__input` (the hidden radio), `__stop` (the label: dot + text), `__dot`, `__text` | |
+| `.coming-soon` | `__icon`, `__title`, `__text`. Rendered by the `shared/_coming_soon` partial (locals: `icon`, `title`, `text`) | |
 
 ## Page blocks
 
