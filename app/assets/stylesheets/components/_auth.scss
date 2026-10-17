@@ -1,0 +1,124 @@
+.auth {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  margin: 0 auto;
+  padding: 40px 20px 48px;
+  overflow: hidden;
+
+  background-color: $warm-porcelain;
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+
+    width: 44px; height: 44px;
+    margin-bottom: 24px;
+
+    color: $deep-forest;
+    font-size: 28px;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  &__header {
+    margin-bottom: 32px;
+  }
+
+  &__title {
+    margin: 0 0 10px;
+    color: $deep-forest;
+    font-size: clamp(40px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: $smoky-mauve;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    color: $deep-forest;
+    font-size: 16px;
+  }
+
+  &__switch {
+    margin-top: auto;
+    padding-top: 48px;
+
+    color: $smoky-mauve;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  &__remember {
+    accent-color: $deep-forest;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__link {
+    color: $deep-forest;
+    font-weight: 600;
+
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  &__blob {
+    position: absolute;
+    z-index: -1;
+    aspect-ratio: 1;
+    pointer-events: none;
+    width: 200px;
+    top: -70px;
+    right: -60px;
+
+    &--lilac {
+      color: $dusty-lilac;
+      opacity: 0.45;
+
+      rotate: 245deg;
+    }
+
+    &--yellow {
+      color: $golden-yellow;
+
+      rotate: -120deg;
+    }
+  }
+
+  &__checkbox {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: $deep-forest;
+  }
+
+  &__action {
+    margin-top: 8px;
+  }
+}

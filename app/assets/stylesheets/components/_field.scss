@@ -1,0 +1,56 @@
+.field {
+
+  &__label {
+    display: block;
+    margin-bottom: 8px;
+    color: $deep-forest;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__input {
+    width: 100%;
+    height: 56px;
+    padding: 0 16px;
+    border: 1.5px solid rgba($dusty-lilac, 0.6);
+    border-radius: 16px;
+    background-color: #fff;
+    color: $deep-forest;
+    font-size: 16px;
+    line-height: 1.4;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $deep-forest;
+      box-shadow: 0 0 0 1px $deep-forest;
+    }
+  }
+
+  &__hint {
+    margin-top: 10px;
+    color: $smoky-mauve;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  &--invalid {
+    .field__input {
+      border-color: $deep-brick;
+    }
+  }
+
+  &__error {
+    margin-top: 8px;
+    color: $deep-brick;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__error::before {
+    content: "\f06a"; // circle-exclamation
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 6px;
+  }
+}

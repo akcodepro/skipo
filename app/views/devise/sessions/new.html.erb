@@ -1,20 +1,59 @@
-<h2>Log in</h2>
+<% content_for :hide_header, true %>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
+<div class="auth">
+    <svg class="auth__blob auth__blob--yellow" viewBox="-100 -100 200 200" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M44.7,-61.2C57.1,-52.3,66,-38.6,70.4,-23.6C74.8,-8.6,74.6,7.7,69,21.6C63.4,35.5,52.4,47,39.5,55.9C26.6,64.8,11.9,71.1,-3.6,75.9C-19.1,80.8,-35.4,84.2,-47.7,77C-60,69.8,-68.2,52,-72.6,34.4C-77,16.8,-77.6,-0.6,-72.3,-15.6C-67,-30.6,-55.8,-43.2,-42.6,-52C-29.4,-60.8,-14.7,-65.8,0.6,-66.6C15.9,-67.4,32.3,-70.1,44.7,-61.2Z"
+    />
+  </svg>
+
+  <%= link_to root_path, class: "auth__back", aria: { label: "Go back" } do %>
+    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+  <% end %>
+
+  <header class="auth__header">
+    <h1 class="auth__title">Welcome back.</h1>
+
+    <p class="auth__subtitle">
+      Log in to keep jumping.
+    </p>
+  </header>
+
+  <%= simple_form_for(
+        resource,
+        as: resource_name,
+        url: session_path(resource_name),
+        wrapper: :field,
+        html: { class: "auth__form" }
+      ) do |f| %>
+
     <%= f.input :email,
                 required: false,
                 autofocus: true,
                 input_html: { autocomplete: "email" } %>
+
     <%= f.input :password,
                 required: false,
                 input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
-  </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
+    <% if devise_mapping.rememberable? %>
+      <div class="auth__options">
+        <label class="auth__remember">
+          <%= f.check_box :remember_me,  class: "auth__checkbox" %>
+          Remember me
+        </label>
 
-<%= render "devise/shared/links" %>
+        <%= link_to "Forgot password?", new_password_path(resource_name), class: "auth__link" %>
+      </div>
+    <% end %>
+
+    <%= f.submit "Log in", class: "button button--primary button--block auth__action" %>
+  <% end %>
+
+  <div class="auth__switch">
+    New to SKIPO?
+    <%= link_to "Create an account",
+                new_registration_path(resource_name), class: "auth__link" %>
+  </div>
+</div>

@@ -352,6 +352,16 @@ SimpleForm.setup do |config|
     b.use :hint, wrap_with: { class: "form-text" }
   end
 
+  # custom simple_form
+  config.wrappers :field, class: "field", error_class: "field--invalid" do |b|
+    b.use :html5
+    b.use :placeholder
+    b.use :label, class: "field__label"
+    b.use :input, class: "field__input"
+    b.use :hint, wrap_with: { tag: :p, class: "field__hint" }
+    b.use :full_error, wrap_with: { tag: :p, class: "field__error" }
+  end
+
 
   # The default wrapper to be used by the FormBuilder.
   config.default_wrapper = :vertical_form
