@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.5
+**Version:** 0.6
 **Status:** Exploratory
 
 ## Product
@@ -341,9 +341,9 @@ Colour treatment: see BRAND.md.
 
 ### Train tab icon
 
-The Train tab should be evaluated using the brand symbol rather than introducing an unrelated icon by default.
+The Train tab uses the brand S symbol, inline as SVG so it follows the tab's text colour. It reads clearly at tab size (20px).
 
-The final choice should prioritise clarity, consistency and legibility at the actual rendered size.
+Progress and Feed keep conventional icons (a chart, a group of people), matching their placeholder pages.
 
 The brand symbol should not be forced into contexts where a conventional icon communicates the action more clearly.
 
@@ -433,6 +433,7 @@ Content and UI details should be refined during implementation.
 - Pause/resume in the browser only; stopped workouts cannot be shared
 - AI: RubyLLM with Mistral, structured output validated in code
 - Custom organic S established as the primary brand symbol
+- Train tab uses the S symbol; Progress and Feed use conventional icons
 - Front-end conventions (BEM, one block per file, components) documented in CSS.md
 
 ---
@@ -449,5 +450,4 @@ Content and UI details should be refined during implementation.
 - History / progress scope
 - Final illustration approach
 - Error and loading states
-- Train tab icon: brand S or conventional icon
 - What "Mixed" focus means for the generator

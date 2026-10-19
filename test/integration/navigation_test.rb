@@ -21,6 +21,6 @@ class NavigationTest < ActionDispatch::IntegrationTest
     sign_in @user
     get root_path
     assert_response :success
-    assert_select ".liquid-navbar__link.is-active", text: "Train"
+    assert_select ".liquid-navbar__link--active", text: "Train"
   end
 end

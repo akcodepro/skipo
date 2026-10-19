@@ -4,23 +4,43 @@
 
       <% progress_active = controller_name == "workout_sessions" %>
       <%= link_to workout_sessions_path,
-          class: "liquid-navbar__link #{'is-active' if progress_active}",
+          class: class_names(
+            "liquid-navbar__link",
+            "liquid-navbar__link--active" => progress_active
+          ),
           aria: { current: ("page" if progress_active) } do %>
-        <span>Progress</span>
+        <i class="liquid-navbar__icon fa-solid fa-chart-line" aria-hidden="true"></i>
+        <span class="liquid-navbar__label">Progress</span>
       <% end %>
-  
+
       <% train_active = controller_name == "workouts" %>
       <%= link_to new_workout_path,
-          class: "liquid-navbar__link #{'is-active' if train_active}",
+          class: class_names(
+            "liquid-navbar__link",
+            "liquid-navbar__link--active" => train_active
+          ),
           aria: { current: ("page" if train_active) } do %>
-        <span>Train</span>
+        <svg
+          class="liquid-navbar__icon"
+          viewBox="16 12 152 152"
+          aria-hidden="true"
+        >
+          <path
+            fill="currentColor"
+            d="M61.337,39.304C75.013,28.172 116.537,13.879 136.502,14.446C145.875,14.713 149.018,20.896 147.539,26.511C145.987,32.406 142.361,35.063 141.681,35.696C131.95,44.766 110.237,46.048 106.59,53.547C103.587,59.723 109.86,63.758 110.628,64.318C114.637,67.238 131.824,73.754 138.64,77.219C151.3,83.656 163.619,92.86 164.1,103.528C164.515,112.739 155.959,118.983 155.437,119.428C144.825,128.473 105.305,146.095 67.573,155.796C37.042,163.645 29.445,159.869 25.487,157.52C21.284,155.025 19.829,149.477 20.808,144.568C24.237,127.372 40.958,113.82 48.475,110.449C70.913,100.385 84.93,108.254 100.456,106.138C108.009,105.108 111.147,99.993 107.027,94.862C105.676,93.18 105.567,93.296 103.786,92.074C94.176,85.478 86.06,84.573 69.709,75.143C67.549,73.898 51.649,63.367 53.551,51.509C54.64,44.717 60.572,39.987 61.337,39.304Z"/>
+        </svg>
+        <span class="liquid-navbar__label">Train</span>
       <% end %>
-  
+
       <% feed_active = controller_name == "shared_workouts" %>
       <%= link_to shared_workouts_path,
-          class: "liquid-navbar__link #{'is-active' if feed_active}",
+          class: class_names(
+            "liquid-navbar__link",
+            "liquid-navbar__link--active" => feed_active
+          ),
           aria: { current: ("page" if feed_active) } do %>
-        <span>Feed</span>
+        <i class="liquid-navbar__icon fa-solid fa-users" aria-hidden="true"></i>
+        <span class="liquid-navbar__label">Feed</span>
       <% end %>
 
     </div>
