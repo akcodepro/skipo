@@ -12,7 +12,6 @@ export default class extends Controller {
     "status",
     "actualDuration",
     "stopButton",
-    "stopButton",
     "pauseButton"
   ]
 
@@ -24,7 +23,9 @@ export default class extends Controller {
     rest: "Rest",
     done: "Workout complete!",
     cooldown: "Cooldown",
-    stopped: "Workout stopped"
+    cooldownMessage: "Nice work. Breathe it out.",
+    stopped: "Workout stopped",
+    upNext: "Up next:",
   }
 
   connect() {
@@ -82,6 +83,35 @@ export default class extends Controller {
     return this.exercisesValue[this.index]
   }
 
+  nextExercise() {
+    return this.exercisesValue[this.index + 1] ?? null
+  }
+
+  isCooldown() {
+    return (
+      this.phase === "rest" &&
+      this.index === this.exercisesValue.length - 1
+    )
+  }
+
+  exerciseText() {
+    const labels = this.constructor.LABELS
+
+    if (this.isCooldown()) {
+      return labels.cooldownMessage
+    }
+
+    if (this.phase === "ready") {
+      return `${labels.upNext} ${this.currentExercise().name}`
+    }
+
+    if (this.phase === "rest") {
+      return `${labels.upNext} ${this.nextExercise().name}`
+    }
+
+    return this.currentExercise().name
+  }
+
   render() {
     if (this.phase === "done") {
       this.exerciseTarget.textContent = this.constructor.LABELS.done
@@ -95,9 +125,9 @@ export default class extends Controller {
     this.progressTarget.value = this.elapsedSeconds()
     this.progressTextTarget.textContent = `${this.index + 1} of ${this.exercisesValue.length}`
 
-    this.exerciseTarget.textContent = this.currentExercise().name
+    this.exerciseTarget.textContent = this.exerciseText()
 
-    if (this.phase === "rest" && this.index === this.exercisesValue.length - 1) {
+    if (this.isCooldown()) {
       this.phaseTarget.textContent = this.constructor.LABELS.cooldown
     } else {
       this.phaseTarget.textContent = this.constructor.LABELS[this.phase]
