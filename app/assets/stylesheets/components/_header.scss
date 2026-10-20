@@ -6,7 +6,10 @@
   justify-content: space-between;
 
   height: 64px;
-  padding: 0 20px;
+
+  margin-inline: auto;
+  max-width: $screen-max-width;
+  padding-inline: $screen-gutter;
 }
 
 .app-header__logo {
@@ -17,7 +20,7 @@
 }
 
 .app-header__action {
-  color: $dusty-lilac;
+  color: $smoky-mauve;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;

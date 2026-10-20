@@ -1,0 +1,12 @@
+.screen {
+  max-width: $screen-max-width;
+  margin-inline: auto;
+  padding-inline: $screen-gutter;
+  &--with-nav {
+    padding-bottom: 100px;
+  }
+  &--bleed {
+    max-width: none;
+    padding-inline: 0;
+  }
+}
