@@ -5,8 +5,8 @@
   flex-direction: column;
   justify-content: space-between;
 
-  min-height: 100vh;   // fallback for older browsers
-  min-height: 100dvh;  // the visible height on mobile
+  min-height: calc(100dvh - env(safe-area-inset-top));
+  min-height: 100dvh;
 
   padding: 3rem 1.5rem 2.5rem;
   overflow: hidden;

@@ -1,6 +1,5 @@
 .workout-session {
-  min-height: 100vh;
-  padding: 1.5rem 1.25rem 7rem;
+  padding-top: 1.5rem;
 }
 
 .workout-session__header {
@@ -122,9 +121,4 @@
   color: $deep-forest;
   background-color: transparent;
   border-color: rgba($deep-forest, 0.2);
-}
-
-// Completed workout
-.workout-session--completed {
-  min-height: auto;
 }

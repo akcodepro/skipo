@@ -55,9 +55,13 @@
 
     <%= render "shared/flashes" %>
 
-    <main class="<%= 'has-bottom-nav' if user_signed_in? %>">
-      <%= yield %>
-    </main>
+  <main class="<%= class_names(
+    'screen',
+    'screen--with-nav': user_signed_in?,
+    'screen--bleed': content_for?(:bleed)
+  ) %>">
+    <%= yield %>
+  </main>
 
     <%= render "shared/navbar" %>
   </body>
