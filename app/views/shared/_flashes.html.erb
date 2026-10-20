@@ -1,14 +1,30 @@
-<% if notice %>
-  <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
-    <%= notice %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-    </button>
-  </div>
-<% end %>
-<% if alert %>
-  <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-    <%= alert %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-    </button>
+<% if flash.any? { |type, message| message.present? } %>
+  <div class="flash-stack">
+    <% flash.each do |type, message| %>
+      <% next if message.blank? %>
+
+      <% variant = type.to_s == "notice" ? "notice" : "alert" %>
+      <% role = variant == "notice" ? "status" : "alert" %>
+
+      <div
+        class="flash flash--<%= variant %>"
+        role="<%= role %>"
+        data-controller="flash"
+        data-flash-timeout-value="<%= variant == "notice" ? 5000 : 0 %>"
+      >
+        <span class="flash__message">
+          <%= message %>
+        </span>
+
+        <button
+          type="button"
+          class="flash__close"
+          data-action="click->flash#dismiss"
+          aria-label="Close notification"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    <% end %>
   </div>
 <% end %>
