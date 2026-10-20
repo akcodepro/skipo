@@ -6,11 +6,10 @@
 
   width: 100%;
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: calc(100dvh - env(safe-area-inset-top));
 
   margin: 0 auto;
-  padding: 40px 20px 48px;
-  overflow: hidden;
+  padding: 40px 0 48px;
 
   background-color: $warm-porcelain;
 

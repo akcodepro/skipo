@@ -2,6 +2,7 @@
   max-width: $screen-max-width;
   margin-inline: auto;
   padding-inline: $screen-gutter;
+  overflow-x: clip;
   &--with-nav {
     padding-bottom: 100px;
   }
