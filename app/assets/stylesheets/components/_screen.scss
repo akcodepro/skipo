@@ -4,7 +4,7 @@
   padding-inline: $screen-gutter;
   overflow-x: clip;
   &--with-nav {
-    padding-bottom: 100px;
+    padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
   }
   &--bleed {
     max-width: none;
