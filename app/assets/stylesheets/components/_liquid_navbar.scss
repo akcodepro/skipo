@@ -87,9 +87,3 @@
     line-height: 1.2;
   }
 }
-/* Home Screen web app */
-@media (display-mode: standalone) {
-  .liquid-navbar {
-    bottom: env(safe-area-inset-bottom, 0px);
-  }
-}
