@@ -1,85 +1,90 @@
 <div id="workout_generation" class="generated-workout">
+  <section class="generated-workout__hero">
+    <svg
+      class="generated-workout__blob"
+      viewBox="0 0 200 300"
+      aria-hidden="true"
+      fill="currentColor"
+    >
+      <path d="M116 3C65 10 32 56 17 111 1 171 19 234 65 271c34 28 82 35 112 7 27-26 17-67 10-107-7-39 15-72 5-111C183 22 151-2 116 3Z"/>
+    </svg>
 
-  <header class="generated-workout__header">
+    <%= render "shared/header", inverse: true, signed_in: true %>
+
+    <div class="generated-workout__chips">
+      <span class="pill pill--inverse pill--fundamentals">
+        <%= focus_icon("fundamentals", extra_class: "pill__icon") %>
+        Fundamentals
+      </span>
+
+      <% (workout.focus - ["fundamentals"]).each do |focus| %>
+        <span class="pill pill--inverse">
+          <%= focus_icon(focus, extra_class: "pill__icon") %>
+          <%= focus.titleize %>
+        </span>
+      <% end %>
+    </div>
+
     <h1 class="generated-workout__title">
       <%= workout.title %>
     </h1>
 
+    <div class="generated-workout__stats">
+      <div class="generated-workout__stat">
+        <div class="generated-workout__stat-value">
+          <span><%= workout.total_duration_seconds / 60 %></span>
+          <span class="generated-workout__stat-unit">min</span>
+        </div>
+        <span class="generated-workout__stat-label">Total</span>
+      </div>
+
+      <div class="generated-workout__stat">
+        <div class="generated-workout__stat-value">
+          <%= workout.workout_exercises.size %>
+        </div>
+        <span class="generated-workout__stat-label">Moves</span>
+      </div>
+
+      <div class="generated-workout__stat">
+        <div class="generated-workout__stat-value generated-workout__stat-value--level">
+          <%= Workout::DIFFICULTY_LEVELS[workout.difficulty] %>
+        </div>
+        <span class="generated-workout__stat-label">Level</span>
+      </div>
+    </div>
+
     <p class="generated-workout__description">
       <%= workout.description %>
     </p>
-  </header>
-
-  <section class="generated-workout__summary">
-    <div class="generated-workout__stat">
-      <span class="generated-workout__stat-label">Requested duration</span>
-      <span class="pill pill--duration">
-        <i class="fa-clock pill__icon" aria-hidden="true"></i>
-        <%= format_duration(workout.requested_duration_seconds) %>
-      </span>
-    </div>
-
-    <div class="generated-workout__stat">
-      <span class="generated-workout__stat-label">Actual duration</span>
-      <span class="pill pill--duration">
-        <i class="fa fa-hourglass-half pill__icon" aria-hidden="true"></i>
-        <%= format_duration(workout.total_duration_seconds) %>
-      </span>
-    </div>
-
-    <div class="generated-workout__stat">
-      <span class="generated-workout__stat-label">Difficulty</span>
-      <span class="pill pill--difficulty">
-        <%= Workout::DIFFICULTY_LEVELS[workout.difficulty] %>
-      </span>
-    </div>
-
-    <div class="generated-workout__stat">
-      <span class="generated-workout__stat-label">Focus</span>
-
-      <div class="generated-workout__focuses">
-        <% workout.focus.each do |focus| %>
-          <span class="pill pill--focus">
-            <%= focus_icon(focus, extra_class: "pill__icon") %>
-            <%= focus.titleize %>
-          </span>
-        <% end %>
-      </div>
-    </div>
   </section>
 
   <section class="generated-workout__exercises">
-    <h2 class="generated-workout__section-title">Your exercises</h2>
+    <h2 class="visually-hidden">Your exercises</h2>
+    <ol class="timeline">
+      <% workout.workout_exercises.each_with_index do |workout_exercise, index| %>
+        <li class="timeline__item">
+          <button type="button" class="timeline__move">
+            <span class="timeline__dot" aria-hidden="true"></span>
 
-    <ol class="generated-workout__list">
-      <% workout.workout_exercises.each do |workout_exercise| %>
-        <li class="generated-workout__exercise">
-          <div class="generated-workout__exercise-header">
-            <h3 class="generated-workout__exercise-title">
+            <span class="timeline__name">
               <%= workout_exercise.exercise.name %>
-            </h3>
-          </div>
-
-          <div class="generated-workout__exercise-details">
-            <span class="pill pill--duration">
-              <i class="fa-solid fa-stopwatch pill__icon" aria-hidden="true"></i>
-              Work: <%= format_duration(workout_exercise.duration_seconds) %>
             </span>
 
-            <span class="pill pill--rest">
-              <i class="fa-solid fa-pause pill__icon" aria-hidden="true"></i>
-              Rest: <%= format_duration(workout_exercise.rest_seconds) %>
+            <span class="timeline__time">
+              <%= workout_exercise.duration_seconds %>s
             </span>
-          </div>
+
+            <i class="fa-solid fa-chevron-right timeline__chevron" aria-hidden="true"></i>
+          </button>
+
+          <% if index < workout.workout_exercises.size - 1 &&
+                workout_exercise.rest_seconds.to_i.positive? %>
+            <div class="timeline__rest">
+              <span><%= workout_exercise.rest_seconds %>s rest</span>
+            </div>
+          <% end %>
         </li>
       <% end %>
     </ol>
   </section>
-
-  <div class="generated-workout__actions">
-    <%= button_to "Start workout",
-          workout_workout_sessions_path(workout),
-          class: "generated-workout__start-button" %>
-  </div>
-
 </div>
