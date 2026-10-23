@@ -1,5 +1,5 @@
+<% content_for :hide_header, true %>
 <%= turbo_stream_from current_user, :workout_generation %>
-
 <div id="workout_generation" class="workout-state">
   <div class="workout-state__indicator" aria-hidden="true"></div>
   <h1 class="workout-state__title">Hang tight, our coach is on it</h1>

@@ -10,6 +10,16 @@
   margin-inline: auto;
   max-width: $screen-max-width;
   padding-inline: $screen-gutter;
+
+  &--inverse {
+    padding-inline: 0;
+    margin-inline: 0;
+    
+    .app-header__logo,
+    .app-header__action {
+      color: $warm-porcelain;
+    }
+  }
 }
 
 .app-header__logo {

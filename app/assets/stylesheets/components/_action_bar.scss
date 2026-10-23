@@ -1,0 +1,15 @@
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px + 66px + 12px);
+  margin-inline: auto;
+  max-width: $screen-max-width;
+  padding-inline: $screen-gutter;
+  z-index: 999;
+}
+
+.action-bar__form {
+  width: 100%;
+}
+

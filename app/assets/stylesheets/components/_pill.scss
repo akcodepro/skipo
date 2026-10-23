@@ -12,6 +12,18 @@
   font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
+
+  &--inverse {
+    background: transparent;
+    border: 1px solid $warm-porcelain;
+    color: $warm-porcelain;
+  }
+
+  &--fundamentals {
+    background: $golden-yellow;
+    border: 1px solid $golden-yellow;
+    color: $deep-forest;
+  }
 }
 
 .pill__icon {
