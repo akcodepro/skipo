@@ -4,36 +4,91 @@
   justify-content: center;
 
   border-radius: 9999px;
-
   text-decoration: none;
   font-family: $headers-font;
   font-weight: 600;
 
-  border: none;
-
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+
+  min-height: 44px;
+  padding: 0 18px;
+
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    filter 120ms ease;
 
   &--primary {
-    background: $warm-orange;
     color: $deep-forest;
+    background: $warm-orange;
+
+    border-color: rgba($warm-porcelain, 0.55);
+
+    box-shadow:
+      0 4px 10px rgba($deep-forest, 0.14),
+      0 1px 2px rgba($deep-forest, 0.08),
+      inset 0 1px 0 rgba($warm-porcelain, 0.65),
+      inset 0 -1px 0 rgba($deep-forest, 0.08);
   }
+
   &--secondary {
-    background: $deep-forest;
     color: $warm-porcelain;
+    background: $deep-forest;
+
+    border-color: rgba($warm-porcelain, 0.22);
+
+    box-shadow:
+      0 4px 10px rgba($deep-forest, 0.16),
+      inset 0 1px 0 rgba($warm-porcelain, 0.16),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.12);
   }
+
   &--small {
     height: 44px;
     padding: 0 18px;
     font-size: 15px;
   }
+
   &--block {
     width: 100%;
     height: 58px;
     font-size: 20px;
   }
 
+
+
+  // Hover only on devices that support it
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      filter: brightness(1.04);
+    }
+  }
+
+  // Immediate feedback on touch and click
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
+    filter: brightness(0.96);
+
+    box-shadow:
+      inset 0 2px 4px rgba($deep-forest, 0.16),
+      0 1px 2px rgba($deep-forest, 0.08);
+  }
+
+  // Keyboard accessibility
+  &:focus-visible {
+    outline: 2px solid $deep-forest;
+    outline-offset: 3px;
+  }
+
+  // Disabled state
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    filter: none;
+    box-shadow: none;
   }
 }
