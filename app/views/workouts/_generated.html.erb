@@ -2,11 +2,11 @@
   <section class="generated-workout__hero">
     <svg
       class="generated-workout__blob"
-      viewBox="0 0 200 300"
+      viewBox="0 0 1000 1000"
       aria-hidden="true"
       fill="currentColor"
     >
-      <path d="M116 3C65 10 32 56 17 111 1 171 19 234 65 271c34 28 82 35 112 7 27-26 17-67 10-107-7-39 15-72 5-111C183 22 151-2 116 3Z"/>
+      <path d="M877.5 645q-31.5 145-167 212.5T466 836q-109-89-134.5-177t-131-197.5Q95 352 180 222t221-30q136 100 243.5 98t186 104q78.5 106 47 251Z" />
     </svg>
 
     <%= render "shared/header", inverse: true, signed_in: true %>
@@ -40,7 +40,7 @@
 
       <div class="generated-workout__stat">
         <div class="generated-workout__stat-value">
-          <%= workout.workout_exercises.size %>
+          <span><%= workout.workout_exercises.size %></span>
         </div>
         <span class="generated-workout__stat-label">Moves</span>
       </div>

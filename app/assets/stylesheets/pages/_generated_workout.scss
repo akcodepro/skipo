@@ -1,33 +1,55 @@
-.generated-workout {
-  padding-top: 1.5rem;
+.generated-workout__hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  margin-inline: -$screen-gutter;
+  margin-top: calc(-1 * env(safe-area-inset-top, 0px));
+
+  padding-inline: $screen-gutter;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: 20px;
+
+  background: $deep-forest;
+  color: $warm-porcelain;
+
+  border-radius: 0 0 20px 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
-.generated-workout__header {
-  margin-bottom: 2rem;
+.generated-workout__blob {
+  position: absolute;
+  z-index: -1;
+
+  top: -3rem;
+  right: -9rem;
+
+  width: 500px;
+  height: 500px;
+
+  color: rgba($warm-porcelain, 0.07);
+  pointer-events: none;
+
+  rotate: 75deg;
 }
 
 .generated-workout__title {
-  margin-bottom: 0.75rem;
+  margin: 0;
 
-  color: $deep-forest;
+  color: $warm-porcelain;
   font-family: $headers-font;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
-.generated-workout__description {
-  color: rgba($deep-forest, 0.75);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.generated-workout__summary {
+.generated-workout__stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-
-  margin-bottom: 2.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
 .generated-workout__stat {
@@ -39,79 +61,58 @@
   min-width: 0;
 }
 
-.generated-workout__stat-label {
-  color: $dusty-lilac;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.generated-workout__focuses {
+.generated-workout__stat-value {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
+  align-items: flex-end;
+  gap: 0.3rem;
 
-.generated-workout__section-title {
-  margin-bottom: 1rem;
+  height: 3rem;
 
-  color: $deep-forest;
+  color: $warm-porcelain;
   font-family: $headers-font;
-  font-size: 1.4rem;
+  font-size: 2.5rem;
   font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.generated-workout__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  counter-reset: workout-exercise;
-}
-
-.generated-workout__exercise {
-  padding: 1rem;
-
-  background: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba($deep-forest, 0.1);
-  border-radius: $border-radius-lg;
-
-  counter-increment: workout-exercise;
-}
-
-.generated-workout__exercise-title {
-  margin-bottom: 0.85rem;
-
-  color: $deep-forest;
-  font-family: $headers-font;
-  font-size: 1.05rem;
+.generated-workout__stat-unit {
+  font-family: $body-font;
+  font-size: 0.9rem;
   font-weight: 600;
+
+  transform: translateY(-2px);
 }
 
-.generated-workout__exercise-details {
+.generated-workout__stat-value--level {
+  font-size: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.generated-workout__stat-value > span:first-child {
+  transform: translateY(2px);
+}
+
+.generated-workout__stat-label {
+  color: $mist;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.generated-workout__description {
+  margin: 0;
+
+  color: $mist;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.generated-workout__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.generated-workout__actions {
-  margin-top: 2rem;
-}
-
-.generated-workout__start-button {
-  width: 100%;
-  padding: 0.95rem 1.25rem;
-
-  border: 0;
-  border-radius: 9999px;
-
-  background: $warm-orange;
-  color: $deep-forest;
-
-  font-family: $headers-font;
-  font-weight: 700;
-  font-size: 1rem;
+.generated-workout__exercises {
+  padding-top: 2rem;
 }
