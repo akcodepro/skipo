@@ -87,4 +87,12 @@
       <% end %>
     </ol>
   </section>
+
+  <div class="action-bar">
+    <%= button_to "Start workout",
+      workout_workout_sessions_path(workout),
+      class: "button button--primary button--block action-bar__primary",
+      form: { class: "action-bar__form" }
+    %>
+  </div>
 </div>
