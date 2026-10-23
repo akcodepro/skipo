@@ -21,7 +21,9 @@ class WorkoutsController < ApplicationController
   end
 
   def show
-    @workout = current_user.workouts.find(params[:id])
+    @workout = current_user.workouts
+                          .includes(workout_exercises: :exercise)
+                          .find(params[:id])
   end
 
   def generating

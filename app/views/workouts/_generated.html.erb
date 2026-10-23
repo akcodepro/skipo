@@ -32,7 +32,7 @@
     <div class="generated-workout__stats">
       <div class="generated-workout__stat">
         <div class="generated-workout__stat-value">
-          <span><%= workout.total_duration_seconds / 60 %></span>
+          <span class="generated-workout__stat-number"><%= workout.total_duration_seconds / 60 %></span>
           <span class="generated-workout__stat-unit">min</span>
         </div>
         <span class="generated-workout__stat-label">Total</span>
@@ -40,7 +40,7 @@
 
       <div class="generated-workout__stat">
         <div class="generated-workout__stat-value">
-          <span><%= workout.workout_exercises.size %></span>
+          <span class="generated-workout__stat-number"><%= workout.workout_exercises.size %></span>
         </div>
         <span class="generated-workout__stat-label">Moves</span>
       </div>
