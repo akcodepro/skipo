@@ -1,0 +1,42 @@
+.sheet {
+  border: 0;
+  width: 100%;
+  max-width: $screen-max-width;
+  max-height: 85dvh;
+  overflow-y: auto;
+  margin: auto auto 0;
+  padding: 10px $screen-gutter calc(28px + env(safe-area-inset-bottom));
+  border-radius: 28px 28px 0 0;
+  background: $warm-porcelain;
+  color: $deep-forest;
+
+  &::backdrop {
+    background: rgba($deep-forest, 0.45);
+  }
+
+  &__grabber {
+    display: block;
+    width: 40px;
+    height: 5px;
+    margin: 0 auto 18px;
+    border-radius: 999px;
+    background: #d9d9d9;
+  }
+
+  &__close {
+    position: absolute;
+    top: 12px;
+    right: $screen-gutter;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    color: $deep-forest;
+    cursor: pointer;
+  }
+}
