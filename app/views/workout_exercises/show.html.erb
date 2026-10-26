@@ -1,0 +1,56 @@
+<%= turbo_frame_tag "exercise_detail" do %>
+  <% exercise = @workout_exercise.exercise %>
+
+  <div class="exercise-detail">
+    <div class="exercise-detail__chips">
+      <span class="<%= class_names(
+        "pill",
+        "pill--fundamentals" => exercise.fundamentals?,
+        "pill--outline" => !exercise.fundamentals?
+      ) %>">
+        <%= focus_icon(exercise.category, extra_class: "pill__icon") %>
+        <%= focus_label(exercise.category) %>
+      </span>
+
+      <span class="pill pill--outline">
+        <%= Workout::DIFFICULTY_LEVELS[exercise.difficulty] %>
+      </span>
+    </div>
+
+    <h2 class="exercise-detail__title"><%= exercise.name %></h2>
+
+    <div class="exercise-detail__stats">
+      <div class="exercise-detail__stat exercise-detail__stat--jump">
+        <span class="exercise-detail__stat-value">
+          <%= @workout_exercise.duration_seconds %>s
+        </span>
+        <span class="exercise-detail__stat-label">Jump</span>
+      </div>
+
+      <div class="exercise-detail__stat">
+        <span class="exercise-detail__stat-value">
+          <%= @workout_exercise.rest_seconds %>s
+        </span>
+        <span class="exercise-detail__stat-label">Rest</span>
+      </div>
+    </div>
+
+    <div class="exercise-detail__visual">
+      <span>Demo video coming soon</span>
+    </div>
+
+    <% if exercise.description.present? %>
+      <section class="exercise-detail__section">
+        <h3 class="exercise-detail__heading">What it is</h3>
+        <p class="exercise-detail__text"><%= exercise.description %></p>
+      </section>
+    <% end %>
+
+    <% if exercise.instructions.present? %>
+      <section class="exercise-detail__section">
+        <h3 class="exercise-detail__heading">How to do it</h3>
+        <%= simple_format(exercise.instructions, class: "exercise-detail__text") %>
+      </section>
+    <% end %>
+  </div>
+<% end %>

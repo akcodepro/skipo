@@ -1,0 +1,82 @@
+.exercise-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $headers-font;
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: #fff;
+    color: $deep-forest;
+
+    &--jump {
+      background: $deep-forest;
+      color: $warm-porcelain;
+    }
+  }
+
+  &__stat-value {
+    font-family: $headers-font;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__stat-label {
+    font-size: 12px;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__heading {
+    margin: 0;
+    font-family: $headers-font;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  &__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    padding: 16px;
+    border: 1px dashed #D9D4DA;
+    border-radius: 16px;
+    color: $smoky-mauve;
+    text-align: center;
+    font-size: 14px;
+  }
+}

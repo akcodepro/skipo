@@ -1,4 +1,4 @@
-<div id="workout_generation" class="generated-workout">
+<div id="workout_generation" class="generated-workout" data-controller="sheet">
   <section class="generated-workout__hero">
     <svg
       class="generated-workout__blob"
@@ -12,13 +12,13 @@
     <%= render "shared/header", inverse: true, signed_in: true %>
 
     <div class="generated-workout__chips">
-      <span class="pill pill--inverse pill--fundamentals">
+      <span class="pill pill--fundamentals">
         <%= focus_icon("fundamentals", extra_class: "pill__icon") %>
         Fundamentals
       </span>
 
       <% (workout.focus - ["fundamentals"]).each do |focus| %>
-        <span class="pill pill--inverse">
+        <span class="pill pill--outline">
           <%= focus_icon(focus, extra_class: "pill__icon") %>
           <%= focus.titleize %>
         </span>
@@ -70,13 +70,13 @@
           ></div>
         <% end %>
       </div>
-  
+
       <div class="rhythm-strip__legend">
         <span class="rhythm-strip__key">
           <span class="rhythm-strip__swatch rhythm-strip__swatch--work"></span>
           Jump
         </span>
-  
+
         <span class="rhythm-strip__key">
           <span class="rhythm-strip__swatch rhythm-strip__swatch--rest"></span>
           Rest
@@ -87,7 +87,13 @@
     <ol class="timeline">
       <% workout.workout_exercises.each_with_index do |workout_exercise, index| %>
         <li class="timeline__item">
-          <button type="button" class="timeline__move">
+          <%= link_to workout_workout_exercise_path(workout, workout_exercise),
+            class: "timeline__move",
+            data: {
+              turbo_frame: "exercise_detail",
+              action: "sheet#open"
+            } do
+          %>
             <span class="timeline__dot" aria-hidden="true"></span>
 
             <span class="timeline__name">
@@ -99,7 +105,7 @@
             </span>
 
             <i class="fa-solid fa-chevron-right timeline__chevron" aria-hidden="true"></i>
-          </button>
+          <% end %>
 
           <% if index < workout.workout_exercises.size - 1 &&
                 workout_exercise.rest_seconds.to_i.positive? %>
@@ -111,6 +117,21 @@
       <% end %>
     </ol>
   </section>
+
+  <dialog class="sheet" data-sheet-target="dialog" data-action="click->sheet#closeOnBackdrop">
+    <span class="sheet__grabber" aria-hidden="true"></span>
+
+    <button
+      type="button"
+      class="sheet__close"
+      aria-label="Close"
+      data-action="sheet#close"
+    >
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+
+    <%= turbo_frame_tag "exercise_detail", data: { sheet_target: "frame" } %>
+  </dialog>
 
   <div class="action-bar">
     <%= button_to "Start workout",

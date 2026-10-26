@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   resources :workouts, only: [ :new, :create, :show ], path: "train" do
     resources :workout_sessions, only: [ :create ]
+    resources :workout_exercises, only: [ :show ]
+
     collection do
       get :generating
     end
