@@ -2,7 +2,8 @@
 
 AI-generated jump rope workouts, built around what you actually want to train.
 
-**[Live demo](https://skipo-app-3be98c580ead.herokuapp.com)** · Demo account: `demo@example.com` / `password`
+**Live demo:** [Scalingo](https://skipo-app.osc-fr1.scalingo.io) · [Heroku](https://skipo-app-3be98c580ead.herokuapp.com)
+Demo account: `jumper@example.com` / `letsjump`
 
 ![SKIPO screens: landing, workout builder, generated workout, active session](docs/screenshots.webp)
 
@@ -31,7 +32,7 @@ SKIPO is a solo project in active development.
 
 ## Stack
 
-Ruby on Rails 8.1, PostgreSQL, Devise, Stimulus, Turbo, Sass/SCSS with Bootstrap, importmap, RubyLLM with Mistral, Solid Queue, Solid Cable, Solid Cache, Active Storage with Cloudinary, Minitest, GitHub Actions, Heroku.
+Ruby on Rails 8.1, PostgreSQL, Devise, Stimulus, Turbo, Sass/SCSS with Bootstrap, importmap, RubyLLM with Mistral, Solid Queue, Solid Cable, Solid Cache, Active Storage with Cloudinary, Minitest, GitHub Actions, Heroku and Scalingo.
 
 ## How generation works
 
@@ -71,7 +72,7 @@ For the full data model, see [schema.dbml](docs/schema.dbml) and [DB.md](docs/DB
 
 ## Engineering decisions
 
-- **Solid Cache, Queue and Cable share one database.** Rails 8 defaults to separate databases for each, but I configured all three to use the primary database so the app can run on a single Postgres instance on Heroku. Solid Queue runs the generation job, while Solid Cable pushes updates to the page via Turbo Streams.
+- **Solid Cache, Queue and Cable share one database.** Rails 8 defaults to separate databases for each, but I configured all three to use the primary database so the app can run on a single Postgres instance on Heroku and Scalingo. Solid Queue runs the generation job, while Solid Cable pushes updates to the page via Turbo Streams.
 - **BEM for SCSS.** I use BEM naming to keep styles organised and avoid naming conflicts. See [CSS.md](docs/CSS.md).
 - **One branch and PR per card.** This keeps changes in smaller, reviewable chunks and makes progress visible.
 - **CI on every PR.** The pipeline runs RuboCop for style checks, bundler-audit and importmap audit for vulnerable dependencies, Brakeman for security analysis, the full test suite, and a check that seeds load cleanly on a fresh database. It runs on every PR and every push to `main`.
