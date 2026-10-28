@@ -82,7 +82,7 @@ Product, design and brand decisions live in [docs/](docs).
 
 ## Run it locally
 
-**Requirements:** Ruby 3.3.5, PostgreSQL, a Mistral API key, and a Cloudinary account for image uploads.
+**Requirements:** Ruby 3.3.12, PostgreSQL, a Mistral API key, and a Cloudinary account for image uploads.
 
 ```bash
 git clone https://github.com/akcodepro/skipo.git
