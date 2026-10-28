@@ -57,12 +57,14 @@
 
   <main class="<%= class_names(
     'screen',
-    'screen--with-nav': user_signed_in?,
+    'screen--with-nav': user_signed_in? && !content_for?(:hide_navbar),
     'screen--bleed': content_for?(:bleed)
   ) %>">
     <%= yield %>
   </main>
 
-    <%= render "shared/navbar" %>
+    <% unless content_for?(:hide_navbar) %>
+      <%= render "shared/navbar" %>
+    <% end %>
   </body>
 </html>
