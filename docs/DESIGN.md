@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.6
+**Version:** 0.7
 **Status:** Exploratory
 
 ## Product
@@ -107,13 +107,13 @@ Purpose:
 - Explain what the AI generated
 - Let the user understand the workout before starting
 
-Show:
+Layout (decided October 2026):
 
-- Workout duration
-- Difficulty
-- Focus
-- Exercises / rounds
-- Brief explanation
+- **Full-bleed Forest hero** reaching the top of the screen, bottom corners rounded. The header sits inside it in its inverse version. It holds the focus chips (Fundamentals always shown, in yellow), the title, three stats (total minutes, moves, level) and the AI's short description. A large tone-on-tone blob adds depth without hurting readability
+- **Rhythm strip** under the hero: one bar for the whole workout, jump blocks in Forest and rest blocks in yellow, widths proportional to seconds. Its place on this screen is still under review (see Open Questions)
+- **Timeline of moves:** a dot, the exercise name and the jump time per move, with the rest shown as a dashed connector between moves. No rest after the last move
+- **Exercise detail sheet:** tapping a move opens a bottom sheet with its category, level, jump and rest times, "What it is", "How to do it" (when written) and a "Demo video coming soon" slot for future visuals
+- **Sticky action bar** above the navbar with the orange **Start workout** button, always visible. A regenerate button joins it later
 
 Primary action:
 
@@ -125,20 +125,27 @@ Primary action:
 
 The most important screen.
 
-Priority:
+Context drives every decision: the user is jumping, and the phone usually sits on a window sill or on the floor a couple of metres away, leaning on whatever is around. Everything must read in half a second from a distance.
 
-1. Current exercise
-2. Timer
-3. Work / rest state
-4. Current round
-5. Overall progress
-6. Controls
+Layout (decided October 2026):
 
-The interface should feel focused rather than like a dashboard.
+- **Full-screen colour by phase:** Get Ready and Cooldown in calm porcelain, Jump in Forest, Rest in yellow. The phase reads from the corner of the eye, without words
+- **Draining fill:** the phase colour fills the screen and its level drops as the countdown runs, like a battery. The top edge of the fill is wavy and gently animated: the blob identity lives in the progress itself. Reduced motion is respected
+- **Giant countdown:** the biggest element in every phase, with the phase label written once, above it
+- **Jump:** the current exercise name only. No "Up next", to keep the screen calm
+- **Rest and Get Ready:** "Up next" and the next move. This is where future illustrations will go
+- **Cooldown:** "Nice work. Breathe it out."
+- **Progress:** one dot per move (done, current larger, upcoming faded) plus "x / xx"
+- **Controls:** small round icon buttons, no words. × (leave) top left, pause top right. They are possibilities on the screen, not calls to action
+- **No header and no navbar.** The × is the exit
 
 Pause and resume happen in the browser only. Leaving the workout screen ends the session: the user finishes or stops.
 
-Stopping before the end asks for confirmation and explains that a stopped workout cannot be shared, so there is no surprise.
+Stopping before the end asks for confirmation in a styled sheet, and explains that a stopped workout cannot be shared, so there is no surprise.
+
+The screen stays awake for the whole workout (wake lock). Otherwise the phone locks, and nothing can be seen or heard.
+
+Sound (planned): beeps in the last 3 seconds of every phase except the final one, and the next exercise and the completion message announced with the phone's own voice (Web Speech API). One toggle switches all sound on or off. It lives on the workout screen for now and moves to the profile later.
 
 ---
 
@@ -154,6 +161,8 @@ Purpose:
 The user should be prompted to share, but sharing must remain optional.
 
 Only completed workouts can be shared. A stopped workout shows a neutral, positive summary of what the user did (for example, the minutes completed), without a share prompt. Final wording to be defined.
+
+The moment should feel joyful (confetti or similar), without overdoing it.
 
 Primary actions:
 
@@ -284,7 +293,7 @@ Mobile-native bottom tab bar, styled close to Apple's Liquid Glass.
 - Profile accessed via the avatar in the header
 - Hidden during workout generation and the active workout, shown again on the complete screen
 - Logged-out users see a landing page with sign up / log in, and no tab bar
-- Desktop: same mobile layout in a centred column for V1
+- Desktop: same mobile layout in a centred column for V1 (the `.screen` component)
 - Glass effect on the nav bar only. It must stay readable over any content and look right on iPhone Safari, where refraction effects may not render
 - Active tab set server-side, tap interactions only (no hover-driven behaviour)
 
@@ -317,7 +326,9 @@ Illustrations should be:
 
 For early implementation, large icons such as Font Awesome can be used as placeholders.
 
-Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout pills).
+Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout chips, exercise detail sheet).
+
+Planned spots for exercise illustrations: the exercise detail sheet ("Demo video coming soon" slot) and the Rest and Get Ready phases of the active workout, next to "Up next".
 
 Final illustrations may be created specifically for the project, potentially with external illustration support.
 
@@ -407,6 +418,8 @@ They are not intended to define exact content, copy, navigation or final compone
 
 Content and UI details should be refined during implementation.
 
+Mockups for the generated workout and the active workout live on the "SKIPO generated workout options" canvas.
+
 ---
 
 ## Current Decisions
@@ -435,6 +448,9 @@ Content and UI details should be refined during implementation.
 - Custom organic S established as the primary brand symbol
 - Train tab uses the S symbol; Progress and Feed use conventional icons
 - Front-end conventions (BEM, one block per file, components) documented in CSS.md
+- Generated workout: full-bleed Forest hero, timeline of moves, exercise detail sheet, sticky Start button
+- Active workout: full-screen colour by phase, draining fill with an animated wavy edge, giant countdown, move dots, icon controls, no header or navbar, screen kept awake
+- Sound: countdown beeps and spoken exercise names, behind one on/off toggle
 
 ---
 
@@ -444,8 +460,7 @@ Content and UI details should be refined during implementation.
 - Feed ordering / pagination
 - Exact feed post layout
 - Progress visualisation
-- Active workout controls
-- Animation behaviour
+- Rhythm strip on the generated workout: keep, rework or remove? It may read as stripes and feels decorative on a preview screen
 - AI coach interaction
 - History / progress scope
 - Final illustration approach
