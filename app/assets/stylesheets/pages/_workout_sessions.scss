@@ -1,124 +1,204 @@
 .workout-session {
-  padding-top: 1.5rem;
-}
+  // Defaults: ready phase
+  --phase-bg: #{$warm-porcelain};
+  --phase-fill: #E9E4D8;
+  --phase-fg: #{$deep-forest};
 
-.workout-session__header {
-  margin-bottom: 2rem;
-}
-
-.workout-session__title {
-  margin-bottom: 1rem;
-
-  color: $deep-forest;
-  font-family: $headers-font;
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.workout-session__metadata {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.workout-session__started {
-  color: $dusty-lilac;
-  font-size: 0.8rem;
-}
-
-// Progress section
-.workout-session__progress {
-  margin-bottom: 2rem;
-}
-
-.workout-session__progress-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.workout-session__progress-bar {
-  display: block;
-  width: 100%;
-  height: 0.5rem;
-
-  overflow: hidden;
-  border: none;
-  border-radius: 9999px;
-
-  accent-color: $warm-orange;
-}
-
-// Timer section
-.workout-session__timer {
-  margin: 3rem 0;
-  text-align: center;
-}
-
-.workout-session__phase {
-  color: $warm-orange;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.workout-session__exercise {
-  margin: 1rem 0;
-
-  font-family: $headers-font;
-  font-size: 2rem;
-  font-weight: 700;
-  color: $deep-forest;
-}
-
-.workout-session__seconds {
-  font-family: $headers-font;
-  font-size: 3.5rem;
-  font-weight: 700;
-  line-height: 1;
-  color: $deep-forest;
-}
-
-// Action buttons
-.workout-session__actions {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  overflow: hidden;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 16px)
+    calc(env(safe-area-inset-right, 0px) + #{$screen-gutter})
+    calc(env(safe-area-inset-bottom, 0px) + 24px)
+    calc(env(safe-area-inset-left, 0px) + #{$screen-gutter});
+  background: var(--phase-bg);
+  color: var(--phase-fg);
+  font-family: $body-font;
+  transition:
+    background-color 350ms ease,
+    color 350ms ease;
+
+
+  // Phase variations come after the base declarations
+  &--ready,
+  &--cooldown {
+    --phase-bg: #{$warm-porcelain};
+    --phase-fill: #E9E4D8;
+    --phase-fg: #{$deep-forest};
+  }
+
+  &--jump {
+    --phase-bg: #4B6F64;
+    --phase-fill: #{$deep-forest};
+    --phase-fg: #{$warm-porcelain};
+  }
+
+  &--rest {
+    --phase-bg: #FBEBB0;
+    --phase-fill: #{$golden-yellow};
+    --phase-fg: #{$deep-forest};
+  }
+
+  &__fill {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: -1;
+    height: calc(var(--remaining, 1) * 100%);
+    background: var(--phase-fill);
+    transition:
+      background-color 350ms ease,
+      height 1s linear;
+  }
+
+  &__wave {
+    position: absolute;
+    top: -23px;
+    left: 0;
+    width: 200%;
+    height: 24px;
+    color: var(--phase-fill);
+    animation: workout-wave 6s linear infinite;
+    transition: color 350ms ease;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__control {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--phase-fg) 10%, transparent);
+    color: var(--phase-fg);
+    font-size: 18px;
+    cursor: pointer;
+    transition:
+      background-color 350ms ease,
+      color 350ms ease;
+  }
+
+  &__progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  &__dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--phase-fg);
+    opacity: 0.25;
+
+    &--done {
+      opacity: 0.65;
+    }
+
+    &--current {
+      width: 9px;
+      height: 9px;
+      opacity: 1;
+    }
+  }
+
+  &__count {
+    margin-left: auto;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  &__main {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 0;
+    padding-bottom: 16px;
+  }
+
+  &__phase {
+    margin: 0 0 8px;
+    font-family: $headers-font;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__seconds {
+    margin: 0;
+    font-family: $headers-font;
+    font-size: clamp(120px, 30vw, 190px);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__next {
+    margin: 24px 0 6px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  &__name {
+    margin: 0;
+    font-family: $headers-font;
+    font-size: clamp(24px, 6vw, 34px);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  &--jump &__next,
+  &--cooldown &__next {
+    visibility: hidden;
+  }
 }
 
-.workout-session__button {
-  width: 100%;
-  padding: 0.9rem 1.25rem;
+@keyframes workout-wave {
+  from {
+    transform: translateX(0);
+  }
 
-  border: 1px solid transparent;
-  border-radius: 9999px;
-
-  font-family: $headers-font;
-  font-size: 1rem;
-  font-weight: 600;
-
-  cursor: pointer;
-  transition: transform 0.15s ease;
+  to {
+    transform: translateX(-50%);
+  }
 }
 
-.workout-session__button:active {
-  transform: scale(0.98);
-}
+@media (prefers-reduced-motion: reduce) {
+  .workout-session,
+  .workout-session__fill,
+  .workout-session__wave,
+  .workout-session__control {
+    transition: none;
+  }
 
-.workout-session__button--primary {
-  color: $warm-porcelain;
-  background-color: $deep-forest;
-}
-
-.workout-session__button--secondary {
-  color: $deep-forest;
-  background-color: transparent;
-  border-color: rgba($deep-forest, 0.2);
+  .workout-session__wave {
+    animation: none;
+  }
 }

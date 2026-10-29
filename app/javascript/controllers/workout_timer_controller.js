@@ -6,8 +6,8 @@ export default class extends Controller {
     "exercise",
     "seconds",
     "phase",
-    "progress",
     "progressText",
+    "dot",
     "form",
     "status",
     "actualDuration",
@@ -17,6 +17,8 @@ export default class extends Controller {
 
   static values = { exercises: Array }
 
+  static READY_SECONDS = 5
+
   static LABELS = {
     ready: "Get ready!",
     work: "Jump!",
@@ -24,14 +26,13 @@ export default class extends Controller {
     done: "Workout complete!",
     cooldown: "Cooldown",
     cooldownMessage: "Nice work. Breathe it out.",
-    stopped: "Workout stopped",
-    upNext: "Up next:",
+    stopped: "Workout stopped"
   }
 
   connect() {
     this.index = 0
     this.phase = "ready"
-    this.phaseEndsAt = Date.now() + 5 * 1000
+    this.phaseEndsAt = Date.now() + this.constructor.READY_SECONDS * 1000
     this.workoutStartsAt = this.phaseEndsAt
     this.pausedAt = null
 
@@ -79,6 +80,22 @@ export default class extends Controller {
     return Math.ceil((this.phaseEndsAt - this.now()) / 1000)
   }
 
+  phaseDuration() {
+    if (this.phase === "ready") {
+      return this.constructor.READY_SECONDS
+    }
+
+    if (this.phase === "work") {
+      return this.currentExercise().work
+    }
+
+    if (this.phase === "rest") {
+      return this.currentExercise().rest
+    }
+
+    return 0
+  }
+
   currentExercise() {
     return this.exercisesValue[this.index]
   }
@@ -95,18 +112,12 @@ export default class extends Controller {
   }
 
   exerciseText() {
-    const labels = this.constructor.LABELS
-
     if (this.isCooldown()) {
-      return labels.cooldownMessage
-    }
-
-    if (this.phase === "ready") {
-      return `${labels.upNext} ${this.currentExercise().name}`
+      return this.constructor.LABELS.cooldownMessage
     }
 
     if (this.phase === "rest") {
-      return `${labels.upNext} ${this.nextExercise().name}`
+      return this.nextExercise().name
     }
 
     return this.currentExercise().name
@@ -117,30 +128,85 @@ export default class extends Controller {
       this.exerciseTarget.textContent = this.constructor.LABELS.done
       this.phaseTarget.textContent = ""
       this.secondsTarget.textContent = "0"
-      this.progressTarget.value = this.progressTarget.max
       this.progressTextTarget.textContent = ""
       return
     }
 
-    this.progressTarget.value = this.elapsedSeconds()
-    this.progressTextTarget.textContent = `${this.index + 1} of ${this.exercisesValue.length}`
+    this.updatePhaseClass()
+    this.updateDots()
+
+    const displayIndex = this.displayIndex()
+
+    this.progressTextTarget.textContent =
+      `${displayIndex + 1} / ${this.exercisesValue.length}`
 
     this.exerciseTarget.textContent = this.exerciseText()
 
     if (this.isCooldown()) {
       this.phaseTarget.textContent = this.constructor.LABELS.cooldown
     } else {
-      this.phaseTarget.textContent = this.constructor.LABELS[this.phase]
+      this.phaseTarget.textContent =
+        this.constructor.LABELS[this.phase]
     }
 
     this.secondsTarget.textContent = this.secondsLeft()
+
+    const duration = this.phaseDuration()
+    const now = this.now()
+    const lookAhead = this.pausedAt !== null ? 0 : 1000
+
+    const remaining = duration > 0
+      ? Math.max(0, (this.phaseEndsAt - (now + lookAhead)) / (duration * 1000))
+      : 0
+
+    this.element.style.setProperty("--remaining", remaining)
+  }
+
+  updatePhaseClass() {
+    const phaseClasses = [
+      "workout-session--ready",
+      "workout-session--jump",
+      "workout-session--rest",
+      "workout-session--cooldown"
+    ]
+
+    this.element.classList.remove(...phaseClasses)
+
+    let phaseClass
+
+    if (this.isCooldown()) {
+      phaseClass = "workout-session--cooldown"
+    } else if (this.phase === "work") {
+      phaseClass = "workout-session--jump"
+    } else {
+      phaseClass = `workout-session--${this.phase}`
+    }
+
+    this.element.classList.add(phaseClass)
+  }
+
+  updateDots() {
+    const currentIndex = this.displayIndex()
+
+    this.dotTargets.forEach((dot, index) => {
+      dot.classList.toggle(
+        "workout-session__dot--done",
+        index < currentIndex
+      )
+
+      dot.classList.toggle(
+        "workout-session__dot--current",
+        index === currentIndex
+      )
+    })
   }
 
   elapsedSeconds() {
     const elapsed = Math.floor(
       (this.now() - this.workoutStartsAt) / 1000
     )
-    return Math.max(0, Math.min(elapsed, Number(this.progressTarget.max)))
+
+    return Math.max(0, elapsed)
   }
 
   finish(status) {
@@ -150,7 +216,11 @@ export default class extends Controller {
   }
 
   stop() {
-    if (!confirm("Are you sure you want to stop? A stopped workout cannot be shared.")) {
+    if (
+      !confirm(
+        "Are you sure you want to stop? A stopped workout cannot be shared."
+      )
+    ) {
       return
     }
 
@@ -174,15 +244,32 @@ export default class extends Controller {
       this.pausedAt = null
 
       this.interval = setInterval(() => this.tick(), 1000)
-      this.pauseButtonTarget.textContent = "Pause"
+
+      this.updatePauseButton(false)
     } else {
       this.pausedAt = Date.now()
 
       clearInterval(this.interval)
-      this.pauseButtonTarget.textContent = "Resume"
+
+      this.updatePauseButton(true)
     }
 
     this.render()
+  }
+
+  updatePauseButton(paused) {
+    const button = this.pauseButtonTarget
+    const icon = button.querySelector("i")
+
+    if (icon) {
+      icon.classList.toggle("fa-pause", !paused)
+      icon.classList.toggle("fa-play", paused)
+    }
+
+    button.setAttribute(
+      "aria-label",
+      paused ? "Resume workout" : "Pause workout"
+    )
   }
 
   now() {
@@ -192,5 +279,13 @@ export default class extends Controller {
   hideControls() {
     this.stopButtonTarget.hidden = true
     this.pauseButtonTarget.hidden = true
+  }
+
+  displayIndex() {
+    if (this.phase === "rest" && !this.isCooldown()) {
+      return this.index + 1
+    }
+
+    return this.index
   }
 }

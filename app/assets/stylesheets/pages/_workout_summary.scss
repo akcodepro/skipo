@@ -1,0 +1,17 @@
+.workout-summary {
+  padding-block: 24px;
+
+  &__title {
+    margin-bottom: 16px;
+    font-family: $headers-font;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  &__metadata {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+}

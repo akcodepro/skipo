@@ -1,91 +1,110 @@
 <% if @workout_session.in_progress? %>
-  <%= tag.div class: "workout-session",
+  <% content_for :hide_header, true %>
+  <% content_for :hide_navbar, true %>
+
+  <%= tag.div class: "workout-session workout-session--ready",
+      id: "workout_session",
       data: {
-        controller: "workout-timer",
+        controller: "workout-timer wake-lock",
         workout_timer_exercises_value: timer_exercises(@workout_session.workout)
       } do %>
 
-    <header class="workout-session__header" id="workout_session">
-      <h1 class="workout-session__title">
-        <%= @workout_session.workout.title %>
-      </h1>
-
-      <div class="workout-session__metadata">
-        <span class="pill pill--status">
-          <span class="pill__dot" aria-hidden="true"></span>
-          <%= @workout_session.status.titleize %>
-        </span>
-
-        <span class="workout-session__started">
-          Started at: <%= @workout_session.started_at %>
-        </span>
-      </div>
-    </header>
-
-    <section class="workout-session__progress">
-      <div class="workout-session__progress-label">
-        <span>Workout progress</span>
-        <span data-workout-timer-target="progressText"></span>
-      </div>
-
-      <progress
-        class="workout-session__progress-bar"
-        data-workout-timer-target="progress"
-        value="0"
-        max="<%= @workout_session.workout.total_duration_seconds %>">
-      </progress>
-    </section>
-
-    <section class="workout-session__timer">
-      <p class="workout-session__phase"
-         data-workout-timer-target="phase"></p>
-
-      <h2 class="workout-session__exercise"
-          data-workout-timer-target="exercise"></h2>
-
-      <p class="workout-session__seconds"
-         data-workout-timer-target="seconds"></p>
-    </section>
-
-    <div class="workout-session__actions">
-      <button
-        type="button"
-        class="workout-session__button workout-session__button--primary"
-        data-action="workout-timer#togglePause"
-        data-workout-timer-target="pauseButton">
-        Pause
-      </button>
-
-      <button
-        type="button"
-        class="workout-session__button workout-session__button--secondary"
-        data-action="workout-timer#stop"
-        data-workout-timer-target="stopButton">
-        Stop workout
-      </button>
-    </div>
-
-    <%= form_with model: @workout_session,
-        data: { workout_timer_target: "form" } do |f| %>
-
-      <%= f.hidden_field :status,
-          value: "",
-          data: { workout_timer_target: "status" } %>
-
-      <%= f.hidden_field :actual_duration_seconds,
-          value: "",
-          data: { workout_timer_target: "actualDuration" } %>
-    <% end %>
-
-  <% end %>
-
-<% else %>
-  <div class="workout-session workout-session--completed" id="workout_session">
-    <h1 class="workout-session__title">
+    <%# Accessible page heading %>
+    <h1 class="visually-hidden">
       <%= @workout_session.workout.title %>
     </h1>
 
-    <div class="workout-session__metadata">
+    <%# Background fill and decorative wave %>
+    <div class="workout-session__fill" aria-hidden="true">
+      <svg
+        class="workout-session__wave"
+        viewBox="0 0 780 24"
+        preserveAspectRatio="none">
+        <path
+          fill="currentColor"
+          d="M0 12 Q48.75 0 97.5 12 T195 12 T292.5 12 T390 12 T487.5 12 T585 12 T682.5 12 T780 12 V24 H0 Z" />
+      </svg>
+    </div>
+
+    <%# Stop and pause controls %>
+    <div class="workout-session__controls">
+      <button
+        type="button"
+        class="workout-session__control"
+        aria-label="Stop workout"
+        data-action="workout-timer#stop"
+        data-workout-timer-target="stopButton">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+
+      <button
+        type="button"
+        class="workout-session__control"
+        aria-label="Pause workout"
+        data-action="workout-timer#togglePause"
+        data-workout-timer-target="pauseButton">
+        <i class="fa-solid fa-pause" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <%# Exercise progress dots and count %>
+    <div class="workout-session__progress">
+      <span class="workout-session__dots" aria-hidden="true">
+        <% @workout_session.workout.workout_exercises.size.times do |index| %>
+          <span class="<%= class_names(
+            "workout-session__dot",
+            "workout-session__dot--current": index.zero?
+          ) %>"
+            data-workout-timer-target="dot"></span>
+        <% end %>
+      </span>
+
+      <span class="workout-session__count"
+        data-workout-timer-target="progressText">
+      </span>
+    </div>
+
+    <%# Main. timer display %>
+    <div class="workout-session__main">
+      <p
+        class="workout-session__phase"
+        data-workout-timer-target="phase">
+      </p>
+
+      <p
+        class="workout-session__seconds"
+        data-workout-timer-target="seconds">
+      </p>
+
+      <p class="workout-session__next">
+        Up next
+      </p>
+
+      <p
+        class="workout-session__name"
+        data-workout-timer-target="exercise">
+      </p>
+    </div>
+
+    <%= form_with model: @workout_session,
+      data: { workout_timer_target: "form" } do |f| %>
+
+      <%= f.hidden_field :status,
+        value: "",
+        data: { workout_timer_target: "status" } %>
+
+      <%= f.hidden_field :actual_duration_seconds,
+        value: "",
+        data: { workout_timer_target: "actualDuration" } %>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="workout-summary" id="workout_session">
+    <h1 class="workout-summary__title">
+      <%= @workout_session.workout.title %>
+    </h1>
+
+    <div class="workout-summary__metadata">
       <span class="pill pill--status">
         <%= @workout_session.status.titleize %>
       </span>
