@@ -1,12 +1,11 @@
 <% if @workout_session.in_progress? %>
   <% content_for :hide_header, true %>
   <% content_for :hide_navbar, true %>
-  <% content_for :bleed, true %>
 
   <%= tag.div class: "workout-session workout-session--ready",
       id: "workout_session",
       data: {
-        controller: "workout-timer",
+        controller: "workout-timer wake-lock",
         workout_timer_exercises_value: timer_exercises(@workout_session.workout)
       } do %>
 
@@ -100,12 +99,12 @@
     <% end %>
   <% end %>
 <% else %>
-  <div class="workout-session workout-session--completed" id="workout_session">
-    <h1 class="workout-session__title">
+  <div class="workout-summary" id="workout_session">
+    <h1 class="workout-summary__title">
       <%= @workout_session.workout.title %>
     </h1>
 
-    <div class="workout-session__metadata">
+    <div class="workout-summary__metadata">
       <span class="pill pill--status">
         <%= @workout_session.status.titleize %>
       </span>
