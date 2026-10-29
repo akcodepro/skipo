@@ -19,6 +19,10 @@
   background: var(--phase-bg);
   color: var(--phase-fg);
   font-family: $body-font;
+  transition:
+    background-color 350ms ease,
+    color 350ms ease;
+
 
   // Phase variations come after the base declarations
   &--ready,
@@ -40,27 +44,26 @@
     --phase-fg: #{$deep-forest};
   }
 
-  transition:
-    background-color 350ms ease,
-    color 350ms ease;
-
   &__fill {
     position: absolute;
     inset-inline: 0;
     bottom: 0;
     z-index: -1;
-    height: 60%;
+    height: calc(var(--remaining, 1) * 100%);
     background: var(--phase-fill);
-    transition: background-color 350ms ease;
+    transition:
+      background-color 350ms ease,
+      height 1s linear;
   }
 
   &__wave {
     position: absolute;
     top: -23px;
     left: 0;
-    width: 100%;
+    width: 200%;
     height: 24px;
     color: var(--phase-fill);
+    animation: workout-wave 6s linear infinite;
     transition: color 350ms ease;
   }
 
@@ -152,7 +155,7 @@
     font-size: clamp(120px, 30vw, 190px);
     font-weight: 700;
     line-height: 0.9;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
   }
 
@@ -177,11 +180,25 @@
   }
 }
 
+@keyframes workout-wave {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .workout-session,
   .workout-session__fill,
   .workout-session__wave,
   .workout-session__control {
     transition: none;
+  }
+
+  .workout-session__wave {
+    animation: none;
   }
 }

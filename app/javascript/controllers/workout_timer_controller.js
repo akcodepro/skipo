@@ -17,6 +17,8 @@ export default class extends Controller {
 
   static values = { exercises: Array }
 
+  static READY_SECONDS = 5
+
   static LABELS = {
     ready: "Get ready!",
     work: "Jump!",
@@ -30,7 +32,7 @@ export default class extends Controller {
   connect() {
     this.index = 0
     this.phase = "ready"
-    this.phaseEndsAt = Date.now() + 5 * 1000
+    this.phaseEndsAt = Date.now() + this.constructor.READY_SECONDS * 1000
     this.workoutStartsAt = this.phaseEndsAt
     this.pausedAt = null
 
@@ -76,6 +78,22 @@ export default class extends Controller {
 
   secondsLeft() {
     return Math.ceil((this.phaseEndsAt - this.now()) / 1000)
+  }
+
+  phaseDuration() {
+    if (this.phase === "ready") {
+      return this.constructor.READY_SECONDS
+    }
+
+    if (this.phase === "work") {
+      return this.currentExercise().work
+    }
+
+    if (this.phase === "rest") {
+      return this.currentExercise().rest
+    }
+
+    return 0
   }
 
   currentExercise() {
@@ -132,6 +150,16 @@ export default class extends Controller {
     }
 
     this.secondsTarget.textContent = this.secondsLeft()
+
+    const duration = this.phaseDuration()
+    const now = this.now()
+    const lookAhead = this.pausedAt !== null ? 0 : 1000
+
+    const remaining = duration > 0
+      ? Math.max(0, (this.phaseEndsAt - (now + lookAhead)) / (duration * 1000))
+      : 0
+
+    this.element.style.setProperty("--remaining", remaining)
   }
 
   updatePhaseClass() {
