@@ -49,6 +49,9 @@
   </head>
 
   <body>
+    <%# Removes the iOS status-bar blur %>
+    <div class="status-bar-background" aria-hidden="true"></div>
+
     <% unless content_for?(:hide_header) %>
       <%= render "shared/header" %>
     <% end %>
