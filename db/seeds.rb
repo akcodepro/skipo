@@ -126,46 +126,45 @@ DEMO_TEMPLATES = [
   {
     title: "Steady Rhythm Foundations",
     description: "Easy, even pacing to groove the basics. Stay light and keep the rope smooth.",
-    focus: ["fundamentals"], difficulty: 1, minutes: 10, work: 45, rest: 30,
-    moves: ["Basic Bounce", "Alternate Foot Step", "Front-to-Back", "Boxer Step",
-            "Basic Bounce", "Side-to-Side", "Alternate Foot Step", "Basic Bounce"]
+    focus: [ "fundamentals" ], difficulty: 1, minutes: 10, work: 45, rest: 30,
+    moves: [ "Basic Bounce", "Alternate Foot Step", "Front-to-Back", "Boxer Step",
+            "Basic Bounce", "Side-to-Side", "Alternate Foot Step", "Basic Bounce" ]
   },
   {
     title: "Light Feet Warm-Up",
     description: "Short stepping patterns to wake the ankles up. Smooth beats fast today.",
-    focus: ["fundamentals", "footwork"], difficulty: 1, minutes: 10, work: 40, rest: 35,
-    moves: ["Basic Bounce", "Boxer Step", "Side-to-Side", "In & Out",
-            "Skier", "Alternate Foot Step", "Boxer Step", "Basic Bounce"]
+    focus: [ "fundamentals", "footwork" ], difficulty: 1, minutes: 10, work: 40, rest: 35,
+    moves: [ "Basic Bounce", "Boxer Step", "Side-to-Side", "In & Out",
+            "Skier", "Alternate Foot Step", "Boxer Step", "Basic Bounce" ]
   },
   {
     title: "Rhythm & Power Mix",
     description: "Steady blocks broken up by quick bursts. Push the fast ones, recover on the easy ones.",
-    focus: ["fundamentals", "power"], difficulty: 2, minutes: 15, work: 45, rest: 30,
-    moves: ["Basic Bounce", "Fast Basic Bounce", "Boxer Step", "Fast Boxer Step",
+    focus: [ "fundamentals", "power" ], difficulty: 2, minutes: 15, work: 45, rest: 30,
+    moves: [ "Basic Bounce", "Fast Basic Bounce", "Boxer Step", "Fast Boxer Step",
             "Alternate Foot Step", "Speed Step", "Front-to-Back", "Backward Speed Step",
-            "Single Leg Hop", "Speed Step", "Basic Bounce", "Fast Boxer Step"]
+            "Single Leg Hop", "Speed Step", "Basic Bounce", "Fast Boxer Step" ]
   },
   {
     title: "Footwork & Crosses Flow",
     description: "Moving feet and crossing arms, one skill at a time. Reset with a basic bounce when you trip.",
-    focus: ["fundamentals", "footwork", "technical"], difficulty: 2, minutes: 20, work: 50, rest: 25,
-    moves: ["Boxer Step", "Side-to-Side", "Criss-Cross", "In & Out",
+    focus: [ "fundamentals", "footwork", "technical" ], difficulty: 2, minutes: 20, work: 50, rest: 25,
+    moves: [ "Boxer Step", "Side-to-Side", "Criss-Cross", "In & Out",
             "Skier", "Side Swing Cross", "Running Step", "Backward Basic Bounce",
             "High Knees", "Criss-Cross", "Basic Bounce", "Side Swing Jump",
-            "Boxer Step", "Running Step", "Criss-Cross", "Alternate Foot Step"]
+            "Boxer Step", "Running Step", "Criss-Cross", "Alternate Foot Step" ]
   },
   {
     title: "Double Under Challenge",
     description: "Coordination patterns building up to double unders. Quality first, then speed.",
-    focus: ["fundamentals", "power", "rhythm_coordination"], difficulty: 3, minutes: 15, work: 45, rest: 30,
-    moves: ["Basic Bounce", "Heel-Toe", "Speed Step", "Scissors",
+    focus: [ "fundamentals", "power", "rhythm_coordination" ], difficulty: 3, minutes: 15, work: 45, rest: 30,
+    moves: [ "Basic Bounce", "Heel-Toe", "Speed Step", "Scissors",
             "Double Under", "Cross-Step", "Speed Step", "Shuffle",
-            "Double Under", "Single Leg Hop", "Scissors", "Fast Basic Bounce"]
+            "Double Under", "Single Leg Hop", "Scissors", "Fast Basic Bounce" ]
   }
 ].freeze
 
 created_workouts = 0
-created_sessions = 0
 missed_weeks = []
 templates_used = Hash.new(0)
 session_number = 0
@@ -198,13 +197,13 @@ total_actual_duration_seconds = 0
   if current_week
     today_offset = (Date.current - week_start.to_date).to_i
 
-    days = ([today_offset] + days).uniq
+    days = ([ today_offset ] + days).uniq
   end
 
   days.each do |day_offset|
     session_date = week_start + day_offset.days
 
-    time_slots = [8, 12, 17, 18, 20]
+    time_slots = [ 8, 12, 17, 18, 20 ]
 
     if current_week && session_date.to_date == Date.current
       time_slots = time_slots.select do |hour|
@@ -212,7 +211,7 @@ total_actual_duration_seconds = 0
       end
 
       # Monday at 07:00: guarantee a past time
-      time_slots = [6] if time_slots.empty?
+      time_slots = [ 6 ] if time_slots.empty?
     end
 
     session_time = session_date + time_slots.sample.hours
