@@ -122,11 +122,61 @@ demo_user.workouts.destroy_all
 #############################
 #############################
 
+DEMO_TEMPLATES = [
+  {
+    title: "Steady Rhythm Foundations",
+    description: "Easy, even pacing to groove the basics. Stay light and keep the rope smooth.",
+    focus: ["fundamentals"], difficulty: 1, minutes: 10, work: 45, rest: 30,
+    moves: ["Basic Bounce", "Alternate Foot Step", "Front-to-Back", "Boxer Step",
+            "Basic Bounce", "Side-to-Side", "Alternate Foot Step", "Basic Bounce"]
+  },
+  {
+    title: "Light Feet Warm-Up",
+    description: "Short stepping patterns to wake the ankles up. Smooth beats fast today.",
+    focus: ["fundamentals", "footwork"], difficulty: 1, minutes: 10, work: 40, rest: 35,
+    moves: ["Basic Bounce", "Boxer Step", "Side-to-Side", "In & Out",
+            "Skier", "Alternate Foot Step", "Boxer Step", "Basic Bounce"]
+  },
+  {
+    title: "Rhythm & Power Mix",
+    description: "Steady blocks broken up by quick bursts. Push the fast ones, recover on the easy ones.",
+    focus: ["fundamentals", "power"], difficulty: 2, minutes: 15, work: 45, rest: 30,
+    moves: ["Basic Bounce", "Fast Basic Bounce", "Boxer Step", "Fast Boxer Step",
+            "Alternate Foot Step", "Speed Step", "Front-to-Back", "Backward Speed Step",
+            "Single Leg Hop", "Speed Step", "Basic Bounce", "Fast Boxer Step"]
+  },
+  {
+    title: "Footwork & Crosses Flow",
+    description: "Moving feet and crossing arms, one skill at a time. Reset with a basic bounce when you trip.",
+    focus: ["fundamentals", "footwork", "technical"], difficulty: 2, minutes: 20, work: 50, rest: 25,
+    moves: ["Boxer Step", "Side-to-Side", "Criss-Cross", "In & Out",
+            "Skier", "Side Swing Cross", "Running Step", "Backward Basic Bounce",
+            "High Knees", "Criss-Cross", "Basic Bounce", "Side Swing Jump",
+            "Boxer Step", "Running Step", "Criss-Cross", "Alternate Foot Step"]
+  },
+  {
+    title: "Double Under Challenge",
+    description: "Coordination patterns building up to double unders. Quality first, then speed.",
+    focus: ["fundamentals", "power", "rhythm_coordination"], difficulty: 3, minutes: 15, work: 45, rest: 30,
+    moves: ["Basic Bounce", "Heel-Toe", "Speed Step", "Scissors",
+            "Double Under", "Cross-Step", "Speed Step", "Shuffle",
+            "Double Under", "Single Leg Hop", "Scissors", "Fast Basic Bounce"]
+  }
+].freeze
+
+created_workouts = 0
+created_sessions = 0
+missed_weeks = []
+templates_used = Hash.new(0)
+
 13.times do |weeks_back|
   week_start = weeks_back.weeks.ago.beginning_of_week
 
   # Exactly one deliberate missed week
-  next if weeks_back == 5
+  if weeks_back == 5
+    missed_weeks << week_start.to_date
+    next
+  end
 
   current_week = weeks_back.zero?
 
@@ -165,6 +215,62 @@ demo_user.workouts.destroy_all
 
     next if session_time > Time.current
 
-    puts session_time.strftime("%a %d %b %Y - %H:%M")
+    # Pick a random workout template
+    template = DEMO_TEMPLATES.sample
+
+    # Create workout
+    workout = demo_user.workouts.create!(
+      title: template[:title],
+      description: template[:description],
+      focus: template[:focus],
+      difficulty: template[:difficulty],
+      requested_duration_seconds: template[:minutes] * 60,
+      created_at: session_time - 5.minutes
+    )
+
+    # Create workout exercises
+    template[:moves].each_with_index do |move, index|
+      exercise = Exercise.find_by!(name: move)
+
+      workout.workout_exercises.create!(
+        exercise: exercise,
+        position: index + 1,
+        duration_seconds: template[:work],
+        rest_seconds: index == template[:moves].length - 1 ? 0 : template[:rest]
+      )
+    end
+
+    # Create completed session
+    started_at = session_time
+
+    workout.workout_sessions.create!(
+      user: demo_user,
+      status: :completed,
+      started_at: started_at,
+      actual_duration_seconds: workout.total_duration_seconds,
+      completed_at: started_at + workout.total_duration_seconds.seconds
+    )
+
+    created_workouts += 1
+    created_sessions += 1
+    templates_used[template[:title]] += 1
   end
 end
+
+puts ""
+puts "🏋️  Demo workout seeding complete!"
+puts "  👤 Demo user: #{demo_user.display_name} (#{demo_user.email})"
+puts "  🆕 #{created_workouts} workouts created."
+puts "  ✅ #{created_sessions} completed sessions created."
+puts "  📅 #{13 - missed_weeks.size} weeks with workout history."
+puts "  💤 #{missed_weeks.size} deliberately missed week(s)."
+puts "  ⏱️  #{(demo_user.workouts.sum(&:total_duration_seconds) / 60.0).round} minutes of workout time."
+puts ""
+puts "  📚 Workout template distribution:"
+
+templates_used.sort.each do |title, count|
+  puts "    • #{title}: #{count}"
+end
+
+puts ""
+puts "  📊 #{demo_user.workouts.count} total workouts for demo user."
