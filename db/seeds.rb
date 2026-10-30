@@ -98,13 +98,29 @@ puts "  ✏️  #{updated_count} existing exercises updated."
 puts "  ⏭️  #{unchanged_count} exercises unchanged."
 puts "  📚 #{Exercise.count} exercises in the database."
 
-
 #############################
 #############################
 #############################
 #############################
 #############################
 
+# Create or find demo user
+demo_user = User.find_or_initialize_by(email: "jumper@example.com")
+
+demo_user.assign_attributes(
+  display_name: "Jamie",
+  password: "letsjump"
+)
+demo_user.save!
+
+# Clear existing workouts (sessions and exercises are destroyed automatically)
+demo_user.workouts.destroy_all
+
+#############################
+#############################
+#############################
+#############################
+#############################
 
 13.times do |weeks_back|
   week_start = weeks_back.weeks.ago.beginning_of_week
