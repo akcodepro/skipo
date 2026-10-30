@@ -97,3 +97,58 @@ puts "  🆕 #{created_count} new exercises created."
 puts "  ✏️  #{updated_count} existing exercises updated."
 puts "  ⏭️  #{unchanged_count} exercises unchanged."
 puts "  📚 #{Exercise.count} exercises in the database."
+
+
+#############################
+#############################
+#############################
+#############################
+#############################
+
+
+13.times do |weeks_back|
+  week_start = weeks_back.weeks.ago.beginning_of_week
+
+  # Exactly one deliberate missed week
+  next if weeks_back == 5
+
+  current_week = weeks_back.zero?
+
+  available_days =
+    if current_week
+      (0..(Date.current - week_start.to_date).to_i).to_a
+    else
+      (0..6).to_a
+    end
+
+  sessions = rand(1..3)
+  days = available_days.sample(sessions)
+
+  # Guarantee one completed session in the current week
+  if current_week
+    today_offset = (Date.current - week_start.to_date).to_i
+
+    days = ([today_offset] + days).uniq
+  end
+
+  days.each do |day_offset|
+    session_date = week_start + day_offset.days
+
+    time_slots = [8, 12, 17, 18, 20]
+
+    if current_week && session_date.to_date == Date.current
+      time_slots = time_slots.select do |hour|
+        session_date + hour.hours <= Time.current
+      end
+
+      # Monday at 07:00: guarantee a past time
+      time_slots = [6] if time_slots.empty?
+    end
+
+    session_time = session_date + time_slots.sample.hours
+
+    next if session_time > Time.current
+
+    puts session_time.strftime("%a %d %b %Y - %H:%M")
+  end
+end
