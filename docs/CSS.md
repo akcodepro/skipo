@@ -84,7 +84,6 @@ Active workout phase tones (set as custom properties on `.workout-session`): Get
 | `.flash-stack` | | |
 | `.flash` | `__message`, `__close` | `--notice`, `--alert` |
 | `.timeline` | `__item`, `__move` (link that opens the sheet), `__dot`, `__name`, `__time`, `__chevron`, `__rest` | |
-| `.rhythm-strip` | `__bar`, `__segment`, `__legend`, `__key`, `__swatch` | `__segment--work` / `--rest`, `__swatch--work` / `--rest` |
 | `.action-bar` | `__form`, `__primary` (mix) | |
 | `.sheet` | `__grabber`, `__close` | |
 | `.exercise-detail` | `__chips`, `__title`, `__stats`, `__stat`, `__stat-value`, `__stat-label`, `__visual`, `__section`, `__heading`, `__text` | `__stat--jump` |

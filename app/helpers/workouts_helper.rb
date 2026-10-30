@@ -36,26 +36,4 @@ module WorkoutsHelper
 
     labels.fetch(category.to_s, category.to_s.titleize)
   end
-
-  def rhythm_segments(workout)
-    segments = []
-    exercises = workout.workout_exercises
-
-    exercises.each_with_index do |workout_exercise, index|
-      segments << {
-        kind: :work,
-        seconds: workout_exercise.duration_seconds
-      }
-
-      rest_seconds = workout_exercise.rest_seconds.to_i
-
-      if index < exercises.size - 1 && rest_seconds.positive?
-        segments << {
-          kind: :rest,
-          seconds: rest_seconds
-        }
-      end
-    end
-    segments
-  end
 end

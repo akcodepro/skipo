@@ -61,29 +61,6 @@
   <section class="generated-workout__exercises">
     <h2 class="visually-hidden">Your exercises</h2>
 
-    <div class="rhythm-strip" aria-hidden="true">
-      <div class="rhythm-strip__bar">
-        <% rhythm_segments(workout).each do |segment| %>
-          <div
-            class="rhythm-strip__segment rhythm-strip__segment--<%= segment[:kind] %>"
-            style="--seconds: <%= segment[:seconds] %>;"
-          ></div>
-        <% end %>
-      </div>
-
-      <div class="rhythm-strip__legend">
-        <span class="rhythm-strip__key">
-          <span class="rhythm-strip__swatch rhythm-strip__swatch--work"></span>
-          Jump
-        </span>
-
-        <span class="rhythm-strip__key">
-          <span class="rhythm-strip__swatch rhythm-strip__swatch--rest"></span>
-          Rest
-        </span>
-      </div>
-    </div>
-
     <ol class="timeline">
       <% workout.workout_exercises.each_with_index do |workout_exercise, index| %>
         <li class="timeline__item">
