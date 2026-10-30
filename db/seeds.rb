@@ -168,6 +168,10 @@ created_workouts = 0
 created_sessions = 0
 missed_weeks = []
 templates_used = Hash.new(0)
+session_number = 0
+completed_sessions = 0
+stopped_sessions = 0
+total_actual_duration_seconds = 0
 
 13.times do |weeks_back|
   week_start = weeks_back.weeks.ago.beginning_of_week
@@ -240,19 +244,32 @@ templates_used = Hash.new(0)
       )
     end
 
-    # Create completed session
+    # Create session
     started_at = session_time
+
+    session_number += 1
+    stopped = (session_number % 6).zero?
+
+    actual_duration = stopped ?
+      (workout.total_duration_seconds * 0.7).round :
+      workout.total_duration_seconds
 
     workout.workout_sessions.create!(
       user: demo_user,
-      status: :completed,
+      status: stopped ? :stopped : :completed,
       started_at: started_at,
-      actual_duration_seconds: workout.total_duration_seconds,
-      completed_at: started_at + workout.total_duration_seconds.seconds
+      actual_duration_seconds: actual_duration,
+      completed_at: started_at + actual_duration.seconds
     )
 
+    if stopped
+      stopped_sessions += 1
+    else
+      completed_sessions += 1
+    end
+
+    total_actual_duration_seconds += actual_duration
     created_workouts += 1
-    created_sessions += 1
     templates_used[template[:title]] += 1
   end
 end
@@ -261,10 +278,11 @@ puts ""
 puts "🏋️  Demo workout seeding complete!"
 puts "  👤 Demo user: #{demo_user.display_name} (#{demo_user.email})"
 puts "  🆕 #{created_workouts} workouts created."
-puts "  ✅ #{created_sessions} completed sessions created."
+puts "  ✅ #{completed_sessions} completed sessions."
+puts "  🛑 #{stopped_sessions} stopped sessions."
 puts "  📅 #{13 - missed_weeks.size} weeks with workout history."
 puts "  💤 #{missed_weeks.size} deliberately missed week(s)."
-puts "  ⏱️  #{(demo_user.workouts.sum(&:total_duration_seconds) / 60.0).round} minutes of workout time."
+puts "  ⏱️  #{(total_actual_duration_seconds / 60.0).round} minutes of actual workout time."
 puts ""
 puts "  📚 Workout template distribution:"
 
