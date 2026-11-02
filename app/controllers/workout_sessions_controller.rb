@@ -1,5 +1,9 @@
 class WorkoutSessionsController < ApplicationController
   def index
+    @workout_sessions = current_user.workout_sessions
+      .where(status: %i[ completed stopped ])
+      .includes(workout: { workout_exercises: :exercise })
+      .order(started_at: :desc)
   end
 
   def create

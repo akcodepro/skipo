@@ -1,4 +1,16 @@
-<%= render "shared/coming_soon",
+<%#= render "shared/coming_soon",
   icon: "fa-solid fa-chart-line",
   title: "Your progress lives here soon",
   text: "Every workout you finish will land here. Streaks, minutes, personal bests." %>
+
+<h1>Progress</h1>
+
+<ul>
+  <% @workout_sessions.each do |workout_session| %>
+    <li>
+      <%= workout_session.started_at.to_date %> —
+      <%= workout_session.workout.title %> —
+      <%= workout_session.actual_duration_seconds / 60 %> min
+    </li>
+  <% end %>
+</ul>
