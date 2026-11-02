@@ -139,4 +139,24 @@ class WorkoutSessionsTest < ActionDispatch::IntegrationTest
     @workout_session.reload
     assert_equal total_duration, @workout_session.actual_duration_seconds
   end
+
+  test "progress page only shows your completed and stopped sessions" do
+    @workout_session.update!(
+      status: "stopped",
+      started_at: 2.hours.ago,
+      actual_duration_seconds: 300
+    )
+
+    @other_session.update!(
+      status: "completed",
+      started_at: 6.hours.ago,
+      actual_duration_seconds: 1800
+    )
+
+    get workout_sessions_path
+
+    assert_response :success
+    assert_includes response.body, "Test Workout"
+    assert_not_includes response.body, "Their Workout"
+  end
 end
