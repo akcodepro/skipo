@@ -10,7 +10,7 @@
     <li>
       <%= workout_session.started_at.to_date %> —
       <%= workout_session.workout.title %> —
-      <%= workout_session.actual_duration_seconds / 60 %> min
+      <%= human_duration(workout_session.actual_duration_seconds) %>
     </li>
   <% end %>
 </ul>

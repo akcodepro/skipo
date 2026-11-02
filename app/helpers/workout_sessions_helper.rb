@@ -7,4 +7,20 @@ module WorkoutSessionsHelper
     }
     end
   end
+
+  def human_duration(seconds)
+    return "0 min" if seconds.nil?
+
+    minutes = (seconds / 60.0).round
+    hours = minutes / 60
+    remaining_minutes = minutes % 60
+
+    if hours.positive? && remaining_minutes.positive?
+      "#{hours}h #{remaining_minutes}min"
+    elsif hours.positive?
+      "#{hours}h"
+    else
+      "#{minutes} min"
+    end
+  end
 end
