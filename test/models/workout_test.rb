@@ -65,4 +65,14 @@ class WorkoutTest < ActiveSupport::TestCase
   test "workout durations match generator tolerance keys" do
     assert_equal Workout::DURATIONS.sort, WorkoutGenerator::DURATION_TOLERANCES.keys.sort
   end
+
+  test "is fundamentals only when fundamentals is the only focus" do
+    @workout.focus = [ "fundamentals" ]
+    assert @workout.fundamentals_only?
+  end
+
+  test "is not fundamentals only when other focuses are picked" do
+    @workout.focus = [ "fundamentals", "footwork" ]
+    assert_not @workout.fundamentals_only?
+  end
 end

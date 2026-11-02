@@ -22,6 +22,10 @@ class Workout < ApplicationRecord
     end
   end
 
+  def fundamentals_only?
+    focus == [ "fundamentals" ]
+  end
+
   private
 
   def allowed_focus_names
