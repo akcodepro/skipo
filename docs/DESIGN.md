@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.7
+**Version:** 0.8
 **Status:** Exploratory
 
 ## Product
@@ -110,10 +110,10 @@ Purpose:
 Layout (decided October 2026):
 
 - **Full-bleed Forest hero** reaching the top of the screen, bottom corners rounded. The header sits inside it in its inverse version. It holds the focus chips (Fundamentals always shown, in yellow), the title, three stats (total minutes, moves, level) and the AI's short description. A large tone-on-tone blob adds depth without hurting readability
-- **Rhythm strip** under the hero: one bar for the whole workout, jump blocks in Forest and rest blocks in yellow, widths proportional to seconds. Its place on this screen is still under review (see Open Questions)
 - **Timeline of moves:** a dot, the exercise name and the jump time per move, with the rest shown as a dashed connector between moves. No rest after the last move
 - **Exercise detail sheet:** tapping a move opens a bottom sheet with its category, level, jump and rest times, "What it is", "How to do it" (when written) and a "Demo video coming soon" slot for future visuals
 - **Sticky action bar** above the navbar with the orange **Start workout** button, always visible. A regenerate button joins it later
+- The rhythm strip that sat under the hero was removed (October 2026): it read as stripes and added decoration rather than information
 
 Primary action:
 
@@ -203,9 +203,22 @@ Purpose:
 - Let the user see previous workouts
 - Show meaningful personal progress over time
 
-This is primarily private user data and should remain secondary to the workout experience.
+This is primarily private user data and should remain secondary to the workout experience. It is also the screen that shows the app's value fastest to a visitor (with demo data), so it matters for the recruiter path.
 
-Stopped sessions still appear in history and progress, visually distinct from completed ones: a dot on a chart is more motivating than nothing.
+Layout (decided October 2026, "Progress D" on the canvas):
+
+- **Time range switch:** 3M / 1Y / All, top right
+- **Activity card (Forest):** "This week" (time and number of workouts) and the total for the range, then the main visual. Swipe between two panels, with two small dots showing which one is open:
+  - **Bars:** one thin bar per week (per month for 1Y and All), rounded top and flat base. The current week in orange
+  - **Calendar:** one dot per day, bigger for longer sessions, the current week in orange. Missed weeks show as gaps, no extra message needed
+- **How you train:** two labelled tiles, "Your usual length" and "Your usual level" (the most common values, not averages), then one stacked bar, "What you pick on top of Fundamentals", with a legend in percentages
+- **History:** full-width rows separated by dividers, no cards. Each row: date, title, time, the first moves ("Basic Bounce · Boxer Step · +6") and pills for the focuses the user picked (icon plus text)
+
+Rules:
+
+- **Human units:** under an hour shows "45 min", from an hour shows "9h 18min"
+- **Fundamentals is a default, not a choice:** it is not shown as a pill on every row, only when it was the workout's only focus. Yellow then means "a pure fundamentals day". The focus mix shows what the user picked on top of it
+- **Stopped sessions** appear in the history with a quiet treatment: Mauve text "Stopped at 8 of 10 min" and a small orange unclosed ring. Their minutes count in the totals and charts: effort is effort
 
 ---
 
@@ -326,7 +339,7 @@ Illustrations should be:
 
 For early implementation, large icons such as Font Awesome can be used as placeholders.
 
-Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout chips, exercise detail sheet).
+Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout chips, exercise detail sheet, Progress history pills).
 
 Planned spots for exercise illustrations: the exercise detail sheet ("Demo video coming soon" slot) and the Rest and Get Ready phases of the active workout, next to "Up next".
 
@@ -418,7 +431,7 @@ They are not intended to define exact content, copy, navigation or final compone
 
 Content and UI details should be refined during implementation.
 
-Mockups for the generated workout and the active workout live on the "SKIPO generated workout options" canvas.
+Mockups for the generated workout, the active workout and the Progress tab live on the "SKIPO generated workout options" canvas.
 
 ---
 
@@ -448,9 +461,10 @@ Mockups for the generated workout and the active workout live on the "SKIPO gene
 - Custom organic S established as the primary brand symbol
 - Train tab uses the S symbol; Progress and Feed use conventional icons
 - Front-end conventions (BEM, one block per file, components) documented in CSS.md
-- Generated workout: full-bleed Forest hero, timeline of moves, exercise detail sheet, sticky Start button
+- Generated workout: full-bleed Forest hero, timeline of moves, exercise detail sheet, sticky Start button. No rhythm strip
 - Active workout: full-screen colour by phase, draining fill with an animated wavy edge, giant countdown, move dots, icon controls, no header or navbar, screen kept awake
 - Sound: countdown beeps and spoken exercise names, behind one on/off toggle
+- Progress: 3M / 1Y / All, weekly bars with a swipe to a calendar, "How you train", full-width history. Human units, Fundamentals shown only when it was the only focus, stopped sessions shown quietly and counted
 
 ---
 
@@ -459,10 +473,8 @@ Mockups for the generated workout and the active workout live on the "SKIPO gene
 - Exact home screen structure
 - Feed ordering / pagination
 - Exact feed post layout
-- Progress visualisation
-- Rhythm strip on the generated workout: keep, rework or remove? It may read as stripes and feels decorative on a preview screen
 - AI coach interaction
-- History / progress scope
 - Final illustration approach
 - Error and loading states
 - What "Mixed" focus means for the generator
+- Progress: should tapping a bar or a history row open details (for example the exercise sheet, or the workout again)?
