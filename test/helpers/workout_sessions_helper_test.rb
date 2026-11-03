@@ -24,4 +24,12 @@ class WorkoutSessionsHelperTest < ActionView::TestCase
   test "rounds up to an hour when nearest minute reaches 60" do
     assert_equal "1h", human_duration(3570)
   end
+
+  test "shows Today for a session from today" do
+    assert_equal "Today", session_date(Time.current)
+  end
+
+  test "shows weekday, day and month for an older session" do
+    assert_equal "Tue 27 Oct", session_date(Time.zone.local(2026, 10, 27, 18))
+  end
 end
