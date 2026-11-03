@@ -1,6 +1,6 @@
 # SKIPO: CSS conventions
 
-**Version:** 0.2
+**Version:** 0.3
 
 ## Naming: BEM
 
@@ -32,6 +32,7 @@
 - simple_form forms use our own `:field` wrapper (`simple_form_for ..., wrapper: :field`), defined once in the simple_form initializer. It outputs `.field` BEM classes instead of Bootstrap's. Initializer changes need a server restart
 - `link_to` takes `class:` directly. `html: { class: }` is a `simple_form_for` option, and on `link_to` it just outputs an `html` attribute
 - `button_to` generates a `<form>`: style it with `form: { class: "..." }`
+- **Bootstrap reserves common class names:** `.progress`, `.card`, `.alert`, `.badge`, `.nav`, `.modal`, `.toast`, `.btn` and more. A block named like one of them inherits Bootstrap styles (the Progress page once collapsed into a 1rem grey bar). When a block looks styled before you wrote any CSS for it, check DevTools for a Bootstrap rule, then rename the block (`.progress-page`)
 - When CSS "should work" but doesn't, read the real DOM tree in DevTools, not the ERB
 - Sizing a child is the parent's job: prefer making the parent flex or grid over `height: 100%`
 - Grow or shrink things on state changes with `transform: scale()`, not `width`/`height`, so nothing around them moves
@@ -108,3 +109,6 @@ Active workout phase tones (set as custom properties on `.workout-session`): Get
 | `.workout-state` | Generating and generation failed |
 | `.workout-session` (`__fill`, `__wave`, `__controls`, `__control`, `__progress`, `__dots`, `__dot` (`--done`, `--current`), `__count`, `__main`, `__phase`, `__seconds`, `__next`, `__name`) with phase modifiers `--ready`, `--jump`, `--rest`, `--cooldown` set by the timer | Active workout (hides the header and navbar) |
 | `.workout-summary` (`__title`, `__metadata`) | Finished or stopped session, until #81 redesigns it |
+| `.progress-page` (`__title`, `__heading`) | Progress (`workout_sessions#index`) |
+| `.training` (`__tiles`, `__tile`, `__tile-label`, `__tile-value`, `__mix-label`, `__mix` (aria-hidden), `__mix-segment` with one modifier per focus key, e.g. `--footwork`, `--fundamentals_only`, width from `--value`, `__legend`, `__legend-item`) | Progress: How you train |
+| `.history` (`__item`, `__top`, `__heading`, `__date`, `__title`, `__duration`, `__stopped`, `__stopped-icon`, `__moves`, `__pills`). Rows run edge to edge: the block cancels the `.screen` gutter and each row adds it back | Progress: History |
