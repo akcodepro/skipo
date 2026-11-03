@@ -1,0 +1,69 @@
+.training {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  &__tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  &__tile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid $mist;
+    border-radius: 14px;
+    background: #FFFFFF;
+  }
+
+  &__tile-label {
+    font-size: 0.75rem;
+    color: $smoky-mauve;
+  }
+
+  &__tile-value {
+    font-family: $headers-font;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  &__mix-label {
+    margin: 0;
+    font-size: 0.75rem;
+    color: $smoky-mauve;
+  }
+
+  &__mix {
+    display: flex;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  // Width comes from the data: style="--value: 36"
+  &__mix-segment {
+    flex: var(--value, 0) 0 0;
+    background: $deep-forest;
+
+    &--footwork { background: $deep-forest; }
+    &--power { background: $warm-orange; }
+    &--technical { background: $dusty-lilac; }
+    &--rhythm_coordination { background: $smoky-mauve; }
+    &--freestyle { background: color-mix(in srgb, $deep-forest 45%, white); }
+    &--fundamentals_only { background: $golden-yellow; }
+  }
+
+  &__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+  }
+
+  &__legend-item {
+    font-size: 0.75rem;
+    color: $smoky-mauve;
+  }
+}

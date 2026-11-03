@@ -1,0 +1,15 @@
+.progress-page {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    margin: 0 0 1rem;
+  }
+
+  &__heading {
+    margin: 1.25rem 0 0.6rem;
+    font-family: $headers-font;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+}

@@ -31,7 +31,8 @@ module WorkoutsHelper
 
   def focus_label(category)
     labels = {
-      "rhythm_coordination" => "Rhythm"
+      "rhythm_coordination" => "Rhythm",
+      "fundamentals_only" => "Fundamentals only"
     }
 
     labels.fetch(category.to_s, category.to_s.titleize)
