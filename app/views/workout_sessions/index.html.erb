@@ -1,4 +1,47 @@
-<%= render "shared/coming_soon",
+<%#= render "shared/coming_soon",
   icon: "fa-solid fa-chart-line",
   title: "Your progress lives here soon",
   text: "Every workout you finish will land here. Streaks, minutes, personal bests." %>
+
+
+<h1 class="progress__title">Progress</h1>
+
+<ul class="history">
+  <% @workout_sessions.each do |workout_session| %>
+    <% workout = workout_session.workout %>
+    <li class="history__item">
+      <div class="history__top">
+        <div class="history__heading">
+          <span class="history__date"><%= session_date(workout_session.started_at) %></span>
+          <span class="history__title"><%= workout.title %></span>
+        </div>
+        <span class="history__duration"><%= human_duration(workout_session.actual_duration_seconds) %></span>
+      </div>
+
+      <% if workout_session.stopped? %>
+        <p class="history__stopped">
+          <svg class="history__stopped-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"></path></svg>
+          Stopped at <%= (workout_session.actual_duration_seconds / 60.0).round %> of <%= workout.requested_duration_seconds / 60 %> min
+        </p>
+      <% end %>
+
+      <p class="history__moves"><%= first_moves(workout) %></p>
+
+      <div class="history__pills">
+        <% if workout.fundamentals_only? %>
+          <span class="pill pill--fundamentals">
+            <%= focus_icon("fundamentals", extra_class: "pill__icon") %>
+            <%= focus_label("fundamentals") %>
+          </span>
+        <% else %>
+          <% (workout.focus - [ "fundamentals" ]).each do |focus| %>
+            <span class="pill pill--outline">
+              <%= focus_icon(focus, extra_class: "pill__icon") %>
+              <%= focus_label(focus) %>
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+</ul>

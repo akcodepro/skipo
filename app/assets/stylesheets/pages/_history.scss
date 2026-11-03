@@ -1,0 +1,75 @@
+.history {
+  margin: 0.5rem calc(-1 * #{$screen-gutter}) 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.75rem $screen-gutter;
+    border-top: 1px solid $mist;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  &__date {
+    font-size: 0.75rem;
+    color: $smoky-mauve;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__duration {
+    font-family: $headers-font;
+    font-size: 1.125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  &__stopped {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $smoky-mauve;
+  }
+
+  &__stopped-icon {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: $warm-orange;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+  }
+
+  &__moves {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: $smoky-mauve;
+  }
+
+  &__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+}
