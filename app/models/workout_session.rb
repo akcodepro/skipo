@@ -13,4 +13,5 @@ class WorkoutSession < ApplicationRecord
   validates :status, presence: true
 
   scope :resumable, -> { in_progress.where(started_at: 1.hour.ago..) }
+  scope :finished, -> { where(status: %i[completed stopped]) }
 end
