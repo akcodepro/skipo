@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.8
+**Version:** 0.9
 **Status:** Exploratory
 
 ## Product
@@ -211,7 +211,7 @@ Layout (decided October 2026, "Progress D" on the canvas):
 - **Activity card (Forest):** "This week" (time and number of workouts) and the total for the range, then the main visual. Swipe between two panels, with two small dots showing which one is open:
   - **Bars:** one thin bar per week (per month for 1Y and All), rounded top and flat base. The current week in orange
   - **Calendar:** one dot per day, bigger for longer sessions, the current week in orange. Missed weeks show as gaps, no extra message needed
-- **How you train:** two labelled tiles, "Your usual length" and "Your usual level" (the most common values, not averages), then one stacked bar, "What you pick on top of Fundamentals", with a legend in percentages
+- **How you train:** two labelled tiles, "Go-to duration" and "Go-to level" (the most common values, not averages), then one stacked bar, "What you pick on top of Fundamentals", with a legend in percentages. Each pick counts once per session; a session with only Fundamentals counts as "Fundamentals only"
 - **History:** full-width rows separated by dividers, no cards. Each row: date, title, time, the first moves ("Basic Bounce · Boxer Step · +6") and pills for the focuses the user picked (icon plus text)
 
 Rules:
