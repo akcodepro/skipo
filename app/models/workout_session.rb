@@ -14,4 +14,20 @@ class WorkoutSession < ApplicationRecord
 
   scope :resumable, -> { in_progress.where(started_at: 1.hour.ago..) }
   scope :finished, -> { where(status: %i[completed stopped]) }
+
+  def self.usual_duration_seconds
+    joins(:workout)
+      .group("workouts.requested_duration_seconds")
+      .count
+      .max_by { |_duration, count| count }
+      &.first
+  end
+
+  def self.usual_difficulty
+    joins(:workout)
+      .group("workouts.difficulty")
+      .count
+      .max_by { |_difficulty, count| count }
+      &.first
+  end
 end
