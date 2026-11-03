@@ -47,4 +47,26 @@ class WorkoutSessionTest < ActiveSupport::TestCase
     assert_nil sessions.usual_duration_seconds
     assert_nil sessions.usual_difficulty
   end
+
+  test "focus mix counts picks on top of fundamentals as percentages" do
+    footwork = Workout.create!(
+      user: @user, focus: [ "fundamentals", "footwork" ], title: "Footwork day",
+      difficulty: 1, requested_duration_seconds: 600
+    )
+    pure = Workout.create!(
+      user: @user, focus: [ "fundamentals" ], title: "Pure day",
+      difficulty: 1, requested_duration_seconds: 600
+    )
+
+    WorkoutSession.create!(user: @user, workout: footwork, status: :completed)
+    WorkoutSession.create!(user: @user, workout: pure, status: :stopped)
+
+    mix = @user.workout_sessions.finished.focus_mix
+
+    assert_equal({ "footwork" => 50, "fundamentals_only" => 50 }, mix)
+  end
+
+  test "focus mix is empty with no finished sessions" do
+    assert_equal({}, @user.workout_sessions.finished.focus_mix)
+  end
 end

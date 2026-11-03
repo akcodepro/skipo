@@ -30,4 +30,25 @@ class WorkoutSession < ApplicationRecord
       .max_by { |_difficulty, count| count }
       &.first
   end
+
+  def self.focus_mix
+    counts = joins(:workout)
+      .pluck("workouts.focus")
+      .flat_map do |focuses|
+        if focuses == [ "fundamentals" ]
+          [ "fundamentals_only" ]
+        else
+          focuses - [ "fundamentals" ]
+        end
+      end
+      .tally
+
+    total = counts.values.sum
+
+    percentages = counts.transform_values do |count|
+      (count * 100.0 / total).round
+    end
+
+    percentages.sort_by { |_focus, percentage| -percentage }.to_h
+  end
 end
