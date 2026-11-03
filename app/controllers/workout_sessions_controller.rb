@@ -1,9 +1,14 @@
 class WorkoutSessionsController < ApplicationController
   def index
-    @workout_sessions = current_user.workout_sessions
-      .finished
+    finished_sessions = current_user.workout_sessions.finished
+
+    @workout_sessions = finished_sessions
       .includes(workout: { workout_exercises: :exercise })
       .order(started_at: :desc)
+
+    @usual_duration_seconds = finished_sessions.usual_duration_seconds
+    @usual_difficulty = finished_sessions.usual_difficulty
+    @focus_mix = finished_sessions.focus_mix
   end
 
   def create
