@@ -9,6 +9,11 @@ class WorkoutSessionsController < ApplicationController
     @usual_duration_seconds = finished_sessions.usual_duration_seconds
     @usual_difficulty = finished_sessions.usual_difficulty
     @focus_mix = finished_sessions.focus_mix
+
+    this_week = finished_sessions.where(started_at: Time.current.beginning_of_week..)
+
+    @week_seconds = this_week.sum(:actual_duration_seconds)
+    @week_count = this_week.count
   end
 
   def create
