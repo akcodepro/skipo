@@ -159,4 +159,30 @@ class WorkoutSessionsTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "Test Workout"
     assert_not_includes response.body, "Their Workout"
   end
+
+  test "invalid range defaults to 3m" do
+    get workout_sessions_path(range: "banana")
+
+    assert_response :success
+    assert_select ".range-switch__option--active", "3M"
+  end
+
+  test "all range includes old finished sessions" do
+    @workout_session.update!(
+      status: "completed",
+      started_at: 6.months.ago,
+      actual_duration_seconds: 300,
+      completed_at: 6.months.ago
+    )
+
+    get workout_sessions_path
+
+    assert_response :success
+    assert_no_match "Test Workout", response.body
+
+    get workout_sessions_path(range: "all")
+
+    assert_response :success
+    assert_match "Test Workout", response.body
+  end
 end
