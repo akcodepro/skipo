@@ -14,6 +14,12 @@ class WorkoutSessionsController < ApplicationController
 
     @week_seconds = this_week.sum(:actual_duration_seconds)
     @week_count = this_week.count
+
+    range_start = 3.months.ago.beginning_of_week
+    in_range = finished_sessions.where(started_at: range_start..)
+
+    @range_seconds = in_range.sum(:actual_duration_seconds)
+    @range_count = in_range.count
   end
 
   def create
