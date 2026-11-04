@@ -1,6 +1,15 @@
 class WorkoutSessionsController < ApplicationController
+  RANGES = %w[3m 1y all].freeze
+
   def index
-    finished_sessions = current_user.workout_sessions.finished
+    @range = RANGES.include?(params[:range]) ? params[:range] : "3m"
+
+    range_start = range_start_for(@range)
+
+    finished_sessions = current_user
+      .workout_sessions
+      .finished
+      .where(started_at: range_start..)
 
     @workout_sessions = finished_sessions
       .includes(workout: { workout_exercises: :exercise })
@@ -15,11 +24,8 @@ class WorkoutSessionsController < ApplicationController
     @week_seconds = this_week.sum(:actual_duration_seconds)
     @week_count = this_week.count
 
-    range_start = 3.months.ago.beginning_of_week
-    in_range = finished_sessions.where(started_at: range_start..)
-
-    @range_seconds = in_range.sum(:actual_duration_seconds)
-    @range_count = in_range.count
+    @range_seconds = finished_sessions.sum(:actual_duration_seconds)
+    @range_count = finished_sessions.count
   end
 
   def create
@@ -66,5 +72,16 @@ class WorkoutSessionsController < ApplicationController
   private
     def workout_session_params
       params.expect(workout_session: [ :status, :actual_duration_seconds ])
+    end
+
+    def range_start_for(range)
+      case range
+      when "3m"
+        3.months.ago.beginning_of_week
+      when "1y"
+        11.months.ago.beginning_of_month
+      when "all"
+        nil
+      end
     end
 end
