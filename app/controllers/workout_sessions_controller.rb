@@ -1,8 +1,12 @@
 class WorkoutSessionsController < ApplicationController
-  RANGES = %w[3m 1y all].freeze
+  RANGES = {
+    "3m" => "3M",
+    "1y" => "1Y",
+    "all" => "All"
+  }.freeze
 
   def index
-    @range = RANGES.include?(params[:range]) ? params[:range] : "3m"
+    @range = RANGES.key?(params[:range]) ? params[:range] : "3m"
 
     range_start = range_start_for(@range)
 

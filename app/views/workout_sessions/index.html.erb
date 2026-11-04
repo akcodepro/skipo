@@ -5,7 +5,21 @@
 
 
 <div class="progress-page">
-  <h1 class="progress-page__title">Progress</h1>
+  <div class="progress-page__header">
+    <h1 class="progress-page__title">Progress</h1>
+
+    <nav class="range-switch" aria-label="Time range">
+      <% WorkoutSessionsController::RANGES.each do |value, label| %>
+        <%= link_to label,
+            workout_sessions_path(range: value),
+            class: class_names(
+              "range-switch__option",
+              "range-switch__option--active" => @range == value
+            ),
+            aria: { current: ("page" if @range == value) } %>
+      <% end %>
+    </nav>
+  </div>
 
   <h2 class="progress-page__heading">How you train</h2>
 
