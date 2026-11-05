@@ -1,0 +1,25 @@
+.range-switch {
+  display: flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: $mist;
+
+  &__option {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-family: $headers-font;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: $deep-forest;
+    text-decoration: none;
+
+    &--active {
+      background: $deep-forest;
+      color: $warm-porcelain;
+    }
+  }
+}

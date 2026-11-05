@@ -1,6 +1,19 @@
 class WorkoutSessionsController < ApplicationController
+  RANGES = {
+    "3m" => "3M",
+    "1y" => "1Y",
+    "all" => "All"
+  }.freeze
+
   def index
-    finished_sessions = current_user.workout_sessions.finished
+    @range = RANGES.key?(params[:range]) ? params[:range] : "3m"
+
+    range_start = range_start_for(@range)
+
+    finished_sessions = current_user
+      .workout_sessions
+      .finished
+      .where(started_at: range_start..)
 
     @workout_sessions = finished_sessions
       .includes(workout: { workout_exercises: :exercise })
@@ -9,6 +22,17 @@ class WorkoutSessionsController < ApplicationController
     @usual_duration_seconds = finished_sessions.usual_duration_seconds
     @usual_difficulty = finished_sessions.usual_difficulty
     @focus_mix = finished_sessions.focus_mix
+
+    this_week = finished_sessions.where(started_at: Time.current.beginning_of_week..)
+
+    @week_seconds = this_week.sum(:actual_duration_seconds)
+    @week_count = this_week.count
+
+    @range_seconds = finished_sessions.sum(:actual_duration_seconds)
+    @range_count = finished_sessions.count
+
+    unit = @range == "3m" ? "week" : "month"
+    @bars = finished_sessions.bars(unit, from: range_start)
   end
 
   def create
@@ -55,5 +79,16 @@ class WorkoutSessionsController < ApplicationController
   private
     def workout_session_params
       params.expect(workout_session: [ :status, :actual_duration_seconds ])
+    end
+
+    def range_start_for(range)
+      case range
+      when "3m"
+        3.months.ago.beginning_of_week
+      when "1y"
+        11.months.ago.beginning_of_month
+      when "all"
+        nil
+      end
     end
 end

@@ -2,8 +2,22 @@
   display: flex;
   flex-direction: column;
 
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
   &__title {
-    margin: 0 0 1rem;
+    font-family: $headers-font;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.05;
+
+    color: $deep-forest;
+
+    margin: 0;
   }
 
   &__heading {

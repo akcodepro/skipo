@@ -5,7 +5,65 @@
 
 
 <div class="progress-page">
-  <h1 class="progress-page__title">Progress</h1>
+  <div class="progress-page__header">
+    <h1 class="progress-page__title">Progress</h1>
+
+    <nav class="range-switch" aria-label="Time range">
+      <% WorkoutSessionsController::RANGES.each do |value, label| %>
+        <%= link_to label,
+            workout_sessions_path(range: value),
+            class: class_names(
+              "range-switch__option",
+              "range-switch__option--active" => @range == value
+            ),
+            aria: { current: ("page" if @range == value) } %>
+      <% end %>
+    </nav>
+  </div>
+
+  <section class="activity" aria-label="Activity">
+    <div class="activity__summary">
+      <div class="activity__week">
+        <span class="activity__label">This week</span>
+        <span class="activity__week-value">
+          <%= human_duration(@week_seconds) %>
+          <span class="activity__week-detail">
+            · <%= pluralize(@week_count, "workout") %>
+          </span>
+        </span>
+      </div>
+
+      <div class="activity__total">
+        <span class="activity__total-value">
+          <%= human_duration(@range_seconds) %>
+        </span>
+        <span class="activity__label">
+          <%= { "3m" => "in 3 months", "1y" => "in 1 year", "all" => "in total" }[@range] %>
+        </span>
+      </div>
+    </div>
+
+    <% max_seconds = @bars.map(&:last).max.to_f %>
+
+    <div class="activity__bars" aria-hidden="true">
+      <% @bars.each_with_index do |(_date, seconds), index| %>
+        <% height = max_seconds.zero? ? 0 : (seconds / max_seconds * 100).round %>
+        <span
+          class="<%= class_names(
+            "activity__bar",
+            "activity__bar--current" => index == @bars.length - 1,
+            "activity__bar--empty" => seconds.zero?
+          ) %>"
+          style="--value: <%= height %>%"
+        ></span>
+      <% end %>
+    </div>
+
+    <div class="activity__axis">
+      <span><%= @bars.first&.first&.strftime("%b") %></span>
+      <span>Now</span>
+    </div>
+  </section>
 
   <h2 class="progress-page__heading">How you train</h2>
 
