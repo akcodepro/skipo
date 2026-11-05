@@ -32,7 +32,7 @@ class WorkoutSessionsController < ApplicationController
     @range_count = finished_sessions.count
 
     unit = @range == "3m" ? "week" : "month"
-    @period_seconds = finished_sessions.seconds_by(unit)
+    @bars = finished_sessions.bars(unit, from: range_start)
   end
 
   def create

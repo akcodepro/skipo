@@ -69,4 +69,84 @@ class WorkoutSessionTest < ActiveSupport::TestCase
   test "focus mix is empty with no finished sessions" do
     assert_equal({}, @user.workout_sessions.finished.focus_mix)
   end
+
+  test "seconds_by week groups session durations by week" do
+    week_one = Date.new(2026, 10, 5)
+    week_two = Date.new(2026, 10, 12)
+
+    WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: :completed,
+      started_at: week_one + 1.day,
+      actual_duration_seconds: 300
+    )
+
+    WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: :completed,
+      started_at: week_one + 3.days,
+      actual_duration_seconds: 600
+    )
+
+    WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: :completed,
+      started_at: week_two + 1.day,
+      actual_duration_seconds: 900
+    )
+
+    result = @user.workout_sessions.finished.seconds_by("week")
+
+    assert_equal({ week_one => 900, week_two => 900 }, result)
+  end
+
+  test "counts a session just after Monday midnight in Paris in that week" do
+    week_two = Date.new(2026, 10, 12)
+
+    WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: :completed,
+      started_at: Time.zone.local(2026, 10, 12, 0, 30),
+      actual_duration_seconds: 300
+    )
+
+    result = @user.workout_sessions.finished.seconds_by("week")
+
+    assert_equal 300, result[week_two]
+    assert_nil result[Date.new(2026, 10, 5)]
+  end
+
+  test "bars fill weeks without sessions with zero" do
+    week_one = Date.new(2026, 10, 5)
+
+    WorkoutSession.create!(
+      user: @user, workout: @workout, status: :completed,
+      started_at: Time.zone.local(2026, 10, 6, 18), actual_duration_seconds: 300
+    )
+
+    bars = @user.workout_sessions.finished.bars("week", from: week_one)
+
+    assert_equal [ week_one, 300 ], bars.first
+    assert_equal [ Date.new(2026, 10, 12), 0 ], bars.second
+    assert_equal Date.current.beginning_of_week, bars.last.first
+  end
+
+  test "bars start at the first session's month when there is no range start" do
+    WorkoutSession.create!(
+      user: @user, workout: @workout, status: :completed,
+      started_at: Time.zone.local(2026, 8, 20, 18), actual_duration_seconds: 300
+    )
+
+    bars = @user.workout_sessions.finished.bars("month")
+
+    assert_equal [ Date.new(2026, 8, 1), 300 ], bars.first
+  end
+
+  test "bars are empty with no finished sessions" do
+    assert_equal [], @user.workout_sessions.finished.bars("week")
+  end
 end
