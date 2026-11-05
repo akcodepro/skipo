@@ -51,4 +51,18 @@ class WorkoutSession < ApplicationRecord
 
     percentages.sort_by { |_focus, percentage| -percentage }.to_h
   end
+
+  def self.seconds_by(unit)
+    raise ArgumentError, "Invalid unit" unless %w[week month].include?(unit)
+
+    timezone = Time.zone.tzinfo.name
+
+    group(
+      sanitize_sql_array([
+        "date_trunc(?, started_at AT TIME ZONE 'UTC' AT TIME ZONE ?)::date",
+        unit,
+        timezone
+      ])
+    ).sum(:actual_duration_seconds)
+  end
 end
