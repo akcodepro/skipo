@@ -1,0 +1,86 @@
+.activity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 22px;
+  background: $deep-forest;
+  color: $warm-porcelain;
+
+  &__summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  &__week {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  &__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $mist;
+  }
+
+  &__week-value {
+    font-family: $headers-font;
+    font-size: 1.625rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__week-detail {
+    font-size: 0.875rem;
+    color: $mist;
+  }
+
+  &__total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  &__total-value {
+    font-family: $headers-font;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  // One bar per week (3M) or month (1Y, All). Height comes from the data: style="--value: 64%"
+  &__bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3px;
+    height: 110px;
+  }
+
+  &__bar {
+    flex: 0 1 12px;
+    height: var(--value, 0);
+    min-height: 4px;
+    border-radius: 6px 6px 2px 2px;
+    background: $warm-porcelain;
+
+    &--empty {
+      background: rgba($warm-porcelain, 0.18);
+    }
+
+    &--current {
+      background: $warm-orange;
+    }
+  }
+
+  &__axis {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    color: $mist;
+  }
+}

@@ -21,6 +21,50 @@
     </nav>
   </div>
 
+  <section class="activity" aria-label="Activity">
+    <div class="activity__summary">
+      <div class="activity__week">
+        <span class="activity__label">This week</span>
+        <span class="activity__week-value">
+          <%= human_duration(@week_seconds) %>
+          <span class="activity__week-detail">
+            · <%= pluralize(@week_count, "workout") %>
+          </span>
+        </span>
+      </div>
+
+      <div class="activity__total">
+        <span class="activity__total-value">
+          <%= human_duration(@range_seconds) %>
+        </span>
+        <span class="activity__label">
+          <%= { "3m" => "in 3 months", "1y" => "in 1 year", "all" => "in total" }[@range] %>
+        </span>
+      </div>
+    </div>
+
+    <% max_seconds = @bars.map(&:last).max.to_f %>
+
+    <div class="activity__bars" aria-hidden="true">
+      <% @bars.each_with_index do |(_date, seconds), index| %>
+        <% height = max_seconds.zero? ? 0 : (seconds / max_seconds * 100).round %>
+        <span
+          class="<%= class_names(
+            "activity__bar",
+            "activity__bar--current" => index == @bars.length - 1,
+            "activity__bar--empty" => seconds.zero?
+          ) %>"
+          style="--value: <%= height %>%"
+        ></span>
+      <% end %>
+    </div>
+
+    <div class="activity__axis">
+      <span><%= @bars.first&.first&.strftime("%b") %></span>
+      <span>Now</span>
+    </div>
+  </section>
+
   <h2 class="progress-page__heading">How you train</h2>
 
   <div class="training">
