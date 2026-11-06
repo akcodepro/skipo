@@ -149,4 +149,21 @@ class WorkoutSessionTest < ActiveSupport::TestCase
   test "bars are empty with no finished sessions" do
     assert_equal [], @user.workout_sessions.finished.bars("week")
   end
+
+  test "counts a session just after midnight in Paris on that day" do
+    day = Date.new(2026, 10, 12)
+
+    WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: :completed,
+      started_at: Time.zone.local(2026, 10, 12, 0, 30),
+      actual_duration_seconds: 300
+    )
+
+    result = @user.workout_sessions.finished.seconds_by("day")
+
+    assert_equal 300, result[day]
+    assert_nil result[day - 1]
+  end
 end

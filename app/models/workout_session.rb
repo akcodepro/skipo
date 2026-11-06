@@ -53,7 +53,7 @@ class WorkoutSession < ApplicationRecord
   end
 
   def self.seconds_by(unit)
-    raise ArgumentError, "Invalid unit" unless %w[week month].include?(unit)
+    raise ArgumentError, "Invalid unit" unless %w[day week month].include?(unit)
 
     timezone = Time.zone.tzinfo.name
 
