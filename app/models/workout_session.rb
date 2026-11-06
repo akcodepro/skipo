@@ -98,4 +98,14 @@ class WorkoutSession < ApplicationRecord
 
     periods.map { |date| [ date, totals.fetch(date, 0) ] }
   end
+
+  def self.calendar_days(from:)
+    start = from.to_date
+    finish = Date.current.end_of_week
+    totals = seconds_by("day")
+
+    (start..finish).map do |date|
+      [date, totals.fetch(date, 0)]
+    end
+  end
 end

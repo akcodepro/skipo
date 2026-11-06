@@ -166,4 +166,26 @@ class WorkoutSessionTest < ActiveSupport::TestCase
     assert_equal 300, result[day]
     assert_nil result[day - 1]
   end
+
+  test "calendar days include every day through Sunday and fill missing days with zero" do
+    start = Date.new(2026, 10, 12)
+    finish = Date.current.end_of_week
+
+    WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: :completed,
+      started_at: Time.zone.local(2026, 10, 12, 10),
+      actual_duration_seconds: 300
+    )
+
+    calendar = @user.workout_sessions.finished.calendar_days(from: start)
+
+    assert_equal start, calendar.first.first
+    assert_equal finish, calendar.last.first
+    assert_equal 0, calendar.length % 7
+
+    assert_equal [ start, 300 ], calendar.first
+    assert_equal [ start + 1.day, 0 ], calendar.second
+  end
 end
