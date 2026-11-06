@@ -105,7 +105,7 @@ class WorkoutSession < ApplicationRecord
     totals = seconds_by("day")
 
     (start..finish).map do |date|
-      [date, totals.fetch(date, 0)]
+      [ date, totals.fetch(date, 0) ]
     end
   end
 end

@@ -21,7 +21,7 @@
     </nav>
   </div>
 
-  <section class="activity" aria-label="Activity">
+  <section class="activity" aria-label="Activity" style="--periods: <%= @bars.length %>">
     <div class="activity__summary">
       <div class="activity__week">
         <span class="activity__label">This week</span>
@@ -59,10 +59,37 @@
       <% end %>
     </div>
 
-    <div class="activity__axis">
-      <span><%= @bars.first&.first&.strftime("%b") %></span>
-      <span>Now</span>
+    <% if @calendar_days %>
+      <% current_week_start = Date.current.beginning_of_week %>
+
+      <div
+        class="activity__calendar"
+        aria-hidden="true"
+      >
+        <% @calendar_days.each do |date, seconds| %>
+          <% future = date > Date.current %>
+          <% current = date >= current_week_start %>
+          <% size = seconds.zero? ? 4 : [6 + (seconds / 300.0), 10].min %>
+
+          <span
+            class="<%= class_names(
+              "activity__day",
+              "activity__day--current" => current,
+              "activity__day--empty" => seconds.zero?,
+              "activity__day--future" => future
+            ) %>"
+            style="--size: <%= size %>px"
+          ></span>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="activity__axis" aria-hidden="true">
+      <% @bars.each_index do |index| %>
+        <span class="activity__tick"><%= axis_label(@bars, index) %></span>
+      <% end %>
     </div>
+
   </section>
 
   <h2 class="progress-page__heading">How you train</h2>

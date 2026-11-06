@@ -38,4 +38,13 @@ module WorkoutSessionsHelper
     shown << "+#{hidden}" if hidden.positive?
     shown.join(" · ")
   end
+
+  def axis_label(bars, index)
+    return "Now" if index == bars.length - 1
+
+    date = bars[index].first
+    previous = bars[index - 1].first if index.positive?
+
+    date.strftime("%b") if previous.nil? || previous.month != date.month
+  end
 end

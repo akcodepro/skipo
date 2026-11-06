@@ -52,17 +52,19 @@
     font-weight: 700;
   }
 
-  // One bar per week (3M) or month (1Y, All). Height comes from the data: style="--value: 64%"
+  // One shared grid across bars, calendar and axis.
   &__bars {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 3px;
+    display: grid;
+    grid-template-columns: repeat(var(--periods), minmax(0, 1fr));
+    align-items: end;
+    column-gap: 4px;
     height: 110px;
   }
 
   &__bar {
-    flex: 0 1 12px;
+    justify-self: center;
+    width: 100%;
+    max-width: 12px;
     height: var(--value, 0);
     min-height: 4px;
     border-radius: 6px 6px 2px 2px;
@@ -77,10 +79,55 @@
     }
   }
 
+  // Seven rows (Mon–Sun), one column per week.
+  &__calendar {
+    display: grid;
+    grid-template-columns: repeat(var(--periods), minmax(0, 1fr));
+    grid-template-rows: repeat(7, 12px);
+    grid-auto-flow: column;
+    column-gap: 4px;
+    row-gap: 4px;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    height: 110px;
+  }
+
+  &__day {
+    width: var(--size, 4px);
+    height: var(--size, 4px);
+    border-radius: 999px;
+    background: $warm-porcelain;
+
+    &--empty {
+      background: rgba($warm-porcelain, 0.18);
+    }
+
+    &--current {
+      background: $warm-orange;
+    }
+
+    &--current#{&}--empty {
+      background: rgba($warm-orange, 0.35);
+    }
+
+    &--future {
+      visibility: hidden;
+    }
+  }
+
+  // Same columns as the bars and the calendar, so every label sits under its column
   &__axis {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(var(--periods), minmax(0, 1fr));
+    column-gap: 4px;
     font-size: 0.6875rem;
     color: $mist;
+  }
+
+  // Text may spill to the right over empty neighbours
+  &__tick {
+    justify-self: start;
+    white-space: nowrap;
   }
 }
