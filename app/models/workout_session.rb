@@ -53,7 +53,7 @@ class WorkoutSession < ApplicationRecord
   end
 
   def self.seconds_by(unit)
-    raise ArgumentError, "Invalid unit" unless %w[week month].include?(unit)
+    raise ArgumentError, "Invalid unit" unless %w[day week month].include?(unit)
 
     timezone = Time.zone.tzinfo.name
 
@@ -97,5 +97,15 @@ class WorkoutSession < ApplicationRecord
     totals = seconds_by(unit)
 
     periods.map { |date| [ date, totals.fetch(date, 0) ] }
+  end
+
+  def self.calendar_days(from:)
+    start = from.to_date
+    finish = Date.current.end_of_week
+    totals = seconds_by("day")
+
+    (start..finish).map do |date|
+      [ date, totals.fetch(date, 0) ]
+    end
   end
 end

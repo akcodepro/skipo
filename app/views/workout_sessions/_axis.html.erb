@@ -1,0 +1,5 @@
+<div class="activity__axis" aria-hidden="true">
+  <% @bars.each_index do |index| %>
+    <span class="activity__tick"><%= axis_label(@bars, index) %></span>
+  <% end %>
+</div>

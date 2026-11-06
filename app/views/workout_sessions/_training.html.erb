@@ -1,0 +1,30 @@
+<div class="training">
+  <div class="training__tiles">
+    <div class="training__tile">
+      <span class="training__tile-label">Go-to duration</span>
+      <span class="training__tile-value">
+        <%= human_duration(@usual_duration_seconds) %>
+      </span>
+    </div>
+    <div class="training__tile">
+      <span class="training__tile-label">Go-to level</span>
+      <span class="training__tile-value">
+        <%= Workout::DIFFICULTY_LEVELS[@usual_difficulty] %>
+      </span>
+    </div>
+  </div>
+  <p class="training__mix-label">What you pick on top of Fundamentals</p>
+  <div class="training__mix" aria-hidden="true">
+    <% @focus_mix.each do |focus, percentage| %>
+      <div
+        class="training__mix-segment training__mix-segment--<%= focus %>"
+        style="--value: <%= percentage %>">
+      </div>
+    <% end %>
+  </div>
+  <div class="training__legend">
+    <% @focus_mix.each do |focus, percentage| %>
+      <span class="training__legend-item"><%= focus_label(focus) %> <%= percentage %>%</span>
+    <% end %>
+  </div>
+</div>

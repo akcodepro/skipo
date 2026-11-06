@@ -1,0 +1,16 @@
+<% current_week_start = Date.current.beginning_of_week %>
+
+<div class="activity__calendar" aria-hidden="true">
+  <% @calendar_days.each do |date, seconds| %>
+    <% size = seconds.zero? ? 4 : [ 6 + (seconds / 300.0), 10 ].min %>
+    <span
+      class="<%= class_names(
+        "activity__day",
+        "activity__day--current" => date >= current_week_start,
+        "activity__day--empty" => seconds.zero?,
+        "activity__day--future" => date > Date.current
+      ) %>"
+      style="--size: <%= size %>px"
+    ></span>
+  <% end %>
+</div>

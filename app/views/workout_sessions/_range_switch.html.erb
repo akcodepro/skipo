@@ -1,0 +1,11 @@
+<nav class="range-switch" aria-label="Time range">
+  <% WorkoutSessionsController::RANGES.each do |value, label| %>
+    <%= link_to label,
+        workout_sessions_path(range: value),
+        class: class_names(
+          "range-switch__option",
+          "range-switch__option--active" => @range == value
+        ),
+        aria: { current: ("page" if @range == value) } %>
+  <% end %>
+</nav>

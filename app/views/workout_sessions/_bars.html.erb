@@ -1,0 +1,15 @@
+<% max_seconds = @bars.map(&:last).max.to_f %>
+
+<div class="activity__bars" aria-hidden="true">
+  <% @bars.each_with_index do |(_date, seconds), index| %>
+    <% height = max_seconds.zero? ? 0 : (seconds / max_seconds * 100).round %>
+    <span
+      class="<%= class_names(
+        "activity__bar",
+        "activity__bar--current" => index == @bars.length - 1,
+        "activity__bar--empty" => seconds.zero?
+      ) %>"
+      style="--value: <%= height %>%"
+    ></span>
+  <% end %>
+</div>

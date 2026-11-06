@@ -33,6 +33,8 @@ class WorkoutSessionsController < ApplicationController
 
     unit = @range == "3m" ? "week" : "month"
     @bars = finished_sessions.bars(unit, from: range_start)
+
+    @calendar_days = finished_sessions.calendar_days(from: range_start) if @range == "3m"
   end
 
   def create
