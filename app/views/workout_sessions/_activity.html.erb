@@ -1,0 +1,62 @@
+<section class="activity" aria-label="Activity" style="--periods: <%= @bars.length %>">
+  <div class="activity__summary">
+    <div class="activity__week">
+      <span class="activity__label">This week</span>
+      <span class="activity__week-value">
+        <%= human_duration(@week_seconds) %>
+        <span class="activity__week-detail">
+          · <%= pluralize(@week_count, "workout") %>
+        </span>
+      </span>
+    </div>
+    <div class="activity__total">
+      <span class="activity__total-value">
+        <%= human_duration(@range_seconds) %>
+      </span>
+      <span class="activity__label">
+        <%= { "3m" => "in 3 months", "1y" => "in 1 year", "all" => "in total" }[@range] %>
+      </span>
+    </div>
+  </div>
+  <% max_seconds = @bars.map(&:last).max.to_f %>
+  <div class="activity__bars" aria-hidden="true">
+    <% @bars.each_with_index do |(_date, seconds), index| %>
+      <% height = max_seconds.zero? ? 0 : (seconds / max_seconds * 100).round %>
+      <span
+        class="<%= class_names(
+          "activity__bar",
+          "activity__bar--current" => index == @bars.length - 1,
+          "activity__bar--empty" => seconds.zero?
+        ) %>"
+        style="--value: <%= height %>%"
+      ></span>
+    <% end %>
+  </div>
+  <% if @calendar_days %>
+    <% current_week_start = Date.current.beginning_of_week %>
+    <div
+      class="activity__calendar"
+      aria-hidden="true"
+    >
+      <% @calendar_days.each do |date, seconds| %>
+        <% future = date > Date.current %>
+        <% current = date >= current_week_start %>
+        <% size = seconds.zero? ? 4 : [6 + (seconds / 300.0), 10].min %>
+        <span
+          class="<%= class_names(
+            "activity__day",
+            "activity__day--current" => current,
+            "activity__day--empty" => seconds.zero?,
+            "activity__day--future" => future
+          ) %>"
+          style="--size: <%= size %>px"
+        ></span>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="activity__axis" aria-hidden="true">
+    <% @bars.each_index do |index| %>
+      <span class="activity__tick"><%= axis_label(@bars, index) %></span>
+    <% end %>
+  </div>
+</section>
