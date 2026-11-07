@@ -1,3 +1,8 @@
+:root {
+  --navbar-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) - 12px));
+  --navbar-height: 66px;
+}
+
 body {
   padding-top: env(safe-area-inset-top);
 }

@@ -2,7 +2,8 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px + 66px + 12px);
+  //bottom: calc(env(safe-area-inset-bottom, 0px) + 16px + 66px + 12px);
+  bottom: calc(var(--navbar-bottom) + var(--navbar-height) + 12px);
   margin-inline: auto;
   max-width: $screen-max-width;
   padding-inline: $screen-gutter;
@@ -12,4 +13,3 @@
 .action-bar__form {
   width: 100%;
 }
-

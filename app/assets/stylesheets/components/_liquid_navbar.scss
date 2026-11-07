@@ -3,7 +3,8 @@
   z-index: 1000;
   left: 16px;
   right: 16px;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  //bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  bottom: var(--navbar-bottom);
 
   display: flex;
   justify-content: center;
@@ -15,7 +16,7 @@
     align-items: center;
     gap: 4px;
 
-    width: 100%;
+    width: 80%;
     max-width: 420px;
     padding: 6px;
 
