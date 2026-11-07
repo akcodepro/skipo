@@ -3,7 +3,7 @@
   z-index: 1000;
   left: 16px;
   right: 16px;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  bottom: var(--navbar-bottom);
 
   display: flex;
   justify-content: center;
@@ -15,17 +15,17 @@
     align-items: center;
     gap: 4px;
 
-    width: 100%;
+    width: 80%;
     max-width: 420px;
     padding: 6px;
 
     border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 12px 35px rgba(0, 0, 0, 0.18);
 
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba($deep-forest, 0.06);
+    box-shadow:
+      0 1px 2px rgba($deep-forest, 0.06),
+      0 8px 24px rgba($deep-forest, 0.08);
     backdrop-filter: blur(22px) saturate(180%);
     -webkit-backdrop-filter: blur(22px) saturate(180%);
 
@@ -66,11 +66,13 @@
 
     &--active {
       color: $deep-forest;
-      background: rgba(255, 255, 255, 0.24);
-      border: 1px solid rgba(255, 255, 255, 0.45);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.65),
-        0 2px 8px rgba(0, 0, 0, 0.08);
+      background: rgba($deep-forest, 0.06);
+      border-color: transparent;
+      box-shadow: none;
+
+      .liquid-navbar__icon {
+        color: $warm-orange;
+      }
     }
   }
 
