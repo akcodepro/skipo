@@ -1,3 +1,6 @@
+puts ""
+puts "🌱  Seeding demo workout..."
+
 # Create or find demo user
 demo_user = User.find_or_initialize_by(email: "jumper@example.com")
 
@@ -92,8 +95,6 @@ total_actual_duration_seconds = 0
   end
 end
 
-puts ""
-puts "🏋️  Demo workout seeding complete!"
 puts "  👤 Demo user: #{demo_user.display_name} (#{demo_user.email})"
 puts "  🆕 #{created_workouts} workouts created."
 puts "  ✅ #{completed_sessions} completed sessions."
@@ -101,12 +102,10 @@ puts "  🛑 #{stopped_sessions} stopped sessions."
 puts "  📅 #{13 - missed_weeks.size} weeks with workout history."
 puts "  💤 #{missed_weeks.size} deliberately missed week(s)."
 puts "  ⏱️  #{(total_actual_duration_seconds / 60.0).round} minutes of actual workout time."
-puts ""
 puts "  📚 Workout template distribution:"
 
 templates_used.sort.each do |title, count|
   puts "    • #{title}: #{count}"
 end
 
-puts ""
 puts "  📊 #{demo_user.workouts.count} total workouts for demo user."
