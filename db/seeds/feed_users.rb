@@ -1,26 +1,13 @@
 puts ""
 puts "🌱 Seeding feed users..."
 
-first_names = [
-  "Blake",
-  "Breanna",
-  "Charlotte",
-  "Flynn",
-  "Jayden",
-  "Kirra",
-  "Lachlan",
-  "Leyla",
-  "Riley",
-  "Tahlia"
-]
-
 created_count = 0
 existing_count = 0
 avatars_attached_count = 0
 avatars_skipped_count = 0
 missing_avatars = []
 
-first_names.each do |name|
+FIRST_NAMES.each do |name|
   email = "#{name.downcase}@example.com"
   user_created = false
 

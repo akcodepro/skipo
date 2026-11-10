@@ -9,5 +9,5 @@ load Rails.root.join("db/seeds/demo.rb")
 
 # Generate social feed data
 load Rails.root.join("db/seeds/feed_users.rb")
-#load Rails.root.join("db/seeds/feed_posts.rb")
+load Rails.root.join("db/seeds/feed_posts.rb")
 #load Rails.root.join("db/seeds/feed_likes.rb")

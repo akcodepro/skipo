@@ -40,6 +40,19 @@ DEMO_TEMPLATES = [
   }
 ].freeze
 
+FIRST_NAMES = [
+  "Blake",
+  "Breanna",
+  "Charlotte",
+  "Flynn",
+  "Jayden",
+  "Kirra",
+  "Lachlan",
+  "Leyla",
+  "Riley",
+  "Tahlia"
+]
+
 # Build a workout, its exercises and its session from a template.
 def create_demo_session(user:, template:, started_at:, status: :completed)
   workout = user.workouts.create!(

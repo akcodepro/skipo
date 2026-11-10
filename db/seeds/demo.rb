@@ -7,7 +7,7 @@ demo_user.assign_attributes(
 )
 demo_user.save!
 
-# Clear existing workouts (sessions and exercises are destroyed automatically)
+# Clear existing workouts (exercises, sessions, shared posts and likes go with them)
 demo_user.workouts.destroy_all
 
 created_workouts = 0
