@@ -22,6 +22,8 @@ class SharedWorkout < ApplicationRecord
 
   validate :acceptable_photo
 
+  scope :visible, -> { where(deleted_at: nil) }
+
   private
 
   def acceptable_photo

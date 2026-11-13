@@ -1,6 +1,7 @@
 class SharedWorkoutsController < ApplicationController
   def index
     @shared_workouts = SharedWorkout
+      .visible
       .includes(
         :likes,
         workout_session: :workout,

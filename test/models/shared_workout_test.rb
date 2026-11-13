@@ -47,4 +47,21 @@ class SharedWorkoutTest < ActiveSupport::TestCase
   test "is valid with no photo" do
     assert @shared_workout.valid?
   end
+
+  test "visible excludes deleted shared workouts" do
+    second_workout_session = WorkoutSession.create!(
+      user: @user,
+      workout: @workout,
+      status: "completed"
+    )
+
+    deleted_shared_workout = SharedWorkout.create!(
+      user: @user,
+      workout_session: second_workout_session,
+      deleted_at: Time.current
+    )
+
+    assert_includes SharedWorkout.visible, @shared_workout
+    refute_includes SharedWorkout.visible, deleted_shared_workout
+  end
 end
