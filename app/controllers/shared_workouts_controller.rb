@@ -4,6 +4,7 @@ class SharedWorkoutsController < ApplicationController
       .visible
       .includes(
         :likes,
+        photo_attachment: :blob,
         workout_session: {
           workout: {
             workout_exercises: :exercise

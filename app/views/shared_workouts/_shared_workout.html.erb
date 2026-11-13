@@ -27,7 +27,15 @@
   <% end %>
 
   <div class="feed-post__media">
-    <%= render "shared/move_grid", workout: shared_workout.workout_session.workout %>
+    <% if shared_workout.photo.attached? %>
+      <%= image_tag shared_workout.photo,
+        class: "feed-post__photo",
+        alt: "#{shared_workout.user.display_name}'s workout photo",
+        loading: "lazy" %>
+    <% else %>
+      <%= render "shared/move_grid",
+        workout: shared_workout.workout_session.workout %>
+    <% end %>
   </div>
 
   <div class="feed-post__footer">
@@ -37,7 +45,7 @@
     </div>
 
     <span class="feed-post__likes">
-      <%= shared_workout.likes.size %> likes
+      <%= pluralize(shared_workout.likes.size, "like") %>
     </span>
   </div>
 </article>
