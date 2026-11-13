@@ -1,20 +1,37 @@
 .avatar {
-  width: 40px;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
-}
-.avatar-large {
-  width: 56px;
-  border-radius: 50%;
-}
-.avatar-bordered {
-  width: 40px;
-  border-radius: 50%;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  border: white 1px solid;
-}
-.avatar-square {
-  width: 40px;
-  border-radius: 0px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-  border: white 1px solid;
+  overflow: hidden;
+  font-family: $headers-font;
+  font-weight: bold;
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &--orange {
+    background-color: $warm-orange;
+    color: $deep-forest;
+  }
+
+  &--forest {
+    background-color: $deep-forest;
+    color: $warm-porcelain;
+  }
+
+  &--mauve {
+    background-color: $smoky-mauve;
+    color: $warm-porcelain;
+  }
+
+  &--yellow {
+    background-color: $golden-yellow;
+    color: $deep-forest;
+  }
 }

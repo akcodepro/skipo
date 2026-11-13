@@ -17,19 +17,7 @@
       <% end %>
       <p class="history__moves"><%= first_moves(workout) %></p>
       <div class="history__pills">
-        <% if workout.fundamentals_only? %>
-          <span class="pill pill--fundamentals">
-            <%= focus_icon("fundamentals", extra_class: "pill__icon") %>
-            <%= focus_label("fundamentals") %>
-          </span>
-        <% else %>
-          <% (workout.focus - [ "fundamentals" ]).each do |focus| %>
-            <span class="pill pill--outline">
-              <%= focus_icon(focus, extra_class: "pill__icon") %>
-              <%= focus_label(focus) %>
-            </span>
-          <% end %>
-        <% end %>
+        <%= render "shared/focus_pills", workout: workout %>
       </div>
     </li>
   <% end %>

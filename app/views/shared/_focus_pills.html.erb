@@ -1,0 +1,13 @@
+<% if workout.fundamentals_only? %>
+  <span class="pill pill--fundamentals">
+    <%= focus_icon("fundamentals", extra_class: "pill__icon") %>
+    <%= focus_label("fundamentals") %>
+  </span>
+<% else %>
+  <% (workout.focus - [ "fundamentals" ]).each do |focus| %>
+    <span class="pill pill--outline">
+      <%= focus_icon(focus, extra_class: "pill__icon") %>
+      <%= focus_label(focus) %>
+    </span>
+  <% end %>
+<% end %>
