@@ -17,7 +17,9 @@
   </div>
 
   <% if @calendar_days %>
-    <div class="activity__swipe" data-controller="swipe-dots">
+    <div class="activity__swipe"
+      data-controller="swipe-dots"
+      data-swipe-dots-active-class="activity__dot--active">
       <div class="activity__panels" data-swipe-dots-target="panels" data-action="scroll->swipe-dots#update">
         <div class="activity__panel"><%= render "workout_sessions/bars" %></div>
         <div class="activity__panel"><%= render "workout_sessions/calendar" %></div>
