@@ -1,4 +1,6 @@
-<%= render "shared/coming_soon",
-  icon: "fa-solid fa-users",
-  title: "The community is warming up",
-  text: "Soon you’ll see what others are jumping, and share your own sessions." %>
+<div class="feed-page">
+  <h1 class="feed-page__title">Feed</h1>
+  <div class="feed-page__posts">
+    <%= render @shared_workouts %>
+  </div>
+</div>

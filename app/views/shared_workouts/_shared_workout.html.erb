@@ -1,0 +1,27 @@
+<article class="feed-post">
+  <div class="feed-post__header">
+    <div class="feed-post__author">
+      <span class="feed-post__name">
+        <%= shared_workout.user.display_name %>
+      </span>
+      <span class="feed-post__time">
+        <%= time_ago_in_words(shared_workout.created_at) %> ago
+      </span>
+    </div>
+  </div>
+
+  <div class="feed-post__heading">
+    <h2 class="feed-post__title">
+      <%= shared_workout.workout_session.workout.title %>
+    </h2>
+    <span class="feed-post__duration">
+      <%= human_duration(shared_workout.workout_session.actual_duration_seconds) %>
+    </span>
+  </div>
+
+  <% if shared_workout.caption.present? %>
+    <p class="feed-post__caption">
+      <%= shared_workout.caption %>
+    </p>
+  <% end %>
+</article>
