@@ -75,11 +75,61 @@
     height: 260px;
     margin: 0 calc(-1 * #{$screen-gutter});
   }
-  
+
   &__photo {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  &__carousel {
+    height: 100%;
+    position: relative;
+  }
+
+  &__panels {
+    display: flex;
+    height: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__panel {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: rgba(37, 72, 62, 0.35);
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+
+    &--active {
+      background: white;
+    }
   }
 }
