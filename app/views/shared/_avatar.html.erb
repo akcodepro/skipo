@@ -1,0 +1,7 @@
+<span class="avatar avatar--<%= avatar_color(user) %>">
+  <% if user.profile_photo.attached? %>
+    <%= image_tag user.profile_photo, class: "avatar__image", alt: "" %>
+  <% else %>
+    <span aria-hidden="true"><%= user.display_name.first %></span>
+  <% end %>
+</span>

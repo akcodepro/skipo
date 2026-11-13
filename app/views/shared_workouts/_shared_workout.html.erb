@@ -1,5 +1,6 @@
 <article class="feed-post">
   <div class="feed-post__header">
+    <%= render "shared/avatar", user: shared_workout.user %>
     <div class="feed-post__author">
       <span class="feed-post__name">
         <%= shared_workout.user.display_name %>
