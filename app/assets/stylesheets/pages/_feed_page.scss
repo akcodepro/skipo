@@ -1,0 +1,21 @@
+.feed-page {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-family: $headers-font;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.05;
+    color: $deep-forest;
+    margin: 0;
+  }
+
+  &__posts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: $mist;
+    margin: 0.75rem calc(-1 * #{$screen-gutter}) 0;
+  }
+}
