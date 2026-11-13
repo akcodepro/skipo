@@ -1,3 +1,4 @@
+
 puts ""
 puts "🌱 Seeding feed users..."
 
@@ -5,7 +6,8 @@ created_count = 0
 existing_count = 0
 avatars_attached_count = 0
 avatars_skipped_count = 0
-missing_avatars = []
+avatars_purged_count = 0
+users_without_avatar = []
 
 FIRST_NAMES.each do |name|
   email = "#{name.downcase}@example.com"
@@ -23,12 +25,12 @@ FIRST_NAMES.each do |name|
     existing_count += 1
   end
 
-  if user.profile_photo.attached?
-    avatars_skipped_count += 1
-  else
-    path = Rails.root.join("db/seeds/images/avatars", "#{name.downcase}.jpg")
+  path = Rails.root.join("db/seeds/images/avatars", "#{name.downcase}.jpg")
 
-    if File.file?(path)
+  if File.file?(path)
+    if user.profile_photo.attached?
+      avatars_skipped_count += 1
+    else
       File.open(path) do |file|
         user.profile_photo.attach(
           io: file,
@@ -37,8 +39,13 @@ FIRST_NAMES.each do |name|
       end
 
       avatars_attached_count += 1
+    end
+  else
+    if user.profile_photo.attached?
+      user.profile_photo.purge
+      avatars_purged_count += 1
     else
-      missing_avatars << path.basename.to_s
+      users_without_avatar << name
     end
   end
 end
@@ -47,9 +54,9 @@ puts "  👥 #{created_count} new users created."
 puts "  ♻️ #{existing_count} existing users reused."
 puts "  📸 #{avatars_attached_count} avatars attached."
 puts "  ⏭️ #{avatars_skipped_count} existing avatars skipped."
+puts "  🗑️ #{avatars_purged_count} avatars purged."
 puts "  📊 #{User.count} total users in the database."
 
-
-unless missing_avatars.empty?
-  warn "⚠️ Missing avatar files: #{missing_avatars.join(', ')}"
+unless users_without_avatar.empty?
+  puts "  👤 Users without an avatar: #{users_without_avatar.join(', ')}"
 end
