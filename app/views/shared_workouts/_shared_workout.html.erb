@@ -26,6 +26,57 @@
     </p>
   <% end %>
 
+
+  <div class="feed-post__media">
+    <% if shared_workout.photo.attached? %>
+      <div class="feed-post__carousel"
+          data-controller="swipe-dots"
+          data-swipe-dots-active-class="feed-post__dot--active">
+
+        <div class="feed-post__panels"
+            data-swipe-dots-target="panels"
+            data-action="scroll->swipe-dots#update">
+
+          <div class="feed-post__panel">
+            <%= image_tag shared_workout.photo,
+              class: "feed-post__photo",
+              alt: "#{shared_workout.user.display_name}'s workout photo",
+              loading: "lazy" %>
+          </div>
+
+          <div class="feed-post__panel">
+            <%= render "shared/move_grid",
+              workout: shared_workout.workout_session.workout %>
+          </div>
+
+        </div>
+
+        <div class="feed-post__dots">
+          <button type="button"
+                  class="feed-post__dot feed-post__dot--active"
+                  data-swipe-dots-target="dot"
+                  data-action="click->swipe-dots#go"
+                  data-index="0"
+                  aria-label="Show photo">
+          </button>
+
+          <button type="button"
+                  class="feed-post__dot"
+                  data-swipe-dots-target="dot"
+                  data-action="click->swipe-dots#go"
+                  data-index="1"
+                  aria-label="Show exercises">
+          </button>
+        </div>
+
+      </div>
+    <% else %>
+      <%= render "shared/move_grid",
+        workout: shared_workout.workout_session.workout %>
+    <% end %>
+  </div>
+
+
   <div class="feed-post__footer">
     <div class="feed-post__pills">
       <%= render "shared/focus_pills",
@@ -33,7 +84,7 @@
     </div>
 
     <span class="feed-post__likes">
-      <%= shared_workout.likes.size %> likes
+      <%= pluralize(shared_workout.likes.size, "like") %>
     </span>
   </div>
 </article>

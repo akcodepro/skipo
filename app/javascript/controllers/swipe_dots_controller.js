@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["panels", "dot"]
+  static classes = ["active"]
 
   update() {
     const index = Math.round(
@@ -9,7 +10,7 @@ export default class extends Controller {
     )
 
     this.dotTargets.forEach((dot, i) => {
-      dot.classList.toggle("activity__dot--active", i === index)
+      dot.classList.toggle(this.activeClass, i === index)
     })
   }
 
