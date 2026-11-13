@@ -25,4 +25,15 @@
       <%= shared_workout.caption %>
     </p>
   <% end %>
+
+  <div class="feed-post__footer">
+    <div class="feed-post__pills">
+      <%= render "shared/focus_pills",
+        workout: shared_workout.workout_session.workout %>
+    </div>
+
+    <span class="feed-post__likes">
+      <%= shared_workout.likes.size %> likes
+    </span>
+  </div>
 </article>
