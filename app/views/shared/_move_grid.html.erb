@@ -1,0 +1,24 @@
+<% workout_exercises = workout.workout_exercises %>
+<% shown = workout_exercises.first(10) %>
+<% remaining = workout_exercises.size - shown.size %>
+
+<div class="move-grid">
+  <ul class="move-grid__list">
+    <% shown.each do |workout_exercise| %>
+      <li class="move-grid__item">
+        <span class="move-grid__name">
+          <%= workout_exercise.exercise.name %>
+        </span>
+        <span class="move-grid__time">
+          <%= workout_exercise.duration_seconds %>s
+        </span>
+      </li>
+    <% end %>
+  </ul>
+
+  <% if remaining.positive? %>
+    <p class="move-grid__more">
+      +<%= remaining %> more exercises
+    </p>
+  <% end %>
+</div>

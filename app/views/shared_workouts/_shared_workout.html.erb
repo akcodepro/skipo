@@ -26,6 +26,10 @@
     </p>
   <% end %>
 
+  <div class="feed-post__media">
+    <%= render "shared/move_grid", workout: shared_workout.workout_session.workout %>
+  </div>
+
   <div class="feed-post__footer">
     <div class="feed-post__pills">
       <%= render "shared/focus_pills",
