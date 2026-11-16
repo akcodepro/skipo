@@ -29,7 +29,7 @@ Rails.application.configure do
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
 
-  # Store uploaded files on Cloudinary.
+  # Store uploaded files on local disk.
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
