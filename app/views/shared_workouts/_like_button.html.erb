@@ -1,9 +1,13 @@
+<% popping = local_assigns.fetch(:popping, false) %>
 <% liked = shared_workout.liked_by?(current_user) %>
 
 <div id="<%= dom_id(shared_workout, :like) %>">
   <%= button_to shared_workout_like_path(shared_workout),
         method: liked ? :delete : :post,
-        class: "like-button #{ 'like-button--liked' if liked }",
+        class: class_names(
+          "like-button",
+          "like-button--liked": liked,
+          "like-button--popping": popping),
         aria: { pressed: liked } do %>
     <svg class="like-button__icon" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M7 10v12"></path>

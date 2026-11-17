@@ -42,4 +42,18 @@
       fill: currentColor;
     }
   }
+
+  &--popping .like-button__icon {
+    animation: like-pop 0.4s ease-out;
+  }
+}
+
+@keyframes like-pop {
+  0%   { transform: scale(1) rotate(0); }
+  40%  { transform: scale(1.2) rotate(-12deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .like-button--popping .like-button__icon { animation: none; }
 }
