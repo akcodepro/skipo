@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     root to: "pages#home"
   end
 
-  resources :shared_workouts, only: [ :index ], path: "feed"
+  resources :shared_workouts, only: [ :index ], path: "feed" do
+    resource :like, only: [ :destroy, :create ]
+  end
 
   resources :workout_sessions, only: [ :index, :show, :update ], path: "progress"
 
