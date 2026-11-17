@@ -51,4 +51,14 @@ class SharedWorkoutsTest < ActionDispatch::IntegrationTest
     assert_select ".feed-post__title", text: "Morning fundamentals"
     assert_select ".feed-post__title", text: "Afternoon strength", count: 0
   end
+
+  test "shows empty state when there are no shared workouts" do
+    SharedWorkout.destroy_all
+
+    get shared_workouts_path
+
+    assert_response :success
+    assert_select "h1", "Feed"
+    assert_select ".coming-soon__title", "Your feed starts here"
+  end
 end
