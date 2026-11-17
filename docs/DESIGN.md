@@ -1,6 +1,6 @@
 # SKIPO — Design
 
-**Version:** 0.9
+**Version:** 0.11
 **Status:** Exploratory
 
 ## Product
@@ -170,29 +170,38 @@ Primary actions:
 
 **Done**
 
+Layout (decided November 2026, "Complete B" on the canvas):
+
+- **A card over the finished page.** The page behind it is dimmed (Forest-tinted), the navbar is back, and confetti flies between the dimmed page and the card, so the pieces stay in full colour. The card never scrolls
+- **Card 1, celebrate:** "Workout complete" label in orange, the time jumped as the big number ("15 min"), the workout title, and a short congratulation picked at random. **Share workout** (orange) and **Done**
+- **Card 2, share:** the title and duration as a reminder, a caption field and a small photo picker, both marked "optional" in small Mauve type. **Share to feed** and **Not now**. A back arrow returns to card 1
+- **Steps move with buttons, not swipes**, so typing a caption never fights a swipe and skipping is obvious. Two small dots show which card is open
+- **Confetti:** canvas-confetti, brand colours, mixed shapes (stars, waves, sparkles, dots), plays once on card 1. Custom SVG paths are possible, so the S symbol can join the shapes as an experiment. Respects reduced motion
+- **Stopped:** same card, calm. No confetti, no share. Mauve "Workout stopped" with the orange unclosed ring from History, "8 of 15 min", a gentle message, **Done** only, and a quiet line: "Only finished workouts can be shared."
+- **Where the buttons go:** Done → Progress (the new session at the top of History). Share to feed → the top of the Feed (newest first, so the new post is there, give or take anyone posting at the same moment)
+
 ---
 
 ### Social Feed
 
-A community feed containing workouts shared by users.
+A community feed of workouts that users chose to share.
 
-A feed post can contain:
+The feed should feel like an extension of the workout experience rather than a separate social-media product. A sports app first: enough to see what others did and react to their effort, not every stat.
 
-- User profile picture
-- User name
-- Publication time
-- Workout title
-- Workout duration
-- Workout information
-- Optional user photo
-- Exercise details
-- Like action
+Layout (decided November 2026, "Feed D" on the canvas):
 
-A workout post may contain a carousel when both a user photo and workout details are available.
+- **Full width, no cards.** Each post sits on a porcelain block; a thin grey band separates posts. No band between the page title and the first post
+- **Same structure for every post:** avatar, name and relative time ("7h ago"), then title on the left and duration on the right, then the optional caption, then the media, then focus pills on the left and the like on the right
+- **Media, one fixed height for every post**, so the feed has a steady rhythm:
+  - With a photo: a carousel, photo first (edge to edge, cropped to fill), then the moves. Two small dots show which panel is open
+  - Without a photo: the moves only, no carousel. A white full-width panel, moves in two columns, the first 10 shown, then "See X more exercises"
+- **Avatar:** the initial on a brand colour picked from the user's id (Orange, Forest, Mauve, Yellow), so a person always has the same colour. Forest text on the light colours. Profile photos replace it later
+- **The like:** a thumb with the count right after it, on the right where the thumb rests. Not liked: Mauve outline. Liked: filled Warm Orange (not red: Deep Brick is for errors only). The tap animation starts when the finger lifts (`click`): 1.2x pop, a −12° tilt, a small burst of brand-colour dots, about 0.4 s
+- **Fundamentals pill** only when it was the workout's only focus, as on Progress
+- **Page title** scrolls away with the content, like Progress. A sticky frosted header is a later decision for every page at once
+- **Browse only in V1.** Swiping the carousel and "See X more" are the only interactions besides the like. Later: tapping a post opens the full workout with "Do this workout"
 
-Comments are intentionally outside the V1 scope.
-
-The feed should feel like an extension of the workout experience rather than a separate social-media product.
+Comments are outside V1. When they come: a comment icon and count next to the like, plus the latest comments, each with its own like.
 
 ---
 
@@ -309,6 +318,7 @@ Mobile-native bottom tab bar, styled close to Apple's Liquid Glass.
 - Desktop: same mobile layout in a centred column for V1 (the `.screen` component)
 - Glass effect on the nav bar only. It must stay readable over any content and look right on iPhone Safari, where refraction effects may not render
 - Active tab set server-side, tap interactions only (no hover-driven behaviour)
+- Look (November 2026): light frosted bar at 80% width, a hairline border and a soft two-layer shadow. The active tab is a soft tint with the icon in Warm Orange and the label in Forest. Sits low in the installed app, just clear of the home indicator
 
 ### Components
 
@@ -339,7 +349,7 @@ Illustrations should be:
 
 For early implementation, large icons such as Font Awesome can be used as placeholders.
 
-Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout chips, exercise detail sheet, Progress history pills).
+Each focus category has its own icon, reused wherever that category appears (Train form tiles, generated workout chips, exercise detail sheet, Progress history pills, Feed pills).
 
 Planned spots for exercise illustrations: the exercise detail sheet ("Demo video coming soon" slot) and the Rest and Get Ready phases of the active workout, next to "Up next".
 
@@ -431,7 +441,7 @@ They are not intended to define exact content, copy, navigation or final compone
 
 Content and UI details should be refined during implementation.
 
-Mockups for the generated workout, the active workout and the Progress tab live on the "SKIPO generated workout options" canvas.
+Mockups for the generated workout, the active workout, the Progress tab, the Feed and the workout complete screen live on the "SKIPO generated workout options" canvas.
 
 ---
 
@@ -452,7 +462,7 @@ Mockups for the generated workout, the active workout and the Progress tab live 
 - Achievement without excessive gamification
 - Custom illustrations are desirable but not a development blocker
 - Placeholder icons can be used during early implementation
-- Bottom tab bar navigation: Progress · Train · Feed, Liquid Glass style
+- Bottom tab bar navigation: Progress · Train · Feed, Liquid Glass style, orange active icon
 - Generation inputs: duration stepper (default 15 min), focus tiles (multi-select, Fundamentals always included), difficulty picker (default Medium)
 - Allowed durations are defined once, on the Workout model, and validated server-side
 - Global exercise library with categories and difficulty
@@ -465,6 +475,8 @@ Mockups for the generated workout, the active workout and the Progress tab live 
 - Active workout: full-screen colour by phase, draining fill with an animated wavy edge, giant countdown, move dots, icon controls, no header or navbar, screen kept awake
 - Sound: countdown beeps and spoken exercise names, behind one on/off toggle
 - Progress: 3M / 1Y / All, weekly bars with a swipe to a calendar, "How you train", full-width history. Human units, Fundamentals shown only when it was the only focus, stopped sessions shown quietly and counted
+- Workout complete: a card over the dimmed page with confetti in between, celebrate then share (caption and photo together, both optional), buttons not swipes. Done → Progress, Share → Feed. Stopped: calm, no share
+- Feed: full width with bands between posts, one post structure, fixed-height media (photo carousel or moves panel), avatar colour from the user's id, thumb like in orange with a pop, tilt and burst on release. Browse only in V1
 
 ---
 
@@ -472,9 +484,9 @@ Mockups for the generated workout, the active workout and the Progress tab live 
 
 - Exact home screen structure
 - Feed ordering / pagination
-- Exact feed post layout
 - AI coach interaction
 - Final illustration approach
 - Error and loading states
 - What "Mixed" focus means for the generator
 - Progress: should tapping a bar or a history row open details (for example the exercise sheet, or the workout again)?
+- Sticky frosted header (SKIPO + Log out, and possibly page titles) on every page, or scroll away?
