@@ -1,6 +1,15 @@
 <div class="feed-page">
   <h1 class="feed-page__title">Feed</h1>
-  <div class="feed-page__posts">
-    <%= render @shared_workouts %>
-  </div>
+
+  <% if @shared_workouts.present? %>
+    <div class="feed-page__posts">
+      <%= render @shared_workouts %>
+    </div>
+  <% else %>
+    <%= render "shared/coming_soon",
+          icon: "fa-solid fa-users",
+          title: "Your feed starts here",
+          text: "It's quiet in here for now. Get a workout in, and other jumpers' sessions will show up here."
+    %>
+  <% end %>
 </div>
