@@ -1,0 +1,45 @@
+.like-button {
+  // Reset browser defaults
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+
+  // Layout
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+
+  // Default colour
+  color: $smoky-mauve;
+
+  &__icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+
+    // Outline appearance
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &__count {
+    font-size: 14px;
+    font-weight: 700;
+    color: $deep-forest;
+    min-width: 18px;
+  }
+
+  &--liked {
+    color: $warm-orange;
+
+    .like-button__icon {
+      fill: currentColor;
+    }
+  }
+}
