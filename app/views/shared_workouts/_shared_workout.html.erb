@@ -83,8 +83,6 @@
         workout: shared_workout.workout_session.workout %>
     </div>
 
-    <span class="feed-post__likes">
-      <%= pluralize(shared_workout.likes.size, "like") %>
-    </span>
+    <%= render "shared_workouts/like_button", shared_workout: shared_workout %>
   </div>
 </article>
