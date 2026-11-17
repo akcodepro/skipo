@@ -46,4 +46,10 @@ class LikesTest < ActionDispatch::IntegrationTest
     end
     assert_response :redirect
   end
+
+  test "liking with Turbo replaces the like button" do
+    post shared_workout_like_path(@post), as: :turbo_stream
+
+    assert_turbo_stream action: :replace, target: dom_id(@post, :like)
+  end
 end
