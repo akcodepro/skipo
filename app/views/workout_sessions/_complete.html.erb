@@ -1,10 +1,18 @@
 <% stopped = workout_session.stopped? %>
 
-<div class="<%= class_names(
-        "workout-complete",
-        "workout-complete--stopped": stopped) %>"
-      id="workout_session">
+<%= tag.div(
+  class: class_names("workout-complete", "workout-complete--stopped": stopped),
+  id: "workout_session",
+  data: (stopped ? {} : { controller: "celebrate" })
+) do %>
   <div class="workout-complete__backdrop"></div>
+
+  <% unless stopped %>
+    <canvas
+      class="workout-complete__confetti"
+      data-celebrate-target="canvas">
+    </canvas>
+  <% end %>
 
   <div class="workout-complete__card">
     <p class="workout-complete__label">
@@ -28,4 +36,4 @@
       <p class="workout-complete__note">Only finished workouts can be shared.</p>
     <% end %>
   </div>
-</div>
+<% end %>
