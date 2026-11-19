@@ -185,4 +185,23 @@ class WorkoutSessionsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_match "Test Workout", response.body
   end
+
+  test "completed workout session displays celebration controller" do
+    @workout_session.update!(status: :completed, actual_duration_seconds: 300)
+
+    get workout_session_path(@workout_session)
+
+    assert_response :success
+    assert_select "[data-controller='celebrate']"
+  end
+
+  test "stopped workout session does not display celebration controller" do
+    @workout_session.update!(status: :stopped, actual_duration_seconds: 300)
+
+    get workout_session_path(@workout_session)
+
+    assert_response :success
+    assert_select "[data-controller='celebrate']", count: 0
+    assert_select ".workout-complete__note"
+  end
 end
