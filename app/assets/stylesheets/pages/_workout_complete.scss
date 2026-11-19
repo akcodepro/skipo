@@ -1,0 +1,87 @@
+.workout-complete {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba($deep-forest, 0.62);
+  }
+
+  &__card {
+    position: relative;
+    width: 100%;
+    max-width: 342px;
+    box-sizing: border-box;
+    padding: 28px 24px 22px;
+    border-radius: 28px;
+    background: $warm-porcelain;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: $warm-orange;
+    margin: 0;
+  }
+
+  &__result {
+    margin: 0;
+  }
+
+  &__number {
+    font-family: $headers-font;
+    font-size: 84px;
+    font-weight: 700;
+    line-height: 0.95;
+  }
+
+  &__unit {
+    font-family: $headers-font;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  &__title {
+    font-family: $headers-font;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__message {
+    font-size: 16px;
+    color: $smoky-mauve;
+    margin: 0;
+  }
+
+  &__actions {
+    align-self: stretch;
+    margin-top: 12px;
+  }
+
+  &__note {
+    font-size: 12px;
+    color: $smoky-mauve;
+    margin: 0;
+  }
+
+  &--stopped {
+    .workout-complete__label {
+      color: $smoky-mauve;
+    }
+  }
+}

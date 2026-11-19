@@ -11,13 +11,9 @@
       <%= stopped ? "Workout stopped" : "Workout complete" %>
     </p>
 
-    <p>
-      <span class="workout-complete__number">
-        <%= (workout_session.actual_duration_seconds / 60.0).round %>
-      </span>
-      <span class="workout-complete__unit">
-        <%= stopped ? "of #{workout_session.workout.requested_duration_seconds / 60} min" : "min" %>
-      </span>
+    <p class="workout-complete__result">
+      <span class="workout-complete__number"><%= (workout_session.actual_duration_seconds / 60.0).round %></span>
+      <span class="workout-complete__unit"><%= stopped ? "of #{workout_session.workout.requested_duration_seconds / 60} min" : "min" %></span>
     </p>
 
     <h1 class="workout-complete__title"><%= workout_session.workout.title %></h1>
@@ -25,7 +21,7 @@
     <p class="workout-complete__message"><%= finish_message(workout_session) %></p>
 
     <div class="workout-complete__actions">
-      <%= link_to "Done", workout_sessions_path, class: "button button--primary" %>
+      <%= link_to "Done", workout_sessions_path, class: "button button--primary button--block" %>
     </div>
 
     <% if stopped %>
