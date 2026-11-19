@@ -1,16 +1,20 @@
-  <div class="workout-summary" id="workout_session">
-    <h1 class="workout-summary__title">
-      <%= @workout_session.workout.title %>
-    </h1>
+<div class="workout-complete" id="workout_session">
+  <div class="workout-complete__backdrop"></div>
 
-    <div class="workout-summary__metadata">
-      <span class="pill pill--status">
-        <%= @workout_session.status.titleize %>
-      </span>
+  <div class="workout-complete__card">
+    <p class="workout-complete__label">Workout complete</p>
 
-      <span class="pill pill--duration">
-        <i class="fa-clock pill__icon" aria-hidden="true"></i>
-        <%= format_duration(@workout_session.actual_duration_seconds) %>
-      </span>
+    <p>
+      <span class="workout-complete__number"><%= (workout_session.actual_duration_seconds / 60.0).round %></span>
+      <span class="workout-complete__unit">min</span>
+    </p>
+
+    <h1 class="workout-complete__title"><%= workout_session.workout.title %></h1>
+
+    <p class="workout-complete__message">[Random message here]</p>
+
+    <div class="workout-complete__actions">
+      <%= link_to "Done", workout_sessions_path, class: "button button--primary" %>
     </div>
   </div>
+</div>
