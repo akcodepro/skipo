@@ -22,7 +22,7 @@
 
     <h1 class="workout-complete__title"><%= workout_session.workout.title %></h1>
 
-    <p class="workout-complete__message">[Random message here]</p>
+    <p class="workout-complete__message"><%= finish_message(workout_session) %></p>
 
     <div class="workout-complete__actions">
       <%= link_to "Done", workout_sessions_path, class: "button button--primary" %>

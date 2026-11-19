@@ -48,4 +48,18 @@ class WorkoutSessionsHelperTest < ActionView::TestCase
     assert_equal "Sep", axis_label(bars, 3)
     assert_equal "Now", axis_label(bars, 4)
   end
+
+  test "finish_message returns a completed message for completed workouts" do
+    completed_session = WorkoutSession.new(status: :completed)
+
+    assert_includes WorkoutSessionsHelper::COMPLETED_MESSAGES,
+                    finish_message(completed_session)
+  end
+
+  test "finish_message returns a stopped message for stopped workouts" do
+    stopped_session = WorkoutSession.new(status: :stopped)
+
+    assert_includes WorkoutSessionsHelper::STOPPED_MESSAGES,
+                    finish_message(stopped_session)
+  end
 end
