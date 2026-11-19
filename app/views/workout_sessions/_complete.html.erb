@@ -1,12 +1,23 @@
-<div class="workout-complete" id="workout_session">
+<% stopped = workout_session.stopped? %>
+
+<div class="<%= class_names(
+        "workout-complete",
+        "workout-complete--stopped": stopped) %>"
+      id="workout_session">
   <div class="workout-complete__backdrop"></div>
 
   <div class="workout-complete__card">
-    <p class="workout-complete__label">Workout complete</p>
+    <p class="workout-complete__label">
+      <%= stopped ? "Workout stopped" : "Workout complete" %>
+    </p>
 
     <p>
-      <span class="workout-complete__number"><%= (workout_session.actual_duration_seconds / 60.0).round %></span>
-      <span class="workout-complete__unit">min</span>
+      <span class="workout-complete__number">
+        <%= (workout_session.actual_duration_seconds / 60.0).round %>
+      </span>
+      <span class="workout-complete__unit">
+        <%= stopped ? "of #{workout_session.workout.requested_duration_seconds / 60} min" : "min" %>
+      </span>
     </p>
 
     <h1 class="workout-complete__title"><%= workout_session.workout.title %></h1>
@@ -16,5 +27,9 @@
     <div class="workout-complete__actions">
       <%= link_to "Done", workout_sessions_path, class: "button button--primary" %>
     </div>
+
+    <% if stopped %>
+      <p class="workout-complete__note">Only finished workouts can be shared.</p>
+    <% end %>
   </div>
 </div>
