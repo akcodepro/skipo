@@ -12,7 +12,9 @@ Rails.application.routes.draw do
     resource :like, only: [ :destroy, :create ]
   end
 
-  resources :workout_sessions, only: [ :index, :show, :update ], path: "progress"
+  resources :workout_sessions, only: [ :index, :show, :update ], path: "progress" do
+    resource :shared_workout, only: [ :create ], path: "share"
+  end
 
   resources :workouts, only: [ :new, :create, :show ], path: "train" do
     resources :workout_sessions, only: [ :create ]
