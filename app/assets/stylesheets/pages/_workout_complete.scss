@@ -37,6 +37,11 @@
     text-align: center;
   }
 
+  &__card--compose {
+    align-items: stretch;
+    text-align: left;
+  }
+
   &__label {
     font-size: 13px;
     font-weight: 700;
@@ -92,4 +97,95 @@
       color: $smoky-mauve;
     }
   }
+
+
+  &__back {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: $deep-forest;
+    cursor: pointer;
+  }
+
+  &__heading {
+    font-family: $headers-font;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 24px 0 0;
+  }
+
+  &__subheading {
+    font-size: 14px;
+    color: $smoky-mauve;
+    margin: 0;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 8px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__field-label {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &__optional {
+    font-size: 12px;
+    font-weight: 500;
+    color: $smoky-mauve;
+  }
+
+  &__input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 96px;
+    padding: 12px 14px;
+    border: 1px solid $dusty-lilac;
+    border-radius: 16px;
+    background: white;
+    font: inherit;
+    font-size: 16px;
+    color: $deep-forest;
+    resize: none;
+  }
+
+  &__photo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 2px dashed $dusty-lilac;
+    border-radius: 16px;
+    background: white;
+    color: $smoky-mauve;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:focus-within {
+      outline: 2px solid $warm-orange;
+    }
+  }
+
+  &__file {
+    @include visually-hidden;
+  }
+
 }
