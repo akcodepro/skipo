@@ -188,4 +188,10 @@
     @include visually-hidden;
   }
 
+  &__preview {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
 }

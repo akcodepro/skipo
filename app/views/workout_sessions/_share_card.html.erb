@@ -16,12 +16,39 @@
       <%= f.text_area :caption, placeholder: "How did it feel?", class: "workout-complete__input" %>
     </div>
 
-    <div class="workout-complete__field">
+    <div class="workout-complete__field" data-controller="photo-preview">
       <%= f.label :photo, class: "workout-complete__photo" do %>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
-        Add a photo <span class="workout-complete__optional">optional</span>
+        <img
+          class="workout-complete__preview"
+          alt=""
+          hidden
+          data-photo-preview-target="image"
+        >
+
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          data-photo-preview-target="icon">
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+          <circle cx="12" cy="13" r="3"></circle>
+        </svg>
+
+        <span data-photo-preview-target="text">
+          Add a photo <span class="workout-complete__optional">optional</span>
+        </span>
       <% end %>
-      <%= f.file_field :photo, accept: "image/*", class: "workout-complete__file" %>
+
+      <%= f.file_field :photo,
+          accept: "image/*",
+          class: "workout-complete__file",
+          data: { action: "change->photo-preview#show" } %>
     </div>
 
     <%= f.submit "Share to feed", class: "button button--primary button--block" %>
