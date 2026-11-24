@@ -18,7 +18,9 @@ class SharedWorkout < ApplicationRecord
 
   validates :workout_session_id, uniqueness: { message: "is already out there." }
 
-  has_one_attached :photo, service: :cloudinary_workout_photos
+  has_one_attached :photo, service: :cloudinary_workout_photos do |attachable|
+    attachable.variant :feed, resize_to_fill: [ 1080, 720 ], format: :webp, preprocessed: true
+  end
 
   validate :acceptable_photo
   validate :shareable_session
