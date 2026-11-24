@@ -108,6 +108,15 @@ class SharedWorkoutsTest < ActionDispatch::IntegrationTest
     assert_equal "First share.", SharedWorkout.last.caption
   end
 
+  test "shares my workout with a photo" do
+    workout_session = create_finished_session(user: @user)
+
+    post workout_session_shared_workout_path(workout_session),
+      params: { shared_workout: { photo: fixture_file_upload("photo.jpg", "image/jpeg") } }
+
+    assert SharedWorkout.last.photo.attached?
+  end
+
   private
     def share(workout_session, caption: "Legs are done.")
       post workout_session_shared_workout_path(workout_session),

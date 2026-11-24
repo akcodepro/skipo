@@ -192,7 +192,7 @@ class WorkoutSessionsTest < ActionDispatch::IntegrationTest
     get workout_session_path(@workout_session)
 
     assert_response :success
-    assert_select "[data-controller='celebrate']"
+    assert_select "[data-controller='celebrate share-flow']"
   end
 
   test "stopped workout session does not display celebration controller" do
