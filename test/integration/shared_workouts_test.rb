@@ -61,4 +61,65 @@ class SharedWorkoutsTest < ActionDispatch::IntegrationTest
     assert_select "h1", "Feed"
     assert_select ".coming-soon__title", "Your feed starts here"
   end
+
+  test "shares my completed workout" do
+    workout_session = create_finished_session(user: @user)
+
+    assert_difference "SharedWorkout.count", 1 do
+      share(workout_session, caption: "Legs are done.")
+    end
+
+    assert_redirected_to shared_workouts_path
+    shared_workout = SharedWorkout.last
+    assert_equal "Legs are done.", shared_workout.caption
+    assert_equal @user, shared_workout.user
+  end
+
+  test "cannot share my stopped workout" do
+    workout_session = create_finished_session(user: @user, status: "stopped")
+
+    assert_no_difference "SharedWorkout.count" do
+      share(workout_session)
+    end
+
+    assert_response :not_found
+  end
+
+  test "cannot share someone else's completed workout" do
+    workout_session = create_finished_session(user: create_user(name: "Sam"))
+
+    assert_no_difference "SharedWorkout.count" do
+      share(workout_session)
+    end
+
+    assert_response :not_found
+  end
+
+  test "cannot share the same workout twice" do
+    workout_session = create_finished_session(user: @user)
+    share(workout_session, caption: "First share.")
+
+    assert_no_difference "SharedWorkout.count" do
+      share(workout_session, caption: "Second share.")
+    end
+
+    assert_redirected_to workout_session_path(workout_session)
+    assert_equal "Workout session is already out there.", flash[:alert]
+    assert_equal "First share.", SharedWorkout.last.caption
+  end
+
+  test "shares my workout with a photo" do
+    workout_session = create_finished_session(user: @user)
+
+    post workout_session_shared_workout_path(workout_session),
+      params: { shared_workout: { photo: fixture_file_upload("photo.jpg", "image/jpeg") } }
+
+    assert SharedWorkout.last.photo.attached?
+  end
+
+  private
+    def share(workout_session, caption: "Legs are done.")
+      post workout_session_shared_workout_path(workout_session),
+        params: { shared_workout: { caption: caption } }
+    end
 end

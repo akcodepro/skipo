@@ -1,0 +1,58 @@
+<div class="workout-complete__card workout-complete__card--compose" data-share-flow-target="compose" hidden>
+  <button type="button" class="workout-complete__back" aria-label="Back" data-action="click->share-flow#back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg></button>
+
+  <h2 class="workout-complete__heading">Share your workout</h2>
+  <p class="workout-complete__subheading">
+    <%= workout_session.workout.title %> · <%= human_duration(workout_session.actual_duration_seconds) %>
+  </p>
+
+  <%= form_with url: workout_session_shared_workout_path(workout_session),
+                scope: :shared_workout,
+                class: "workout-complete__form" do |f| %>
+    <div class="workout-complete__field">
+      <%= f.label :caption, class: "workout-complete__field-label" do %>
+        Caption <span class="workout-complete__optional">optional</span>
+      <% end %>
+      <%= f.text_area :caption, placeholder: "How did it feel?", class: "workout-complete__input" %>
+    </div>
+
+    <div class="workout-complete__field" data-controller="photo-preview">
+      <%= f.label :photo, class: "workout-complete__photo" do %>
+        <img
+          class="workout-complete__preview"
+          alt=""
+          hidden
+          data-photo-preview-target="image"
+        >
+
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          data-photo-preview-target="icon">
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+          <circle cx="12" cy="13" r="3"></circle>
+        </svg>
+
+        <span data-photo-preview-target="text">
+          Add a photo <span class="workout-complete__optional">optional</span>
+        </span>
+      <% end %>
+
+      <%= f.file_field :photo,
+          accept: "image/*",
+          class: "workout-complete__file",
+          data: { action: "change->photo-preview#show" } %>
+    </div>
+
+    <%= f.submit "Share to feed", class: "button button--primary button--block" %>
+  <% end %>
+
+  <%= link_to "Not now", workout_sessions_path, class: "button button--text" %>
+</div>

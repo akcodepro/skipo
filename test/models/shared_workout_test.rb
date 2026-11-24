@@ -64,4 +64,22 @@ class SharedWorkoutTest < ActiveSupport::TestCase
     assert_includes SharedWorkout.visible, @shared_workout
     refute_includes SharedWorkout.visible, deleted_shared_workout
   end
+
+  test "should not be valid with a stopped session" do
+    stopped_session = create_finished_session(user: @user, status: "stopped")
+
+    shared_workout = SharedWorkout.new(user: @user, workout_session: stopped_session)
+
+    refute shared_workout.valid?
+    assert_includes shared_workout.errors[:workout_session], "must be completed"
+  end
+
+  test "should not be valid with another user's session" do
+    other_session = create_finished_session(user: create_user(name: "Other"))
+
+    shared_workout = SharedWorkout.new(user: @user, workout_session: other_session)
+
+    refute shared_workout.valid?
+    assert_includes shared_workout.errors[:workout_session], "must belong to the same user"
+  end
 end

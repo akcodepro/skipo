@@ -19,14 +19,14 @@ module ActiveSupport
       )
     end
 
-    def create_finished_session(user:, title: "Test workout")
+    def create_finished_session(user:, title: "Test workout", status: "completed")
       workout = user.workouts.create!(
         title:,
         focus: [ "footwork" ],
         difficulty: 2,
         requested_duration_seconds: 600
       )
-      WorkoutSession.create!(user:, workout:, status: "completed", actual_duration_seconds: 600)
+      WorkoutSession.create!(user:, workout:, status:, actual_duration_seconds: 600)
     end
 
     def create_shared_workout(user:, title: "Test workout", deleted: false)

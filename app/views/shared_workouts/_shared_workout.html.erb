@@ -38,7 +38,7 @@
             data-action="scroll->swipe-dots#update">
 
           <div class="feed-post__panel">
-            <%= image_tag shared_workout.photo,
+            <%= image_tag shared_workout.photo.variant(:feed),
               class: "feed-post__photo",
               alt: "#{shared_workout.user.display_name}'s workout photo",
               loading: "lazy" %>
