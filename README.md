@@ -42,7 +42,7 @@ Rails 8.1, PostgreSQL, Devise, Turbo, Stimulus, Sass with Bootstrap, importmap, 
 
 ## Run it locally
 
-Requires Ruby 3.3.12, PostgreSQL and a Mistral API key.
+Requires Ruby 3.3.14, PostgreSQL and a Mistral API key.
 
 ```bash
 git clone https://github.com/akcodepro/skipo.git
