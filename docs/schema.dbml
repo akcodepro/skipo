@@ -147,7 +147,7 @@ Table shared_workouts {
 
   created_at timestamp [not null]
   updated_at timestamp [not null]
-  deleted_at timestamp
+  hidden_at timestamp
 
   indexes {
     user_id

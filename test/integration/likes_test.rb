@@ -9,7 +9,7 @@ class LikesTest < ActionDispatch::IntegrationTest
 
     author = create_user(name: "Leyla")
     @post = create_shared_workout(user: author)
-    @deleted_post = create_shared_workout(user: author, deleted: true)
+    @hidden_post = create_shared_workout(user: author, hidden: true)
   end
 
   test "should create a like" do
@@ -34,8 +34,8 @@ class LikesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "should not like a deleted post" do
-    post shared_workout_like_path(@deleted_post)
+  test "should not like a hidden post" do
+    post shared_workout_like_path(@hidden_post)
 
     assert_response :not_found
   end

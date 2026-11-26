@@ -48,21 +48,21 @@ class SharedWorkoutTest < ActiveSupport::TestCase
     assert @shared_workout.valid?
   end
 
-  test "visible excludes deleted shared workouts" do
+  test "visible excludes hidden shared workouts" do
     second_workout_session = WorkoutSession.create!(
       user: @user,
       workout: @workout,
       status: "completed"
     )
 
-    deleted_shared_workout = SharedWorkout.create!(
+    hidden_shared_workout = SharedWorkout.create!(
       user: @user,
       workout_session: second_workout_session,
-      deleted_at: Time.current
+      hidden_at: Time.current
     )
 
     assert_includes SharedWorkout.visible, @shared_workout
-    refute_includes SharedWorkout.visible, deleted_shared_workout
+    refute_includes SharedWorkout.visible, hidden_shared_workout
   end
 
   test "should not be valid with a stopped session" do
