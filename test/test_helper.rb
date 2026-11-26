@@ -29,11 +29,11 @@ module ActiveSupport
       WorkoutSession.create!(user:, workout:, status:, actual_duration_seconds: 600)
     end
 
-    def create_shared_workout(user:, title: "Test workout", deleted: false)
+    def create_shared_workout(user:, title: "Test workout", hidden: false)
       SharedWorkout.create!(
         user:,
         workout_session: create_finished_session(user:, title:),
-        deleted_at: (Time.current if deleted)
+        hidden_at: (Time.current if hidden)
       )
     end
   end

@@ -1,6 +1,6 @@
 # SKIPO: Database
 
-**Version:** 0.2
+**Version:** 0.3
 **Status:** Draft
 
 ## Purpose
@@ -175,7 +175,7 @@ Represents a completed workout that a user has chosen to publish to the social f
 - user_id
 - caption
 - created_at
-- deleted_at
+- hidden_at
 
 **Attachments**
 
@@ -185,7 +185,7 @@ Sharing is optional.
 
 A shared workout belongs to one user and one workout session.
 
-deleted_at allows a shared post to be removed without necessarily deleting the underlying workout or workout session.
+hidden_at hides a shared post from the feed without deleting the underlying workout or workout session. Clearing it shows the post again.
 
 ---
 
@@ -255,7 +255,7 @@ Like
 - Users can like shared workouts.
 - A user can only like a particular shared workout once.
 - Users can unlike a workout they previously liked.
-- Deleting a shared workout should not delete the underlying workout session.
+- Hiding a shared workout should not delete the underlying workout session.
 
 ---
 
@@ -299,6 +299,7 @@ An exercise's category describes what kind of move it is. Its difficulty describ
 | #8 Session status values | in_progress, completed, stopped. Pause is browser-only, no resume |
 | #10 Generation inputs | Stored on the workout (focus, requested_duration_seconds, difficulty) |
 | #11 Exercises | Global library, one home category and a difficulty per exercise |
+| #40 Hiding posts | posts are hidden, not deleted; hidden_at is set or cleared; it's reversible and can be re-shared by un-hiding |
 
 ---
 
@@ -310,5 +311,4 @@ These decisions may change as the application is implemented:
 - Whether progress metrics need additional persisted data.
 - Whether stopped sessions count toward progress stats.
 - How stale in_progress sessions are handled.
-- Whether deleted shared workouts should be soft-deleted permanently or physically removed.
 - Whether additional achievement/streak data is required later.

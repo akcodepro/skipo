@@ -39,12 +39,12 @@ class SharedWorkoutsTest < ActionDispatch::IntegrationTest
       actual_duration_seconds: 300
     )
 
-    # One visible post, one soft-deleted post
+    # One visible post, one hidden post
     SharedWorkout.create!(user: @user, workout_session: session_a)
-    SharedWorkout.create!(user: @user, workout_session: session_b, deleted_at: Time.current)
+    SharedWorkout.create!(user: @user, workout_session: session_b, hidden_at: Time.current)
   end
 
-  test "feed shows visible posts and hides deleted ones" do
+  test "feed shows visible posts and leaves out hidden ones" do
     get shared_workouts_path
 
     assert_response :success

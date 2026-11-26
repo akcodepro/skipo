@@ -25,7 +25,7 @@ class SharedWorkout < ApplicationRecord
   validate :acceptable_photo
   validate :shareable_session
 
-  scope :visible, -> { where(deleted_at: nil) }
+  scope :visible, -> { where(hidden_at: nil) }
 
   def liked_by?(user)
     likes.any? { |like| like.user_id == user.id }
