@@ -60,12 +60,12 @@ Story IDs (US-01 to US-27) match the issue titles on the SKIPO GitHub Project bo
 
 ## 5. Sharing
 
-| ID    | Story                                    | As a user, I want                                       | so that                                                          |
-|-------|------------------------------------------|---------------------------------------------------------|------------------------------------------------------------------|
-| US-18 | Choose whether to share                  | to be prompted to share my completed workout            | I can decide whether I want to post it publicly                  |
-| US-19 | Add a photo                              | to optionally add a photo to my workout post            | other users can see what I did                                   |
-| US-20 | Delete a shared workout                  | to delete a workout I previously shared                 | I can remove something from the public feed if I change my mind |
-| US-21 | Confirm before deleting a shared workout | to be asked to confirm before deleting a shared workout | I don't accidentally remove something I wanted to keep           |
+| ID    | Story                         | As a user, I want                                       | so that                                                         |
+|-------|-------------------------------|---------------------------------------------------------|-----------------------------------------------------------------|
+| US-18 | Choose whether to share       | to be prompted to share my completed workout            | I can decide whether I want to post it publicly                 |
+| US-19 | Add a photo                   | to optionally add a photo to my workout post            | other users can see what I did                                  |
+| US-20 | Hide or show a shared workout | to hide a workout I previously shared, or show it again | I can remove something from the public feed if I change my mind |
+| US-21 | Undo hiding from the feed     | to undo hiding a post right after I hide it             | a mis-tap costs me nothing                                      |
 
 US-18 includes the full publish flow from DESIGN.md (share prompt, optional photo, publish, post appears in the feed). Only a completed workout session belonging to the user can be shared.
 
