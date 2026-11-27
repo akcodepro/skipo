@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     root to: "pages#home"
   end
 
-  resources :shared_workouts, only: [ :index ], path: "feed" do
+  resources :shared_workouts, only: [ :index, :update ], path: "feed" do
     resource :like, only: [ :destroy, :create ]
   end
 
