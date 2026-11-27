@@ -21,7 +21,6 @@
 
     color: inherit;
     font: inherit;
-    font-family: inherit;
     font-size: 0.8rem;
 
     white-space: nowrap;
@@ -55,10 +54,10 @@
     min-width: 140px;
     padding: 4px;
 
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 0.7px solid rgba($deep-forest, 0.1);
     border-radius: 8px;
-    background: var(--surface, #fff);
-    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.06);
+    background: $warm-porcelain;
+    box-shadow: 0 4px 12px rgba($deep-forest, 0.1);
   }
 
   &__option {
@@ -74,12 +73,15 @@
 
     color: inherit;
     font: inherit;
-    font-family: inherit;
     font-size: 0.8rem;
 
     text-align: left;
     text-decoration: none;
     white-space: nowrap;
+
+    &--current {
+      font-weight: 600;
+    }
   }
 
   &__option-form {
@@ -89,13 +91,9 @@
       cursor: pointer;
 
       &:hover {
-        background: rgba(0, 0, 0, 0.06);
+        background: rgba($deep-forest, 0.06);
       }
     }
-  }
-
-  &__option--current {
-    font-weight: 600;
   }
 
   &__check {
