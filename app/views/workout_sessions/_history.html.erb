@@ -7,18 +7,30 @@
           <span class="history__date"><%= session_date(workout_session.started_at) %></span>
           <span class="history__title"><%= workout.title %></span>
         </div>
+
         <span class="history__duration"><%= human_duration(workout_session.actual_duration_seconds) %></span>
       </div>
+
       <% if workout_session.stopped? %>
         <p class="history__stopped">
           <svg class="history__stopped-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"></path></svg>
           Stopped at <%= (workout_session.actual_duration_seconds / 60.0).round %> of <%= workout.requested_duration_seconds / 60 %> min
         </p>
       <% end %>
+
       <p class="history__moves"><%= first_moves(workout) %></p>
-      <div class="history__pills">
-        <%= render "shared/focus_pills", workout: workout %>
+
+      <div class="history__bottom">
+        <div class="history__pills">
+          <%= render "shared/focus_pills", workout: workout %>
+        </div>
+
+        <% if workout_session.shared_workout %>
+          <%= render "shared_workouts/post_visibility",
+            shared_workout: workout_session.shared_workout %>
+        <% end %>
       </div>
+
     </li>
   <% end %>
 </ul>

@@ -16,7 +16,10 @@ class WorkoutSessionsController < ApplicationController
       .where(started_at: range_start..)
 
     @workout_sessions = finished_sessions
-      .includes(workout: { workout_exercises: :exercise })
+      .includes(
+        :shared_workout,
+        workout: { workout_exercises: :exercise }
+      )
       .order(started_at: :desc)
 
     @usual_duration_seconds = finished_sessions.usual_duration_seconds

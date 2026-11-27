@@ -1,0 +1,52 @@
+<% hidden = shared_workout.hidden? %>
+
+<details class="<%= class_names(
+  'post-visibility',
+  'post-visibility--hidden': hidden
+) %>">
+
+  <summary class="post-visibility__trigger">
+    <i
+      class="fa-solid <%= hidden ? 'fa-user' : 'fa-users' %> post-visibility__icon"
+      aria-hidden="true"
+    ></i>
+
+    <span class="post-visibility__label">
+      <%= hidden ? "Only me" : "On feed" %>
+    </span>
+
+    <i
+      class="fa-solid fa-chevron-down post-visibility__chevron"
+      aria-hidden="true"
+    ></i>
+  </summary>
+
+  <div class="post-visibility__menu">
+    <% [
+      [false, "On feed", "fa-users"],
+      [true, "Only me", "fa-user"]
+    ].each do |value, text, icon| %>
+
+      <% if value == hidden %>
+        <span
+          class="post-visibility__option post-visibility__option--current"
+          aria-current="true"
+        >
+          <i class="fa-solid fa-fw <%= icon %>" aria-hidden="true"></i>
+          <%= text %>
+          <i class="fa-solid fa-check post-visibility__check" aria-hidden="true"></i>
+        </span>
+      <% else %>
+        <%= button_to shared_workout_path(shared_workout),
+          method: :patch,
+          params: { shared_workout: { hidden: value } },
+          class: "post-visibility__option",
+          form_class: "post-visibility__option-form" do %>
+          <i class="fa-solid fa-fw <%= icon %>" aria-hidden="true"></i>
+          <%= text %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+  </div>
+</details>

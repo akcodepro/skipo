@@ -31,6 +31,10 @@ class SharedWorkout < ApplicationRecord
     likes.any? { |like| like.user_id == user.id }
   end
 
+  def hidden?
+    hidden_at.present?
+  end
+
   private
 
     def acceptable_photo
